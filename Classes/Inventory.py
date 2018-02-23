@@ -8,8 +8,8 @@ class Inventory:
         self.activePowerups = []
         self.powerups = []
 
-    def enableAbility(self,ability):
+    def enableAbility(self,ability): # Weapon being used
         pass
 
-    def usePowerUp(self,powerup):
+    def usePowerUp(self,powerup): #Remove it from inventory and add to game loop
         pass
