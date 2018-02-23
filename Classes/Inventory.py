@@ -4,9 +4,9 @@ class Inventory:
 
     def __init__(self):
         self.enabledAbility = Ability
-        self.abilities = []
-        self.activePowerups = []
-        self.powerups = []
+        self.abilities = [] #Items the user has
+        self.activePowerups = [] #Lists all active power ups
+        self.powerups = [] #Lists all power ups
 
     def enableAbility(self,ability): # Weapon being used
         pass
