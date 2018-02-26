@@ -1,4 +1,3 @@
-from Classes.Projectile import Projectile
 class Ability():
     def __init__(self):
         self.sprite = object
