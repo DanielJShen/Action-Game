@@ -33,6 +33,9 @@ class Vector:
     def getP(self):
         return (self.x, self.y)
 
+    def getIntP(self):
+        return (int(self.x), int(self.y))
+
     # Returns a copy of the vector
     def copy(self):
         return Vector(self.x, self.y)
@@ -74,6 +77,7 @@ class Vector:
 
     # Divides the vector by a scalar
     def divide(self, k):
+        if k==0: return Vector(0,0)
         return self.multiply(1 / k)
 
     def __truediv__(self, k):
@@ -95,12 +99,16 @@ class Vector:
     def length(self):
         return math.sqrt(self.x ** 2 + self.y ** 2)
 
+    # Returns the angle with (1,0) in radians
+    def direction(self):
+        return math.acos(self.getNormalized().x)
+
     # Returns the squared length of the vector
     def lengthSquared(self):
         return self.x ** 2 + self.y ** 2
 
     def getNormal(self):
-        return self.copy().rotAnti().normalize()
+        return self.copy().getNormalized().rotAnti()
 
     # Reflect this vector on a normal
     def reflect(self, normal):
@@ -123,4 +131,4 @@ class Vector:
     # You will need to use the arccosine function:
     # acos in the math library
     def angle(self, other):
-        return math.acos(self.dot(other) / (self.length() * other.length()))
+        return math.acos(self.dot(other) / (math.ceil(self.length()*10000)/10000 * math.ceil(other.length()*10000)/10000))
