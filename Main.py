@@ -17,18 +17,17 @@ walls = []
 
 def click():pass
 
-for i in range(50):
+for i in range(5):
     projectiles.append( Projectile(Vector(random.randint(2,12),random.randint(2,12)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),20,-1,True,0) )
-walls.append( Wall(Vector(0,0),50,Vector(200,500),Vector(500,300)) )
-interaction = Interactions()
+    walls.append( Wall(Vector(0,0),10,Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT))) )
 
 
 # Handler to draw on canvas
 def draw(canvas):
     canvas.draw_text("Testing", [50,112], 48, "Red")
-
-
-    interaction.bounceBallOffWall(projectiles,walls)
+    for wall in walls:
+        for projectile in projectiles:
+            Interactions().bounceBallOffWall(projectile,wall)
 
     for wall in walls:
         wall.draw(canvas)
