@@ -2,7 +2,7 @@ from Classes.Vector import Vector
 class Projectile:
     def __init__(self,vel,pos,radius,timer,bounceState,damage): #rof is Rate of Fire
         self.vel:Vector = vel
-        self.pos = pos
+        self.pos:Vector = pos
         self.radius = radius
         self.timer = timer
         self.bounceState = bounceState #Whether an object bounces of the wall

@@ -11,8 +11,8 @@ class Wall:
 
     def draw(self,canvas):
         canvas.draw_polyline([self.pos1.getIntP(), self.pos2.getIntP()], int(self.thickness*2), "white")
-        # canvas.draw_circle( self.pos1.getP(), self.thickness-1, 1, "white", "white")
-        # canvas.draw_circle( self.pos2.getP(), self.thickness-1, 1, "white", "white")
+        canvas.draw_circle( self.pos1.getP(), math.sqrt(self.thickness**2 + self.thickness**2), 0.01, "white", "white")
+        canvas.draw_circle( self.pos2.getP(), math.sqrt(self.thickness**2 + self.thickness**2), 0.01, "white", "white")
     def update(self):
         self.pos.add(self.vel)
 
@@ -32,10 +32,9 @@ class Wall:
         radius = math.sqrt(self.thickness**2 + self.thickness**2)
 
         if (radius + projectile.radius) >= seperation.length():
-
             # Calculate how to free Object
             direction: Vector = projectile.vel.copy().negate().normalize()
-            distance = ((projectile.radius + radius) - seperation.length()) / max(math.sin(self.line.getNormalized().getNormal().angle(direction)), 0.02)
+            distance = ((projectile.radius + radius) - seperation.length()) / max(math.sin(self.line.getNormalized().getNormal().angle(direction)), 0.02) #Distance needed to escape wall
 
             # Reflect
             projectile.vel.reflect(self.line.getNormalized())
