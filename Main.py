@@ -16,15 +16,15 @@ CANVAS_HEIGHT=1000
 CANVAS_WIDTH=1600
 
 #Defining Objects
-character_image = simplegui.load_image('http://blog.acamara.es/wp-content/uploads/2012/12/PJ-WalkDown1.png')
-character = Character(Vector(0,0),Vector(CANVAS_WIDTH/2,CANVAS_HEIGHT/2),character_image,0)
+character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
+character = Character(Vector(0,0),Vector(CANVAS_WIDTH/2,CANVAS_HEIGHT/2),character_image,0,(64,64))
 keyboard = Keyboard()
 map = Map()
 projectiles = []
-walls = []
-# for i in range(10):
-#     projectiles.append( Projectile(Vector(random.randint(2,22),random.randint(2,22)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),20,-1,True,0,"none") )
-#     walls.append( Wall(Vector(0,0),8,Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT))) )
+walls = map.walls
+# for i in range(100):
+#     projectiles.append( Projectile(Vector(random.randint(2,22),random.randint(2,22)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),10,-1,True,0,"none") )
+#     walls.append( Wall(4,Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT))) )
 
 # Handler to draw on canvas
 def draw(canvas):
@@ -47,8 +47,8 @@ def draw(canvas):
         proj.pos.y %= CANVAS_HEIGHT
 
     #To see collision walls
-    for wall in walls:
-        wall.draw(canvas)
+    # for wall in walls:
+    #     wall.draw(canvas)
 
 
 def click(pos):
@@ -58,11 +58,12 @@ def keyDown(key):
 def keyUp(key):
     keyboard.keyUp(key)
 # Create a frame and assign callbacks to event handlers
-frame = simplegui.create_frame("Home", CANVAS_WIDTH, CANVAS_HEIGHT)
+frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 frame.set_mouseclick_handler(click)
 frame.set_keydown_handler(keyDown)
 frame.set_keyup_handler(keyUp)
 frame.set_draw_handler(draw)
+
 
 # Start the frame animation
 frame.start()

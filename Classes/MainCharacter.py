@@ -6,7 +6,7 @@ from Classes.Vector import Vector
 from Classes.Objects.Projectile import Projectile
 import math
 class Character:
-    def __init__(self,vel,pos,image,rotation):
+    def __init__(self,vel,pos,image,rotation,size=0):
         self.vel:Vector = vel
         self.pos:Vector = pos
         self.speed = 0.7
@@ -16,12 +16,17 @@ class Character:
         self.dim = ( self.image.get_width() , self.image.get_height() )
         self.center = ( self.image.get_width()/2 , self.image.get_height()/2 )
 
+        if size == 0:
+            self.size = self.dim
+        else:
+            self.size = size
+
     def fire(self,pos:Vector,projectiles:list):
         vel = pos.copy().subtract(self.pos).getNormalized()*10
         projectiles.append( Projectile(vel,self.pos.copy(),10,20,True,10,"player") ) #TODO Fire type based on ability and powerups
 
     def draw(self,canvas):
-        canvas.draw_image(self.image, self.center, self.dim, self.pos.getP(), self.dim, self.rotation)
+        canvas.draw_image(self.image, self.center, self.dim, self.pos.getP(), self.size, self.rotation)
     def update(self,keyboard):
         if keyboard.right:
             self.vel.add(Vector(self.speed,0))
@@ -43,25 +48,25 @@ class Keyboard:
         self.space = False
 
     def keyDown(self, key):
-        if key == simplegui.KEY_MAP['right']:
+        if key == simplegui.KEY_MAP['d']:
             self.right = True
-        if key == simplegui.KEY_MAP['left']:
+        if key == simplegui.KEY_MAP['a']:
             self.left = True
-        if key == simplegui.KEY_MAP['up']:
+        if key == simplegui.KEY_MAP['w']:
             self.up = True
-        if key == simplegui.KEY_MAP['down']:
+        if key == simplegui.KEY_MAP['s']:
             self.down = True
         if key == simplegui.KEY_MAP['space']:
             self.space = True
 
     def keyUp(self, key):
-        if key == simplegui.KEY_MAP['right']:
+        if key == simplegui.KEY_MAP['d']:
             self.right = False
-        if key == simplegui.KEY_MAP['left']:
+        if key == simplegui.KEY_MAP['a']:
             self.left = False
-        if key == simplegui.KEY_MAP['up']:
+        if key == simplegui.KEY_MAP['w']:
             self.up = False
-        if key == simplegui.KEY_MAP['down']:
+        if key == simplegui.KEY_MAP['s']:
             self.down = False
         if key == simplegui.KEY_MAP['space']:
             self.space = False
