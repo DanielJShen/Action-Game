@@ -8,6 +8,7 @@ from Classes.Objects.Wall import Wall
 from Classes.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
+from Classes.Maps.Map import Map
 
 import random
 
@@ -18,11 +19,12 @@ CANVAS_WIDTH=1600
 character_image = simplegui.load_image('http://blog.acamara.es/wp-content/uploads/2012/12/PJ-WalkDown1.png')
 character = Character(Vector(0,0),Vector(CANVAS_WIDTH/2,CANVAS_HEIGHT/2),character_image,0)
 keyboard = Keyboard()
+map = Map()
 projectiles = []
 walls = []
-for i in range(10):
-    projectiles.append( Projectile(Vector(random.randint(2,22),random.randint(2,22)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),20,-1,True,0,"none") )
-    walls.append( Wall(Vector(0,0),8,Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT))) )
+# for i in range(10):
+#     projectiles.append( Projectile(Vector(random.randint(2,22),random.randint(2,22)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),20,-1,True,0,"none") )
+#     walls.append( Wall(Vector(0,0),8,Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT))) )
 
 # Handler to draw on canvas
 def draw(canvas):
@@ -37,13 +39,16 @@ def draw(canvas):
     #Drawing and Updates
     character.draw(canvas)
     character.update(keyboard)
-    for wall in walls:
-        wall.draw(canvas)
+    map.draw(canvas)
     for proj in projectiles:
         proj.draw(canvas)
         proj.update()
         proj.pos.x %= CANVAS_WIDTH
         proj.pos.y %= CANVAS_HEIGHT
+
+    #To see collision walls
+    for wall in walls:
+        wall.draw(canvas)
 
 
 def click(pos):
