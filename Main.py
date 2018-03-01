@@ -17,10 +17,9 @@ walls = []
 
 def click():pass
 
-for i in range(5):
-    projectiles.append( Projectile(Vector(random.randint(2,12),random.randint(2,12)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),20,-1,True,0) )
+for i in range(10):
+    projectiles.append( Projectile(Vector(random.randint(2,22),random.randint(2,22)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),20,-1,True,0) )
     walls.append( Wall(Vector(0,0),8,Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT))) )
-
 
 # Handler to draw on canvas
 def draw(canvas):
