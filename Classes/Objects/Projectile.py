@@ -1,12 +1,13 @@
 from Classes.Vector import Vector
 class Projectile:
-    def __init__(self,vel,pos,radius,timer,bounceState,damage): #rof is Rate of Fire
+    def __init__(self,vel,pos,radius,timer,bounceState,damage,owner): #rof is Rate of Fire
         self.vel:Vector = vel
         self.pos:Vector = pos
         self.radius = radius
-        self.timer = timer
+        self.timer = timer #TODO use
         self.bounceState = bounceState #Whether an object bounces of the wall
-        self.damage = damage
+        self.damage = damage #TODO use
+        self.owner = owner #TODO use
 
     def draw(self,canvas):
         canvas.draw_circle(self.pos.getP(),self.radius,0.001,'green','green')
