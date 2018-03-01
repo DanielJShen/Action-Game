@@ -18,5 +18,28 @@ class Sprite:
 
     def draw(self,canvas):
         canvas.draw_image(self.image, self.center, self.dim, self.pos.getP(), self.size, self.rotation)
-    def update(self):
-        self.pos.add(self.vel)
+
+class SpriteGroup:
+    def __init__(self,sprites):
+        self.sprites = sprites
+
+        maxX=sprites[0].pos.x
+        minX=sprites[0].pos.x
+        maxY=sprites[0].pos.y
+        minY=sprites[0].pos.y
+        for sprite in sprites:
+            maxX = max(sprite.pos.x, maxX)
+            minX = min(sprite.pos.x, minX)
+            maxY = max(sprite.pos.y, maxY)
+            minY = min(sprite.pos.y, minY)
+
+        imageHalfWidth = sprites[0].size[0]/2
+        imageHalfHeight = sprites[0].size[1]/2
+        self.cornerTopLeft = Vector(minX-imageHalfWidth,minY-imageHalfHeight)
+        self.cornerTopRight = Vector(maxX+imageHalfWidth,minY-imageHalfHeight)
+        self.cornerBottomRight = Vector(maxX+imageHalfWidth,maxY+imageHalfHeight)
+        self.cornerBottomLeft = Vector(minX-imageHalfWidth,maxY+imageHalfHeight)
+
+    def addTo(self,sprites):
+        for sprite in self.sprites:
+            sprites.append(sprite)
