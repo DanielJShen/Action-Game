@@ -32,28 +32,12 @@ class Wall:
         radius = math.sqrt(self.thickness**2 + self.thickness**2)
 
         if (radius + projectile.radius) >= seperation.length():
-            # Calculate how to free Object
-            direction: Vector = projectile.vel.copy().negate().normalize()
-            distance = ((projectile.radius + radius) - seperation.length()) / max(math.sin(self.line.getNormalized().getNormal().angle(direction)), 0.02) #Distance needed to escape wall
-
             # Reflect
-            projectile.vel.reflect(self.line.getNormalized())
-
-            # Free Object
-            projectile.pos.add(direction.copy().multiply(distance))  # Going back by ammount overlapped
-            projectile.pos.add(projectile.vel.getNormalized() * distance)  # Adding lost distance after
+            projectile.vel.reflect( seperation.getNormalized() )
 
         if (radius + projectile.radius) >= seperation2.length():
-            # Calculate how to free Object
-            direction: Vector = projectile.vel.copy().negate().normalize()
-            distance = ((projectile.radius + radius) - seperation2.length()) / max(math.sin(self.line.getNormalized().getNormal().angle(direction)), 0.02)
-
             # Reflect
-            projectile.vel.reflect(self.line.getNormalized())
-
-            # Free Object
-            projectile.pos.add(direction.copy().multiply(distance))  # Going back by ammount overlapped
-            projectile.pos.add(projectile.vel.getNormalized() * distance)  # Adding lost distance after
+            projectile.vel.reflect( seperation2.getNormalized() )
 
     def reflect(self,projectile):
                 #Calculate how to free Object
