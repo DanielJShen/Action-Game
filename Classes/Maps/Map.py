@@ -15,9 +15,12 @@ class Map:
         self.walls = []
 
         #Load Images
+        image_background = simplegui._load_local_image('Resources/images/grass.jpeg')
         image_wall = simplegui._load_local_image('Resources/images/wall1.png')
         image_spike = simplegui.load_image('https://opengameart.org/sites/default/files/Spike_Pixel_0.png')
 
+        #Background
+        self.sprites.append( Sprite( Vector(800,450),image_background, [1600*3,900*3] ) )
 
         #All sprites
         wallWidth = 50

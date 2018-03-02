@@ -23,7 +23,7 @@ class Character:
 
     def fire(self,pos:Vector,projectiles:list):
         vel = pos.copy().subtract(self.pos).getNormalized()*10
-        projectiles.append( Projectile(vel,self.pos.copy(),10,20,True,10,"player") ) #TODO Fire type based on ability and powerups
+        projectiles.append( Projectile(vel,self.pos.copy(),10,1,True,10,"player") ) #TODO Fire type based on ability and powerups
 
     def draw(self,canvas):
         canvas.draw_image(self.image, self.center, self.dim, self.pos.getP(), self.size, self.rotation)

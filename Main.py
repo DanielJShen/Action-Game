@@ -12,7 +12,7 @@ from Classes.Maps.Map import Map
 
 import random
 
-CANVAS_HEIGHT=1000
+CANVAS_HEIGHT=900
 CANVAS_WIDTH=1600
 
 #Defining Objects
@@ -28,7 +28,6 @@ walls = map.walls
 
 # Handler to draw on canvas
 def draw(canvas):
-    canvas.draw_text("Testing", [50,112], 48, "Red")
 
     #Interactions
     for wall in walls:
@@ -37,12 +36,16 @@ def draw(canvas):
 
 
     #Drawing and Updates
+    map.draw(canvas)
+    canvas.draw_text("Testing", [50,112], 48, "Red")
     character.draw(canvas)
     character.update(keyboard)
-    map.draw(canvas)
+    character.pos.x %= CANVAS_WIDTH
+    character.pos.y %= CANVAS_HEIGHT
+
     for proj in projectiles:
         proj.draw(canvas)
-        proj.update()
+        proj.update(projectiles)
         proj.pos.x %= CANVAS_WIDTH
         proj.pos.y %= CANVAS_HEIGHT
 

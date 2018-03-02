@@ -4,21 +4,25 @@ class Projectile:
         self.vel:Vector = vel
         self.pos:Vector = pos
         self.radius = radius
-        self.timer = timer #TODO use
+        self.timer = timer*60 #TODO use
         self.bounceState = bounceState #Whether an object bounces of the wall
         self.damage = damage #TODO use
         self.owner = owner #TODO use
 
     def draw(self,canvas):
         canvas.draw_circle(self.pos.getP(),self.radius,0.001,'green','green')
-    def update(self):
+    def update(self,projectiles:list):
         self.pos.add(self.vel)
+        if self.incrementTimer() <= 0:
+            print(projectiles.index(self))
+            projectiles.pop(projectiles.index(self))
 
     def bounce(self): #Checks if the projectile hits a wall
         return True
 
-    def timer(self): #Used to end a projectile life
-        pass
+    def incrementTimer(self): #Used to end a projectile life
+        self.timer = self.timer - 1
+        return self.timer
 
 
 #The projectile class is the object that is shot by the player e.g a bullet OR LASERS WHOOOOOOOOO
