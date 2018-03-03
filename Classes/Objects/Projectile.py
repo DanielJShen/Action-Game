@@ -9,12 +9,11 @@ class Projectile:
         self.damage = damage #TODO use
         self.owner = owner #TODO use
 
-    def draw(self,canvas):
-        canvas.draw_circle(self.pos.getP(),self.radius,0.001,'green','green')
+    def draw(self,canvas,offset):
+        canvas.draw_circle((self.pos+offset).getP(),self.radius,0.001,'green','green')
     def update(self,projectiles:list):
         self.pos.add(self.vel)
         if self.incrementTimer() <= 0:
-            print(projectiles.index(self))
             projectiles.pop(projectiles.index(self))
 
     def bounce(self): #Checks if the projectile hits a wall

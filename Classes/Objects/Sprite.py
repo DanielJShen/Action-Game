@@ -16,8 +16,8 @@ class Sprite:
         else:
             self.size = size
 
-    def draw(self,canvas):
-        canvas.draw_image(self.image, self.center, self.dim, self.pos.getP(), self.size, self.rotation)
+    def draw(self,canvas,offset):
+        canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
 
 class SpriteGroup:
     def __init__(self,sprites):
