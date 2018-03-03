@@ -1,4 +1,4 @@
-from Vector_SelfMade import Vector
+from Classes.Vector import Vector
 
 try:
     import simplegui
@@ -20,13 +20,13 @@ class Spritesheet:
         self.fr_idx = [0,0]
 
 
-    def draw(self,canvas,pos,width,height):
+    def draw(self,canvas,offset,pos,width,height):
         self.pos = pos
         self.imgWidth = width
         self.imgHeight = height
         canvas.draw_image(self.img, (self.frameWidth*self.fr_idx[0]+self.frameCentreX, self.frameHeight*self.fr_idx[1]+self.frameCentreY),
                                     (self.frameWidth, self.frameHeight),
-                                    (self.pos.x, self.pos.y),
+                                    (self.pos+offset).getP(),
                                     (self.imgWidth, self.imgHeight))
     def update(self):
         self.fr_idx[0] = (self.fr_idx[0] + 1) % self.columns

@@ -132,3 +132,9 @@ class Vector:
     # acos in the math library
     def angle(self, other):
         return math.acos(self.dot(other) / (math.ceil(self.length()*10000)/10000 * math.ceil(other.length()*10000)/10000))
+
+    def angleToX(self):
+        angle = math.atan2(self.y,self.x)
+        if angle < 0:
+            angle += 2*math.pi
+        return angle

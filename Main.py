@@ -9,17 +9,21 @@ from Classes.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
 from Classes.Maps.Map import Map
+from Classes.View import View
 
 import random
 
 CANVAS_HEIGHT=900
 CANVAS_WIDTH=1600
+offset = Vector(0,0)
 
 #Defining Objects
+frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
 character = Character(Vector(0,0),Vector(CANVAS_WIDTH/2,CANVAS_HEIGHT/2),character_image,0,(64,64))
 keyboard = Keyboard()
-map = Map()
+map = Map(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
+offset = map.startPos
 projectiles = []
 walls = map.walls
 # for i in range(100):
@@ -34,34 +38,34 @@ def draw(canvas):
         for projectile in projectiles:
             Interactions().bounceBallOffWall(projectile,wall)
 
-
     #Drawing and Updates
-    map.draw(canvas)
-    canvas.draw_text("Testing", [50,112], 48, "Red")
-    character.draw(canvas)
+    map.draw(canvas,offset)
+    character.draw(canvas,offset)
     character.update(keyboard)
-    character.pos.x %= CANVAS_WIDTH
-    character.pos.y %= CANVAS_HEIGHT
+
+    #Moving Screen
+    View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
 
     for proj in projectiles:
-        proj.draw(canvas)
+        proj.draw(canvas,offset)
+        Interactions().ballHitPlayer(proj,character,projectiles)
         proj.update(projectiles)
-        proj.pos.x %= CANVAS_WIDTH
-        proj.pos.y %= CANVAS_HEIGHT
 
     #To see collision walls
-    # for wall in walls:
-    #     wall.draw(canvas)
+    for wall in walls:
+        wall.draw(canvas,offset)
 
+    #Draw HUD
+    canvas.draw_text("Testing", [50,112], 48, "white")
+    canvas.draw_text("Health: "+str(character.health), [50, 200], 48, "Red")
 
 def click(pos):
-    character.fire(Vector(pos[0],pos[1]),projectiles)
+    character.fire(Vector(pos[0],pos[1])-offset,projectiles)
 def keyDown(key):
     keyboard.keyDown(key)
 def keyUp(key):
     keyboard.keyUp(key)
-# Create a frame and assign callbacks to event handlers
-frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
+# Assign callbacks to event handlers
 frame.set_mouseclick_handler(click)
 frame.set_keydown_handler(keyDown)
 frame.set_keyup_handler(keyUp)
