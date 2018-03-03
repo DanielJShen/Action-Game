@@ -8,10 +8,10 @@ class Wall:
 
         self.line = self.pos2.copy().subtract(self.pos1)
 
-    def draw(self,canvas):
-        canvas.draw_polyline([self.pos1.getIntP(), self.pos2.getIntP()], int(self.halfThickness * 2), "white")
-        canvas.draw_circle(self.pos1.getP(), math.sqrt(self.halfThickness ** 2 + self.halfThickness ** 2), 0.01, "white", "white")
-        canvas.draw_circle(self.pos2.getP(), math.sqrt(self.halfThickness ** 2 + self.halfThickness ** 2), 0.01, "white", "white")
+    def draw(self,canvas,offset):
+        canvas.draw_polyline([(self.pos1+offset).getIntP(), (self.pos2+offset).getIntP()], int(self.halfThickness * 2), "white")
+        canvas.draw_circle((self.pos1+offset).getP(), math.sqrt(self.halfThickness ** 2 + self.halfThickness ** 2), 0.01, "white", "white")
+        canvas.draw_circle((self.pos2+offset).getP(), math.sqrt(self.halfThickness ** 2 + self.halfThickness ** 2), 0.01, "white", "white")
     def update(self):
         self.pos.add(self.vel)
 

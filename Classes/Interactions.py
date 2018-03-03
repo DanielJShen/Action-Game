@@ -10,3 +10,10 @@ class Interactions:
             #     wall.reflectEdge(projectile)
         else:
             pass #Remove projectile
+
+    def ballHitPlayer(self,projectile,player,projectiles):
+        seperation = player.pos-projectile.pos
+        if not projectile.owner == "player":
+            if projectile.radius + player.size[0] >= seperation.x and projectile.radius + player.size[1] >= seperation.y:
+                player.health -= projectile.damage
+                projectiles.pop(projectiles.index(projectile))
