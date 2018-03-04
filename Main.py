@@ -9,6 +9,7 @@ from Classes.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
 from Classes.Maps.Map import Map
+from Classes.Inventory import Inventory
 
 import random
 
@@ -19,6 +20,7 @@ CANVAS_WIDTH=1600
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
 character = Character(Vector(0,0),Vector(CANVAS_WIDTH/2,CANVAS_HEIGHT/2),character_image,0,(64,64))
 keyboard = Keyboard()
+inventory = Inventory(CANVAS_WIDTH,CANVAS_HEIGHT)
 map = Map()
 projectiles = []
 walls = map.walls
@@ -52,6 +54,9 @@ def draw(canvas):
     #To see collision walls
     # for wall in walls:
     #     wall.draw(canvas)
+
+    inventory.draw(canvas,CANVAS_WIDTH,CANVAS_HEIGHT)
+    inventory.update(keyboard)
 
 
 def click(pos):
