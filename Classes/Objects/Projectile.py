@@ -4,7 +4,7 @@ class Projectile:
         self.vel:Vector = vel
         self.pos:Vector = pos
         self.radius = radius
-        self.timer = timer*60 #TODO use
+        self.timer = round(timer*60) #TODO use
         self.bounceState = bounceState #Whether an object bounces of the wall
         self.damage = damage #TODO use
         self.owner = owner #TODO use

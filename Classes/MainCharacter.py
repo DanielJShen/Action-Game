@@ -18,6 +18,7 @@ class Character:
         self.rotation = rotation
         self.dim = ( self.image.get_width() , self.image.get_height() )
         self.center = ( self.image.get_width()/2 , self.image.get_height()/2 )
+        self.radius = max(size[0],size[1])
 
         if size == 0:
             self.size = self.dim
@@ -25,8 +26,8 @@ class Character:
             self.size = size
 
     def fire(self,pos:Vector,projectiles:list):
-        vel = pos.copy().subtract(self.pos).getNormalized()*10
-        projectiles.append( Projectile(vel,self.pos.copy(),10,1,True,10,"player") ) #TODO Fire type based on ability and powerups
+        vel = pos.copy().subtract(self.pos).getNormalized()*7
+        projectiles.append( Projectile(vel,self.pos.copy(),10,0.5,True,10,"player") ) #TODO Fire type based on ability and powerups
 
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)

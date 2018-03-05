@@ -50,9 +50,10 @@ def draw(canvas):
         Interactions().ballHitPlayer(proj,character,projectiles)
         proj.update(projectiles,map.zoom)
 
-    #To see collision walls
     for wall in walls:
-        wall.draw(canvas,offset)
+        Interactions().playerHitWall(wall,character)
+        #To see collision walls
+        # wall.draw(canvas,offset)
 
     #Draw HUD
     canvas.draw_text("Testing", [50,112], 48, "white")
