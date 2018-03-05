@@ -18,12 +18,12 @@ CANVAS_WIDTH=1600
 offset = Vector(0,0)
 
 #Defining Objects
-frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
-character = Character(Vector(0,0),Vector(CANVAS_WIDTH/2,CANVAS_HEIGHT/2),character_image,0,(64,64))
+frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
 map = Map(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
-offset = map.startPos
+character = Character(Vector(0,0),map.startPos,character_image,0,(64,64))
+offset = -map.startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
 projectiles = []
 walls = map.walls
 # for i in range(100):
@@ -32,7 +32,6 @@ walls = map.walls
 
 # Handler to draw on canvas
 def draw(canvas):
-
     #Interactions
     for wall in walls:
         for projectile in projectiles:
@@ -41,7 +40,7 @@ def draw(canvas):
     #Drawing and Updates
     map.draw(canvas,offset)
     character.draw(canvas,offset)
-    character.update(keyboard)
+    character.update(keyboard,map.zoom)
 
     #Moving Screen
     View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
@@ -49,7 +48,7 @@ def draw(canvas):
     for proj in projectiles:
         proj.draw(canvas,offset)
         Interactions().ballHitPlayer(proj,character,projectiles)
-        proj.update(projectiles)
+        proj.update(projectiles,map.zoom)
 
     #To see collision walls
     for wall in walls:

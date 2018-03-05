@@ -30,8 +30,7 @@ class Character:
 
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
-    def update(self,keyboard):
-        print(self.pos)
+    def update(self,keyboard,zoom):
         if keyboard.right:
             self.vel.add(Vector(self.speed,0))
         if keyboard.left:
@@ -40,7 +39,7 @@ class Character:
             self.vel.add(Vector(0,-self.speed))
         if keyboard.down:
             self.vel.add(Vector(0,self.speed))
-        self.pos.add(self.vel)
+        self.pos.add(self.vel*zoom)
         self.vel = self.vel.getNormalized() * min(self.vel.length(),self.maxSpeed) * 0.935
 
 class Keyboard:
