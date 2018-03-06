@@ -1,0 +1,31 @@
+from Classes.Vector import Vector
+import math
+class Interactions:
+    def __init__(self):
+        pass
+    def bounceBallOffWall(self,projectile,wall):
+        if projectile.bounce():
+            if projectile.radius + wall.halfThickness >= wall.distanceTo(projectile):
+                if wall.inBounds(projectile):
+                    wall.reflect(projectile)
+            # else:
+            #     wall.reflectEdge(projectile)
+        else:
+            pass #Remove projectile
+
+    def ballHitPlayer(self,projectile,player,projectiles):
+        seperation = player.pos-projectile.pos
+        if not projectile.owner == "player":
+            if projectile.radius + player.size[0] >= seperation.x and projectile.radius + player.size[1] >= seperation.y:
+                player.health -= projectile.damage
+                projectiles.pop(projectiles.index(projectile))
+
+    def playerHitWall(self,wall,player):
+        if max(player.size[0],player.size[1])/2 + wall.halfThickness >= wall.distanceTo(player):
+            if wall.playerInBounds(player):
+                direction:Vector = player.vel.getProj(wall.line.getNormal()).getNormalized().negate()
+                distance = ((player.radius/2 + wall.halfThickness + 1) - wall.distanceTo(player))
+
+                player.vel:Vector = player.vel.getProj(wall.line.getNormalized())
+                player.pos.add(direction*distance)
+        pass
