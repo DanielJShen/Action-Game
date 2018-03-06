@@ -2,3 +2,7 @@
 \.idea/
 Classes/Objects/__pycache__/
 Classes/__pycache__/
+
+Classes/Maps/__pycache__/
+
+Classes/Enemy/__pycache__/

@@ -15,7 +15,7 @@ class Map:
         self.walls = []
 
         #Load Images
-        image_background = simplegui._load_local_image('Resources/images/grass.jpeg')
+        image_background = simplegui._load_local_image('SAND.jpg')
         image_wall = simplegui._load_local_image('Resources/images/wall1.png')
         image_spike = simplegui.load_image('https://opengameart.org/sites/default/files/Spike_Pixel_0.png')
 
