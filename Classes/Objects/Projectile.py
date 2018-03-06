@@ -11,6 +11,7 @@ class Projectile:
 
     def draw(self,canvas,offset):
         canvas.draw_circle((self.pos+offset).getP(),self.radius,0.001,'green','green')
+
     def update(self,projectiles:list):
         self.pos.add(self.vel)
         if self.incrementTimer() <= 0:

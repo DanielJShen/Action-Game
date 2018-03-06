@@ -26,12 +26,11 @@ class Character:
 
     def fire(self,pos:Vector,projectiles:list):
         vel = pos.copy().subtract(self.pos).getNormalized()*10
-        projectiles.append( Projectile(vel,self.pos.copy(),10,1,True,10,"player") ) #TODO Fire type based on ability and powerups
+        projectiles.append(Projectile(vel,self.pos.copy(),10,1,True,10,"player") ) #TODO Fire type based on ability and powerups
 
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
     def update(self,keyboard):
-        print(self.pos)
         if keyboard.right:
             self.vel.add(Vector(self.speed,0))
         if keyboard.left:

@@ -10,6 +10,10 @@ from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
 from Classes.Maps.Map import Map
 from Classes.View import View
+from Classes.Enemy.EnemyInteractions import EnemyInteractions
+from Classes.Enemy.Enemy import Enemy
+from Classes.Enemy.Line import Line
+
 
 import random
 
@@ -26,11 +30,17 @@ map = Map(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
 offset = map.startPos
 projectiles = []
 walls = map.walls
-# for i in range(100):
-#     projectiles.append( Projectile(Vector(random.randint(2,22),random.randint(2,22)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),10,-1,True,0,"none") )
-#     walls.append( Wall(4,Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT)),Vector(random.randint(0,CANVAS_WIDTH),random.randint(0,CANVAS_HEIGHT))) )
+enemies = [Enemy(Vector(900,600),Vector(0,0),300,Line,Vector(0,0))]
+inter = EnemyInteractions(character,enemies[0],keyboard)
 
 # Handler to draw on canvas
+def attack():
+    if inter.found:
+        inter.follow()
+        inter.updateLOS()
+        enemies[0].fire(character.pos, projectiles)
+    if not inter.found:
+        enemies[0].losColour = 'rgba(' + str(255) + ',' + str(255) + ',' + str(0) + ',' + str(0.6) + ')'
 def draw(canvas):
 
     #Interactions
@@ -43,12 +53,27 @@ def draw(canvas):
     character.draw(canvas,offset)
     character.update(keyboard)
 
+
+    for enemy in enemies:
+        enemy.draw(canvas,offset)
+        enemy.drawLOS(canvas)
+    # inter.movement()
+        inter.LOS(canvas)
+        enemy.drawLos(canvas,offset)
+        if inter.found:
+            inter.search(canvas)
+    # inter.line2.draw(canvas)
+        if inter.found:
+            enemy.update()
+    # inter.line3.draw(canvas)
+
     #Moving Screen
     View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
 
     for proj in projectiles:
         proj.draw(canvas,offset)
         Interactions().ballHitPlayer(proj,character,projectiles)
+        enemies[0].ballHitEnemy(proj,character,projectiles,enemies)
         proj.update(projectiles)
 
     #To see collision walls
@@ -61,16 +86,19 @@ def draw(canvas):
 
 def click(pos):
     character.fire(Vector(pos[0],pos[1])-offset,projectiles)
+
 def keyDown(key):
     keyboard.keyDown(key)
+
 def keyUp(key):
     keyboard.keyUp(key)
+
 # Assign callbacks to event handlers
 frame.set_mouseclick_handler(click)
 frame.set_keydown_handler(keyDown)
 frame.set_keyup_handler(keyUp)
 frame.set_draw_handler(draw)
-
-
+timer = simplegui.create_timer(1000, attack)
+timer.start()
 # Start the frame animation
 frame.start()

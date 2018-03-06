@@ -10,6 +10,7 @@ class View:
         center = Vector(width/2, height/2)
         maxDisplacement = height * (4 / 5) - center.y
         minDisplacement = height * (11 / 20) - center.y
+
         #Right
         if charPosMinOffset.x > center.x+maxDisplacement:
             offset.subtract(Vector(abs(center.x+maxDisplacement - charPosMinOffset.x), 0))
