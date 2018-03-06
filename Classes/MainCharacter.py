@@ -5,6 +5,7 @@ except ImportError:
 from Classes.Vector import Vector
 from Classes.Objects.Projectile import Projectile
 from Classes.Abilities.Cannon import Cannon
+from Classes.Abilities.Shotgun import Shotgun
 import math
 class Character:
     def __init__(self,vel,pos,image,rotation,size=0):
@@ -14,18 +15,19 @@ class Character:
         self.speed = 0.7
         self.maxSpeed = 3
         self.health = 100
-        self.activeAbility = Cannon()
+        self.activeAbility = Shotgun()
 
         self.image:simplegui.Image = image
         self.rotation = rotation
         self.dim = ( self.image.get_width() , self.image.get_height() )
         self.center = ( self.image.get_width()/2 , self.image.get_height()/2 )
-        self.radius = max(size[0],size[1])
 
         if size == 0:
             self.size = self.dim
         else:
             self.size = size
+
+        self.radius = max(size[0]/2,size[1]/2)
 
     def fire(self,pos:Vector,projectiles:list):
         self.activeAbility.fire(pos,projectiles,self.pos,"player")
