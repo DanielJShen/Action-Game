@@ -63,7 +63,7 @@ def draw(canvas):
             inter.search(canvas)
     # inter.line2.draw(canvas)
         if inter.found:
-            enemy.update()
+            enemy.update(map.zoom)
     # inter.line3.draw(canvas)
 
     #Moving Screen
