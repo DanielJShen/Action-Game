@@ -71,8 +71,9 @@ def draw(canvas):
 
     for proj in projectiles:
         proj.draw(canvas,offset)
-        Interactions().ballHitPlayer(proj,character,projectiles)
         proj.update(projectiles,map.zoom)
+        if projectiles.count(proj) == 0: pass
+        Interactions().ballHitPlayer(proj,character,projectiles)
         enemies[0].ballHitEnemy(proj,character,projectiles,enemies)
 
     for wall in walls:
