@@ -6,7 +6,7 @@ except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 
 class Spritesheet:
-    def __init__(self,newImg,columns,rows,endOffset):
+    def __init__(self,newImg,columns,rows,endOffset=0,index=[0,0]):
         self.img = newImg;
         self.columns = columns
         self.rows = rows
@@ -17,7 +17,7 @@ class Spritesheet:
         self.frameHeight = self.img.get_height()/self.rows
         self.frameCentreX = self.frameWidth/2
         self.frameCentreY = self.frameHeight/2
-        self.fr_idx = [0,0]
+        self.fr_idx = index
 
 
     def draw(self,canvas,offset,pos,width,height):

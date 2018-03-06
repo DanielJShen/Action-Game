@@ -5,12 +5,15 @@ except ImportError:
 from Classes.Vector import Vector
 
 class Sprite:
-    def __init__(self,pos,image,size=(0,0),rotation=0):
+    def __init__(self,pos,image,size=(0,0),rotation=0,center=0):
         self.pos:Vector = pos
         self.image:simplegui.Image = image
         self.rotation = rotation
         self.dim = ( self.image.get_width() , self.image.get_height() )
-        self.center = ( self.image.get_width()/2 , self.image.get_height()/2 )
+        if center==0:
+            self.center = ( self.image.get_width()/2 , self.image.get_height()/2 )
+        else:
+            self.center = center
         if size == 0:
             self.size = self.dim
         else:
