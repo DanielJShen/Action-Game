@@ -4,94 +4,82 @@ from Classes.Objects.Projectile import Projectile
 import random
 
 class EnemyInteractions:
-    def __init__(self,player,enemy,kbd):
+    def __init__(self,player):
         self.player = player
-        self.enemy = enemy
-        self.keyboard = kbd
-        self.found = False
         self.looking = False
         self.rotate = False
-        self.rotation = 4
+        self.rotation = 5
+        # self.range = self.enemy.length*1.5
 
-    def updateLOS(self):
-        self.enemy.losColour = 'rgba(' + str(255) + ',' + str(0) + ',' + str(0) + ',' + str(0.6) + ')'
+    def soundDistance(self,enemy):
+        if enemy.soundRange >= self.getPlayerVector(enemy).length():
+            enemy.found = True
 
-    def follow(self):
-        playertest = self.player.pos.copy().subtract(self.enemy.pos)
-        self.enemy.direction = playertest
+    def stealthDistance(self,enemy):
+        if enemy.stealthRange >= self.getPlayerVector(enemy).length() and self.getPlayerVector(enemy).length() > enemy.soundRange:
+            return True
+        return False
 
-    def playerAngle(self):
-        centerVector = self.enemy.pos.copy().subtract(self.enemy.normalGen)
-        playerVector = self.enemy.pos.copy().subtract(self.player.pos)
-        return playerVector.getNormalized().angle(centerVector.getNormalized())
+    def alertDistance(self):
+        pass
 
-    def search(self,canvas):
-        playerVector = self.getPlayerVector()
-        vectorOfLeft = self.enemy.leftBoundary.pA - self.enemy.leftBoundary.pB
-        Vectorleft = self.enemy.pos.copy().subtract(vectorOfLeft)
-        Left = self.enemy.pos.copy().subtract(Vectorleft)
+    def stop(self,enemy):
+        if (enemy.radius+self.player.radius)+20 >= self.getPlayerVector(enemy).length():
+            enemy.direction = Vector(0,0)
+
+    def attack(self,enemy):
+        if (enemy.radius + self.player.radius) + 20 >= self.getPlayerVector(enemy).length():
+            enemy.direction = Vector(0, 0)
+            self.player.vel.add(self.player.vel.getNormalized()*20)
+            self.player.health -= 10
+
+    def updateLOS(self,enemy):
+        enemy.losColour = 'rgba(255,0,0,0.6)'
+
+    def follow(self,enemy):
+        playertest = self.player.pos.copy().subtract(enemy.pos)
+        enemy.direction = playertest
+
+    def search(self,enemy):
+        playerVector = self.getPlayerVector(enemy)
+        vectorOfLeft = enemy.leftBoundary.pA - enemy.leftBoundary.pB
+        Vectorleft = enemy.pos.copy().subtract(vectorOfLeft)
+        Left = enemy.pos.copy().subtract(Vectorleft)
 
         angleLess = Left.getNormal().angle(playerVector.getNormal())
-        normal = self.getVectorToCentreFromPlayer()
+        vectorToNormal = (enemy.normalBoundary.pA - enemy.normalBoundary.pB)
+        VectorNormal = enemy.pos.copy().subtract(vectorToNormal)
+        normal = enemy.pos.copy().subtract(VectorNormal)
 
         tester = playerVector.getNormal().angle(normal.getNormal())
 
-        if self.looking:
+        if enemy.found:
             if round(angleLess,2) > round(tester,2):
-                self.enemy.lineLeftGen.rotate(self.rotation)
-                self.enemy.normalLine.rotate(self.rotation)
-                self.enemy.lineRightGen.rotate(self.rotation)
+                enemy.lineLeftGen.rotate(self.rotation)
+                enemy.normalLine.rotate(self.rotation)
+                enemy.lineRightGen.rotate(self.rotation)
             elif round(angleLess,2) < round(tester,2):
-                self.enemy.lineLeftGen.rotate(-self.rotation)
-                self.enemy.normalLine.rotate(-self.rotation)
-                self.enemy.lineRightGen.rotate(-self.rotation)
+                enemy.lineLeftGen.rotate(-self.rotation)
+                enemy.normalLine.rotate(-self.rotation)
+                enemy.lineRightGen.rotate(-self.rotation)
 
+    def distanceToEnemy(self,enemy1:Vector,enemy2:Vector):
+        distance = enemy1.pos.copy().subtract(enemy2.pos)
+        if distance.length() < 55:
+            print("Test")
 
-    def getPlayerVector(self):
-        return self.enemy.pos.copy().subtract(self.player.pos)
+    def getPlayerVector(self,enemy):
+        return enemy.pos.copy().subtract(self.player.pos)
 
-    def getVectorToCentreFromPlayer(self):
-        vectorToNormal = (self.enemy.normalBoundary.pA - self.enemy.normalBoundary.pB)
-        VectorNormal = self.enemy.pos.copy().subtract(vectorToNormal)
-        return self.enemy.pos.copy().subtract(VectorNormal)
+    def LOS(self,enemy):
+        leftVision:Vector = enemy.pos.copy().subtract(enemy.leftgen)
+        rightVision:Vector = enemy.pos.copy().subtract(enemy.rightgen)
+        playerVector = self.getPlayerVector(enemy)
 
-    def passive(self):
-        self.enemy.direction = Vector(random.randrange(-5,5),random.randrange(-5,5))
-        if self.rotate:
-            rotate = random.randrange(0,270)
-            self.enemy.lineLeftGen.rotate(rotate)
-            self.enemy.normalLine.rotate(rotate)
-            self.enemy.lineRightGen.rotate(rotate)
-            self.rotate = False
-        else:
-            self.rotate = True
-
-    def LOS(self,canvas):
-        FromPointAtoB = self.enemy.pos.copy().subtract(self.player.pos)
-        actualPoint = self.enemy.pos.copy().subtract(FromPointAtoB)
-        self.line2 = Line(self.enemy.pos, actualPoint,"yellow")
-        leftVision:Vector = self.enemy.pos.copy().subtract(self.enemy.leftgen)
-        rightVision:Vector = self.enemy.pos.copy().subtract(self.enemy.rightgen)
-
-        playerVector = self.getPlayerVector()
-        testerNormal = self.getVectorToCentreFromPlayer().angleToX()
-        tester = playerVector.angleToX()
-
-        angleBtwPlayerAndNormal = abs(testerNormal - tester)
-
-        if self.enemy.length >= playerVector.length():
+        if enemy.length >= playerVector.length():
             if playerVector.angleToX() >= leftVision.angleToX() and playerVector.angleToX() <= rightVision.angleToX():
-                self.found = True
-                self.line2.color = "red"
-                self.enemy.normalBoundary.color = "red"
-                # if round(angleBtwPlayerAndNormal,3) < 0.09:
-                self.looking = False
-            else:
-                self.looking = True
-                self.line2.color = "yellow"
-        elif self.enemy.length < playerVector.length():
-            self.found = False
-            self.looking = False
-        else:
-            self.line2.color = "yellow"
+                enemy.found = True
+                enemy.normalBoundary.color = "red"
+        elif enemy.length*2 < playerVector.length():
+            enemy.found = False
 

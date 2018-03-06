@@ -3,6 +3,7 @@ import math
 class Interactions:
     def __init__(self):
         pass
+
     def bounceBallOffWall(self,projectile,wall):
         if projectile.bounce():
             if projectile.radius + wall.halfThickness >= wall.distanceTo(projectile):

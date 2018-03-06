@@ -20,7 +20,7 @@ import random
 CANVAS_HEIGHT=900
 CANVAS_WIDTH=1600
 offset = Vector(0,0)
-
+i = 0
 #Defining Objects
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
@@ -30,17 +30,22 @@ character = Character(Vector(0,0),map.startPos,character_image,0,(64,64))
 offset = -map.startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
 projectiles = []
 walls = map.walls
-enemies = [Enemy(Vector(900,600),Vector(0,0),300,Line,Vector(0,0))]
-inter = EnemyInteractions(character,enemies[0],keyboard)
+enemies = [Enemy(Vector(900,1500),"Red",300,Line,"sniper"),Enemy(Vector(1200,1000),"Blue",300,Line,"malee")]
+inter = EnemyInteractions(character)
 
 # Handler to draw on canvas
 def attack():
-    if inter.found:
-        inter.follow()
-        inter.updateLOS()
-        enemies[0].fire(character.pos, projectiles)
-    if not inter.found:
-        enemies[0].losColour = 'rgba(' + str(255) + ',' + str(255) + ',' + str(0) + ',' + str(0.6) + ')'
+    for enemy in enemies:
+        if enemy.found:
+            inter.follow(enemy)
+            inter.updateLOS(enemy)
+            if enemy.type == "sniper":
+                enemy.fire(character.pos, projectiles)
+            elif enemy.type == "malee":
+                inter.attack(enemy)
+        if not enemy.found:
+            enemy.losColour = 'rgba(255,255,0,0.6)'
+
 def draw(canvas):
     #Interactions
     for wall in walls:
@@ -52,19 +57,16 @@ def draw(canvas):
     character.draw(canvas,offset)
     character.update(keyboard,map.zoom)
 
-
     for enemy in enemies:
         enemy.draw(canvas,offset)
         enemy.drawLOS(canvas)
-    # inter.movement()
-        inter.LOS(canvas)
+        inter.LOS(enemy)
         enemy.drawLos(canvas,offset)
-        if inter.found:
-            inter.search(canvas)
-    # inter.line2.draw(canvas)
-        if inter.found:
+        inter.soundDistance(enemy)
+        if enemy.found:
+            inter.search(enemy)
+            inter.stop(enemy)
             enemy.update(map.zoom)
-    # inter.line3.draw(canvas)
 
     #Moving Screen
     View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
@@ -74,7 +76,9 @@ def draw(canvas):
         proj.update(projectiles,map.zoom)
         if projectiles.count(proj) == 0: pass
         Interactions().ballHitPlayer(proj,character,projectiles)
-        enemies[0].ballHitEnemy(proj,character,projectiles,enemies)
+        proj.update(projectiles,map.zoom)
+        for enemy in enemies:
+            enemy.ballHitEnemy(proj,inter,projectiles,enemy,enemies)
 
     for wall in walls:
         Interactions().playerHitWall(wall,character)
