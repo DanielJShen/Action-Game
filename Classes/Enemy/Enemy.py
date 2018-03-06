@@ -30,10 +30,10 @@ class Enemy:
                              ((self.leftBoundary.pB.x+offset.x), (self.leftBoundary.pB.y+offset.y)),
                              ((self.rightBoundary.pB.x+offset.x), (self.rightBoundary.pB.y+offset.y)), ], 0, "white",
                             self.losColour)
-    def update(self):
+    def update(self,zoom):
         self.vel.multiply(0.90)
         self.vel.add(self.direction.getNormalized()*self.speed)
-        self.pos.add(self.vel)
+        self.pos.add(self.vel*zoom)
 
     def draw(self,canvas,offset):
         canvas.draw_circle((self.pos+offset).getP(), self.radius, 1, "Red", "Red")
