@@ -4,6 +4,7 @@ except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from Classes.Vector import Vector
 from Classes.Objects.Projectile import Projectile
+from Classes.Abilities.Cannon import Cannon
 import math
 class Character:
     def __init__(self,vel,pos,image,rotation,size=0):
@@ -13,6 +14,7 @@ class Character:
         self.speed = 0.7
         self.maxSpeed = 3
         self.health = 100
+        self.activeAbility = Cannon()
 
         self.image:simplegui.Image = image
         self.rotation = rotation
@@ -26,8 +28,7 @@ class Character:
             self.size = size
 
     def fire(self,pos:Vector,projectiles:list):
-        vel = pos.copy().subtract(self.pos).getNormalized()*7
-        projectiles.append( Projectile(vel,self.pos.copy(),10,0.5,True,10,"player") ) #TODO Fire type based on ability and powerups
+        self.activeAbility.fire(pos,projectiles,self.pos,"player")
 
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
