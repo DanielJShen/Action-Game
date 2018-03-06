@@ -11,7 +11,6 @@ class Character:
     def __init__(self,vel,pos,image,rotation,size=0):
         self.vel:Vector = vel
         self.pos:Vector = pos
-
         self.speed = 0.7
         self.maxSpeed = 3
         self.health = 100
@@ -34,6 +33,7 @@ class Character:
 
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
+
     def update(self,keyboard,zoom):
         if keyboard.right:
             self.vel.add(Vector(self.speed,0))

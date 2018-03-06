@@ -4,10 +4,10 @@ from Classes.Abilities.Cannon import Cannon
 from Classes.Objects.Projectile import Projectile
 
 class Enemy:
-    def __init__(self,pos:Vector,vel:Vector,length,Line,direction):
+    def __init__(self,pos:Vector,color,length,Line,type):
         self.pos = pos
         self.vel = Vector()
-        self.radius = 20
+        self.radius = 30
         self.length = length
         self.normalLine = Vector(0,-self.length)
         self.lineLeftGen = Vector(-self.radius*2 ,-self.length)
@@ -17,13 +17,15 @@ class Enemy:
         self.speed = 0.3
         self.health = 100
         self.ability = Cannon()
-        self.losColour = 'rgba(' + str(255) + ',' + str(255) + ',' + str(0) + ',' + str(0.6) + ')'
+        self.losColour = 'rgba(255,255,0,0.6)'
+        self.found = False
+        self.type = type
+        self.soundRange = 100
+        self.stealthRange = 150
+        self.color = color
 
     def fire(self,pos:Vector,projectiles:list):
         self.ability.fire(pos,projectiles,self.pos,"enemy")
-        # vel = self.pos.copy().subtract(pos)
-        # newVel = self.pos.copy().subtract(vel).getNormalized()*10
-        # projectiles.append(Projectile(newVel,self.pos.copy(),10,1,True,10,"enemy"))
 
     def drawLos(self,canvas,offset):
         canvas.draw_polygon([((self.leftBoundary.pA.x+offset.x), (self.leftBoundary.pA.y+offset.y)),
@@ -36,11 +38,14 @@ class Enemy:
         self.pos.add(self.vel*zoom)
 
     def draw(self,canvas,offset):
-        canvas.draw_circle((self.pos+offset).getP(), self.radius, 1, "Red", "Red")
+        canvas.draw_circle((self.pos+offset).getP(), self.radius, 1, self.color, self.color)
 
-    def healthBar(self):
-        self.healthbar = Line(Vector(self.pos.x-20,self.pos.y),Vector(self.pos.x+self.health,self.pos.y),"Red")
-        self.healthBack = Line(Vector(self.pos.x-20,self.pos.y),Vector(self.pos.x+100,self.pos.y),"white")
+    def healthBar(self,canvas):
+        line1 = Line(Vector(self.pos.x,self.pos.y-100),Vector(self.pos.x+self.health,self.pos.y),"Red")
+        line2 = Line(Vector(self.pos.x,self.pos.y-100),Vector(self.pos.x+100,self.pos.y),"white")
+        line1.draw(canvas)
+        line2.draw(canvas)
+
 
     def drawLOS(self,canvas):
         self.normalGen = Vector((self.pos.x + self.normalLine.x), (self.pos.y + self.normalLine.y))
@@ -52,13 +57,22 @@ class Enemy:
         self.rightgen = Vector((self.pos.x + self.lineRightGen.x), (self.pos.y + self.lineRightGen.y))
         self.rightBoundary = Line(self.pos, self.rightgen, "white")
 
-    def ballHitEnemy(self,projectile,player,projectiles,enemies):
+    def ballHitEnemy(self,projectile,inter,projectiles,enemy,enemylist):
         seperation = self.pos-projectile.pos
         if projectile.owner == "player":
             if projectile.radius + self.radius >= seperation.length():
-                self.health -= projectile.damage
+                if not enemy.found and inter.stealthDistance(enemy):
+                    self.health -= 100
+                elif not enemy.found:
+                    enemy.found = True
+                    self.health -= projectile.damage
+                else:
+                    self.health -= projectile.damage
                 print(self.health)
                 projectiles.pop(projectiles.index(projectile))
+                if self.health <= 0:
+                    enemylist.pop(enemylist.index(enemy))
+
 
 
     #Add a mirror which will reflect the line of sight
