@@ -80,7 +80,7 @@ def draw(canvas):
         #To see collision walls
         # wall.draw(canvas,offset)
     inventory.draw(canvas)
-    inventory.update(keyboard, character.pos.getP())
+    inventory.update(keyboard, (character.pos+offset).getP())
 
     #Draw HUD
     canvas.draw_text("Testing", [50,112], 48, "white")
