@@ -4,7 +4,8 @@ class Interactions:
     def __init__(self):
         pass
 
-    def bounceBallOffWall(self,projectile,wall):
+    def bounceBallOffWall(self,projectile,wall,projectiles):
+        if projectiles.count(projectile) == 0: pass
         if projectile.bounce():
             if projectile.radius + wall.halfThickness >= wall.distanceTo(projectile):
                 if wall.inBounds(projectile):
@@ -12,9 +13,10 @@ class Interactions:
             # else:
             #     wall.reflectEdge(projectile)
         else:
-            pass #Remove projectile
+            projectiles.pop(projectiles.index(projectile))
 
     def ballHitPlayer(self,projectile,player,projectiles):
+        if projectiles.count(projectile) == 0: pass
         seperation = player.pos-projectile.pos
         if not projectile.owner == "player":
             if projectile.radius + player.radius >= seperation.length():
@@ -29,4 +31,20 @@ class Interactions:
 
                 player.vel:Vector = player.vel.getProj(wall.line.getNormalized())
                 player.pos.add(direction*distance)
-        pass
+
+
+    def ballHitEnemy(self,projectile,projectiles,enemy,enemylist):
+        if projectiles.count(projectile) == 0: pass
+        seperation = enemy.pos-projectile.pos
+        if projectile.owner == "player":
+            if projectile.radius + enemy.radius >= seperation.length():
+                if not enemy.found and enemy.stealthDistance(enemy):
+                    enemy.health -= 100
+                elif not enemy.found:
+                    enemy.found = True
+                    enemy.health -= projectile.damage
+                else:
+                    enemy.health -= projectile.damage
+                projectiles.pop(projectiles.index(projectile))
+                if enemy.health <= 0:
+                    enemylist.pop(enemylist.index(enemy))
