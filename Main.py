@@ -61,7 +61,7 @@ def draw(canvas):
 
 def click(pos):
     if inventory.isOpen:
-        inventory.select(pos)
+        inventory.select()
     else:
         character.fire(Vector(pos[0], pos[1]), projectiles)
 
