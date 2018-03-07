@@ -1,2 +1,2 @@
 # ComputingLab-Games
-Skeleton objects,test
+Skeleton objects

@@ -8,10 +8,10 @@ class Wall:
 
         self.line = self.pos2.copy().subtract(self.pos1)
 
-    def draw(self,canvas):
-        canvas.draw_polyline([self.pos1.getIntP(), self.pos2.getIntP()], int(self.halfThickness * 2), "white")
-        canvas.draw_circle(self.pos1.getP(), math.sqrt(self.halfThickness ** 2 + self.halfThickness ** 2), 0.01, "white", "white")
-        canvas.draw_circle(self.pos2.getP(), math.sqrt(self.halfThickness ** 2 + self.halfThickness ** 2), 0.01, "white", "white")
+    def draw(self,canvas,offset):
+        canvas.draw_polyline([(self.pos1+offset).getIntP(), (self.pos2+offset).getIntP()], int(self.halfThickness * 2), "white")
+        canvas.draw_circle((self.pos1+offset).getP(), math.sqrt(self.halfThickness ** 2 + self.halfThickness ** 2), 0.01, "white", "white")
+        canvas.draw_circle((self.pos2+offset).getP(), math.sqrt(self.halfThickness ** 2 + self.halfThickness ** 2), 0.01, "white", "white")
     def update(self):
         self.pos.add(self.vel)
 
@@ -22,6 +22,15 @@ class Wall:
         line1 = self.pos1.copy().subtract(projectile.pos)
         angle = line1.angle(self.line)
         return line1.length()*math.sin(angle)
+    def playerInBounds(self,player):
+        width = player.size[0]-5
+        height = player.size[1]-5
+        positions = (player.pos-Vector(width/2,0),player.pos+Vector(width/2,0),player.pos-Vector(0,height/2),player.pos+Vector(0,height/2))
+        for pos in positions:
+            if ((pos - self.pos1).dot(self.line.getNormalized()) >= 0 and
+                (pos - self.pos2).dot(-self.line.getNormalized()) >= 0):
+                return True
+        return False
     def inBounds(self,projectile): #Checks if projectile is past the end of the line
         return ((projectile.pos - self.pos1).dot(self.line.getNormalized()) >= 0 and
                 (projectile.pos - self.pos2).dot(-self.line.getNormalized()) >= 0)
