@@ -1,18 +1,19 @@
 import math
 from os import walk
 
+
 class Inventory:
 
     def __init__(self, CANVAS_WIDTH, CANVAS_HEIGHT):
 
-        abilities:list = []
+        abilities: list = []
         for (dirpath, dirnames, filenames) in walk('Classes/Abilities/'):
-            abilities.extend( filenames )
+            abilities.extend(filenames)
             break
         for file in abilities:
             abilities[abilities.index(file)] = file = file.split('.')[0]
-            command = 'from Classes.Abilities.'+file+' import '+file
-            exec(command,globals())
+            command = 'from Classes.Abilities.' + file + ' import ' + file
+            exec(command, globals())
 
         self.enabledAbility = eval(abilities[0])()
         self.abilities = []  # Items the user has
