@@ -3,7 +3,7 @@ from Classes.Vector import Vector
 from Classes.Abilities.Cannon import Cannon
 from Classes.Objects.Projectile import Projectile
 
-class Enemy:
+class Enemy2:
     def __init__(self,pos:Vector,color,length,Line,type):
         self.pos = pos
         self.vel = Vector()
