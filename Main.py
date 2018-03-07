@@ -13,6 +13,7 @@ from Classes.View import View
 from Classes.Enemy.Enemy import Enemy
 from Classes.Enemy.Enemy2 import Enemy2
 from Classes.Enemy.Line import Line
+from Classes.Inventory import Inventory
 
 
 import random
@@ -21,13 +22,14 @@ CANVAS_HEIGHT=900
 CANVAS_WIDTH=1600
 offset = Vector(0,0)
 
-#Defining Objects
+# Defining Objects
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
 map = Map(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
 character = Character(Vector(0,0),map.startPos,character_image,0,(64,64))
 offset = -map.startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
+inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT)
 projectiles = []
 walls = map.walls
 enemies = [Enemy(Vector(900,1500),"Red",300,Line,"sniper"),Enemy2(Vector(1200,1000),"Blue",300,Line,"malee")]
@@ -77,6 +79,8 @@ def draw(canvas):
         Interactions().playerHitWall(wall,character)
         #To see collision walls
         # wall.draw(canvas,offset)
+    inventory.draw(canvas)
+    inventory.update(keyboard, character.pos.getP())
 
     #Draw HUD
     canvas.draw_text("Testing", [50,112], 48, "white")
@@ -84,6 +88,17 @@ def draw(canvas):
 
 def click(pos):
     character.fire(Vector(pos[0],pos[1])-offset,projectiles)
+
+    if inventory.isOpen:
+        inventory.select()
+    else:
+        character.fire(Vector(pos[0], pos[1]), projectiles)
+
+
+def drag(pos):
+    if inventory.isOpen:
+        inventory.drag(pos)
+
 
 def keyDown(key):
     keyboard.keyDown(key)
@@ -93,6 +108,7 @@ def keyUp(key):
 
 # Assign callbacks to event handlers
 frame.set_mouseclick_handler(click)
+frame.set_mousedrag_handler(drag)
 frame.set_keydown_handler(keyDown)
 frame.set_keyup_handler(keyUp)
 frame.set_draw_handler(draw)
