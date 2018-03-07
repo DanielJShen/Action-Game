@@ -123,6 +123,13 @@ class Vector:
         self.y = aux.x
         return self
 
+    # Rotates the vector according to an angle theta given in radians
+    def rotateRad(self, theta):
+        rx = self.x * math.cos(theta) - self.y * math.sin(theta)
+        ry = self.x * math.sin(theta) + self.y * math.cos(theta)
+        self.x, self.y = rx, ry
+        return self
+
     def getProj(self, normal):
         n = normal.copy()
         return n.multiply(self.dot(n))
@@ -132,3 +139,15 @@ class Vector:
     # acos in the math library
     def angle(self, other):
         return math.acos(self.dot(other) / (math.ceil(self.length()*10000)/10000 * math.ceil(other.length()*10000)/10000))
+
+    def angleToX(self):
+        angle = math.atan2(self.y,self.x)
+        if angle < 0:
+            angle += 2*math.pi
+        return angle
+
+        # Rotates the vector according to an angle theta given in degrees
+
+    def rotate(self, theta):
+        thetaRad = theta / 180 * math.pi
+        return self.rotateRad(thetaRad)
