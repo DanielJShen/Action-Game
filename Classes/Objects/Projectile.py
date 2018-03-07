@@ -14,7 +14,6 @@ class Projectile:
     def update(self,projectiles:list):
         self.pos.add(self.vel)
         if self.incrementTimer() <= 0:
-            print(projectiles.index(self))
             projectiles.pop(projectiles.index(self))
 
     def bounce(self): #Checks if the projectile hits a wall
