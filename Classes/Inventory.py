@@ -18,17 +18,20 @@ class Inventory:
         self.abilities = []  # Items the user has
         self.activePowerups = []  # Lists all active power ups
         self.powerups = []  # Lists all power ups
-        self.abilityCount = 7  # Temporary ability count for testing purposes
+        self.abilityCount = 9  # Temporary ability count for testing purposes
         self.released = True  # Stores if the inventory button has been released while the inventory is open
         self.isOpen = False  # Determines if the inventory should be open or closed
-        self.isDragged = False
+        self.isDragged = False  # Determines if the mouse is currently 'dragging'
         self.radius = min(CANVAS_WIDTH, CANVAS_HEIGHT) // 9  # Radius of the inventory wheel
         self.thickness = min(CANVAS_WIDTH, CANVAS_HEIGHT) // 12  # Thickness of the inventory wheel
         self.pos = []  # Position of the inventory wheel
+        self.mousePos = [0, 0]  # Stores the current position of the mouse
         self.angle = 0  # Angle of the line between the inventory wheel and cursor
 
     def update(self, keyboard, pos):  # Update method to be called each game loop
         self.pos = pos
+        if self.isOpen:
+            self.angle = math.atan2(self.pos[0] - self.mousePos[0], self.pos[1] - self.mousePos[1])
 
         if keyboard.i and self.released:
             self.isOpen = True
@@ -46,11 +49,12 @@ class Inventory:
 
             for i in range(self.abilityCount):
                 radius = self.thickness // 2.2  # Radius of inventory wheel slots
-                if ((i - 0.5) / self.abilityCount * 2 * math.pi) <= self.angle < (
+                if ((i - 0.5) / self.abilityCount * 2 * math.pi) <= self.angle <= (
                         (i + 0.5) / self.abilityCount * 2 * math.pi) and self.isDragged:
                     radius = self.thickness // 1.8
                 #  Split for clarity
-                elif ((i - 0.5 + self.abilityCount) / self.abilityCount * 2 * math.pi) <= self.angle and self.isDragged:
+                elif ((i - 0.5 - self.abilityCount) / self.abilityCount * 2 * math.pi) <= self.angle <= (
+                        (i + 0.5 - self.abilityCount) / self.abilityCount * 2 * math.pi) and self.isDragged:
                     radius = self.thickness // 1.8
 
                 canvas.draw_circle(
@@ -60,11 +64,9 @@ class Inventory:
 
     def drag(self, pos):  # Highlights the selected powerup or ability
         self.isDragged = True
-        self.angle = math.atan2(self.pos[0] - pos[0], self.pos[1] - pos[1])
-        if self.angle < 0:
-            self.angle += 2 * math.pi
+        self.mousePos = pos
 
-    def select(self, pos):  # Select either a powerup or ability in the inventory wheel
+    def select(self):  # Select either a powerup or ability in the inventory wheel
         self.isOpen = False
         self.isDragged = False
 
