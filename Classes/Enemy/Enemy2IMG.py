@@ -32,16 +32,12 @@ class Enemy2IMG:
 
     def updateDirection(self,player,enemy):
         if (player.pos.x > enemy.pos.x) and (player.pos.y < enemy.pos.y):
-            print("Top-Right")
             self.frameIndex[1] = 2
         elif (player.pos.y > enemy.pos.y) and (player.pos.x < enemy.pos.x):
-            print("Bottom-Left")
             self.frameIndex[1] = 1
         elif (player.pos.x < enemy.pos.x) and (player.pos.y < enemy.pos.y):
-            print("Top-Left")
             self.frameIndex[1] = 2
         elif (player.pos.y > enemy.pos.y) and (player.pos.x > enemy.pos.x):
-            print("Bottom-Right")
             self.frameIndex[1] = 3
 
 
