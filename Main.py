@@ -76,7 +76,6 @@ def draw(canvas):
     character.update(keyboard,map.zoom)
 
     canvas.draw_circle(mousePos,10,1,"darkblue","darkblue")
-
     for enemy in enemies:
         enemy.draw(canvas,offset,enemy,character)
         enemy.update(map.zoom,character)

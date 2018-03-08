@@ -3,10 +3,11 @@ from Classes.Enemy.Line import Line
 from Classes.Vector import Vector
 from Classes.Abilities.Cannon import Cannon
 from Classes.Enemy.Enemy2IMG import Enemy2IMG
+import math
 
 class EnemySuper:
 
-    def defineVariables(self,pos:Vector,color,type,image,rotation=0):
+    def defineVariables(self,pos:Vector,color,type,image):
         self.pos = pos
         self.vel = Vector()
         self.radius = 30
@@ -30,11 +31,6 @@ class EnemySuper:
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, image, 530, 172, 9, 4, [0, 2], 150, 150, 0)
         self.stopDistance = 0
-
-        self.lineLeftGen.rotate(rotation)
-        self.normalLine.rotate(rotation)
-        self.lineRightGen.rotate(rotation)
-
         self.updateLOS()
 
 
@@ -72,7 +68,6 @@ class EnemySuper:
                             self.losColour)
 
     def draw(self,canvas,offset,enemy,player):
-        # if not self.found:
         self.drawLos(canvas, offset)
         self.enemyIMG.draw(canvas, offset)
 
@@ -90,14 +85,23 @@ class EnemySuper:
             self.found = True
 
     def inLOS(self, player):
-        leftVision: Vector = self.pos.copy().subtract(self.leftgen)
-        rightVision: Vector = self.pos.copy().subtract(self.rightgen)
+        leftVision: Vector = self.pos - self.leftgen
+        rightVision: Vector = self.pos - self.rightgen
         playerVector = self.pos - player.pos
 
+        # Debuging
+        # losAngle = (self.leftgen - self.rightgen).angleToX()
+        # canvas.draw_line((self.pos+offset).getP(), (self.pos+offset+Vector(1,0).rotateRad(playerVector.angleToX())).getP(), 9, "black")
+
         if self.length >= playerVector.length():
-            if playerVector.angleToX() >= leftVision.angleToX() and playerVector.angleToX() <= rightVision.angleToX():
+            if rightVision.angleToX() >= playerVector.angleToX() >= leftVision.angleToX():
                 self.found = True
-                self.normalBoundary.color = 'rgba(255,0,0,0.2)'
+                self.normalBoundary.color = 'rgba(255,0,0,1)'
+            elif (rightVision.angleToX() < math.pi/2 and leftVision.angleToX() > 3*math.pi/2):
+                if(rightVision.angleToX()+2*math.pi >= playerVector.angleToX() >= leftVision.angleToX() \
+                    or rightVision.angleToX() >= playerVector.angleToX() >= leftVision.angleToX()-2*math.pi):
+                    self.found = True
+                    self.normalBoundary.color = 'rgba(255,0,0,1)'
         elif self.length * 2 < playerVector.length():
             self.found = False
 
@@ -127,12 +131,18 @@ class EnemySuper:
 
         tester = playerVector.getNormal().angle(normal.getNormal())
 
+        playerToLOSAngle = (self.pos - player.pos).angle(self.pos-self.normalGen)*180/math.pi
+        if playerToLOSAngle < self.rotation*3:
+            rotation = playerToLOSAngle/7
+        else:
+            rotation = self.rotation
+
         if self.found:
             if round(angleLess, 2) > round(tester, 2):
-                self.lineLeftGen.rotate(self.rotation)
-                self.normalLine.rotate(self.rotation)
-                self.lineRightGen.rotate(self.rotation)
+                self.lineLeftGen.rotate(rotation)
+                self.normalLine.rotate(rotation)
+                self.lineRightGen.rotate(rotation)
             elif round(angleLess, 2) < round(tester, 2):
-                self.lineLeftGen.rotate(-self.rotation)
-                self.normalLine.rotate(-self.rotation)
-                self.lineRightGen.rotate(-self.rotation)
+                self.lineLeftGen.rotate(-rotation)
+                self.normalLine.rotate(-rotation)
+                self.lineRightGen.rotate(-rotation)

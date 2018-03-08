@@ -34,7 +34,7 @@ class Interactions:
                 player.pos.add(direction*distance)
 
     def ballHitEnemy(self,projectile,projectiles,enemy,enemylist):
-        if projectiles.count(projectile) == 0: pass
+        if  not projectiles.count(projectile) > 0: pass
         seperation = enemy.pos-projectile.pos
         if projectile.owner == "player":
             if projectile.radius + enemy.radius >= seperation.length():
@@ -45,6 +45,6 @@ class Interactions:
                     enemy.health -= projectile.damage
                 else:
                     enemy.health -= projectile.damage
-                projectiles.pop(projectiles.index(projectile))
+                    projectiles.pop(projectiles.index(projectile))
                 if enemy.health <= 0:
                     enemylist.pop(enemylist.index(enemy))
