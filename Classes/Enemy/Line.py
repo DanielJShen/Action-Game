@@ -4,7 +4,7 @@ class Line:
         self.pA = point1
         self.pB = point2
         self.color = color
-        self.thickness = 3
+        self.thickness = 4
         self.length = self.pB - self.pA
 
     def draw(self, canvas):
