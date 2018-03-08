@@ -14,7 +14,7 @@ class Character:
         self.speed = 0.7
         self.maxSpeed = 3
         self.health = 100
-        self.activeAbility = Shotgun()
+        self.activeAbility = Cannon()
 
         self.image:simplegui.Image = image
         self.rotation = rotation
