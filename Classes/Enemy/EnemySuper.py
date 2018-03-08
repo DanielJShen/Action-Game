@@ -5,10 +5,8 @@ from Classes.Abilities.Cannon import Cannon
 from Classes.Enemy.Enemy2IMG import Enemy2IMG
 
 class EnemySuper:
-    def __init__(self):
-        pass
 
-    def defineVariables(self,pos:Vector,color,type,image):
+    def defineVariables(self,pos:Vector,color,type,image,rotation=0):
         self.pos = pos
         self.vel = Vector()
         self.radius = 30
@@ -27,12 +25,18 @@ class EnemySuper:
         self.soundRange = 100
         self.stealthRange = 150
         self.color = color
-        self.speed = 0.3
+        self.speed = 0.15
         self.health = 100
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, image, 530, 172, 9, 4, [0, 2], 150, 150, 0)
-        self.updateLOS()
         self.stopDistance = 0
+
+        self.lineLeftGen.rotate(rotation)
+        self.normalLine.rotate(rotation)
+        self.lineRightGen.rotate(rotation)
+
+        self.updateLOS()
+
 
     def spriteUpdate(self,character,enemy):
         self.enemyIMG.updateDirection(character,enemy)
@@ -68,6 +72,7 @@ class EnemySuper:
                             self.losColour)
 
     def draw(self,canvas,offset,enemy,player):
+        # if not self.found:
         self.drawLos(canvas, offset)
         self.enemyIMG.draw(canvas, offset)
 
@@ -92,7 +97,7 @@ class EnemySuper:
         if self.length >= playerVector.length():
             if playerVector.angleToX() >= leftVision.angleToX() and playerVector.angleToX() <= rightVision.angleToX():
                 self.found = True
-                self.normalBoundary.color = "red"
+                self.normalBoundary.color = 'rgba(255,0,0,0.2)'
         elif self.length * 2 < playerVector.length():
             self.found = False
 
@@ -105,7 +110,7 @@ class EnemySuper:
             self.direction = Vector(0, 0)
 
     def follow(self, player):
-        self.losColour = 'rgba(255,0,0,0.6)'
+        self.losColour = 'rgba(255,0,0,0.2)'
         playertest = player.pos.copy().subtract(self.pos)
         self.direction = playertest
 

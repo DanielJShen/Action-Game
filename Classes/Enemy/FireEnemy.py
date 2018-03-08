@@ -5,11 +5,11 @@ from Classes.Enemy.EnemySuper import EnemySuper
 from Classes.Enemy.Enemy2IMG import Enemy2IMG
 
 class FireEnemy(EnemySuper):
-    def __init__(self,pos:Vector,color,type,FireEnemy):
-        self.defineVariables(pos,color,type,FireEnemy)
+    def __init__(self,pos:Vector,color,type,FireEnemy,rotation=0):
+        self.defineVariables(pos,color,type,FireEnemy,rotation)
 
         #Specific to this enemy
-        self.speed = 0.2
+        self.speed = 0.1
         self.health = 100
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, FireEnemy, 530, 172, 9, 4, [0, 2], 150, 150, 0)

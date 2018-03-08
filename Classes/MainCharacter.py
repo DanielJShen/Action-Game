@@ -32,6 +32,7 @@ class Character:
         self.activeAbility.fire(pos,projectiles,self.pos,"player")
 
     def draw(self,canvas,offset):
+        print(self.pos)
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
 
     def update(self,keyboard,zoom):
