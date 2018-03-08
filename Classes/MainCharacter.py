@@ -5,12 +5,12 @@ except ImportError:
 from Classes.Vector import Vector
 from Classes.Objects.Projectile import Projectile
 from Classes.Abilities.Cannon import Cannon
+from Classes.Abilities.Shotgun import Shotgun
 import math
 class Character:
     def __init__(self,vel,pos,image,rotation,size=0):
         self.vel:Vector = vel
         self.pos:Vector = pos
-
         self.speed = 0.7
         self.maxSpeed = 3
         self.health = 100
@@ -20,18 +20,20 @@ class Character:
         self.rotation = rotation
         self.dim = ( self.image.get_width() , self.image.get_height() )
         self.center = ( self.image.get_width()/2 , self.image.get_height()/2 )
-        self.radius = max(size[0],size[1])
 
         if size == 0:
             self.size = self.dim
         else:
             self.size = size
 
+        self.radius = max(size[0]/2,size[1]/2)
+
     def fire(self,pos:Vector,projectiles:list):
         self.activeAbility.fire(pos,projectiles,self.pos,"player")
 
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
+
     def update(self,keyboard,zoom):
         if keyboard.right:
             self.vel.add(Vector(self.speed,0))
@@ -51,6 +53,7 @@ class Keyboard:
         self.up = False
         self.down = False
         self.space = False
+        self.i = False
 
     def keyDown(self, key):
         if key == simplegui.KEY_MAP['d']:
@@ -63,6 +66,8 @@ class Keyboard:
             self.down = True
         if key == simplegui.KEY_MAP['space']:
             self.space = True
+        if key == simplegui.KEY_MAP['i']:
+            self.i = True
 
     def keyUp(self, key):
         if key == simplegui.KEY_MAP['d']:
@@ -75,3 +80,5 @@ class Keyboard:
             self.down = False
         if key == simplegui.KEY_MAP['space']:
             self.space = False
+        if key == simplegui.KEY_MAP['i']:
+            self.i = False
