@@ -2,7 +2,6 @@ from Classes.Objects.Projectile import Projectile
 class Cannon():
     def __init__(self):
         self.sprite = object
-
         self.radius = 10
         self.colour = "#7a14ff"
         self.time = 0.5
