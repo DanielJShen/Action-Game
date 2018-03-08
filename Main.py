@@ -15,11 +15,14 @@ from Classes.Inventory import Inventory
 from Classes.Enemy.Line import Line
 from Classes.healthIMG import HealthIMG
 from Classes.Health import Health
+import pygame
+import random
 
 CANVAS_HEIGHT=900
 CANVAS_WIDTH=1600
 offset = Vector(0,0)
-i = 0
+mousePos = (0,0)
+
 #Defining Objects
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
 heart1 = simplegui._load_local_image('Resources/images/Health.png')
@@ -31,7 +34,7 @@ keyboard = Keyboard()
 map = Map(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
 character = Character(Vector(0,0),map.startPos,character_image,0,(64,64))
 offset = -map.startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
-inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT)
+inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
 projectiles = []
 walls = map.walls
 enemies = [Enemy(Vector(900,1600),"Red","Sniper",FireEnemy),Enemy2(Vector(1200,1000),"Blue","Malee",Bat)]
@@ -55,6 +58,8 @@ def attack():
             enemy.losColour = 'rgba(255,255,0,0.6)'
 
 def draw(canvas):
+    #Updating Mouse Position
+    mousePos = (pygame.mouse.get_pos()[0]-frame._canvas_x_offset,pygame.mouse.get_pos()[1]-frame._canvas_y_offset)
     global incrementalTimer
     i = 0
     while i < enemies.__len__()-1:
@@ -101,7 +106,7 @@ def draw(canvas):
         #To see collision walls
         # wall.draw(canvas,offset)
     inventory.draw(canvas)
-    inventory.update(keyboard, (character.pos+offset).getP())
+    inventory.update(keyboard, (character.pos+offset).getP(), mousePos)
 
     #Draw HUD
     i = healthOB.__len__()-1
@@ -113,14 +118,9 @@ def draw(canvas):
 
 def click(pos):
     if inventory.isOpen:
-        inventory.select()
+        inventory.select(character)
     else:
         character.fire(Vector(pos[0], pos[1])-offset, projectiles)
-
-
-def drag(pos):
-    if inventory.isOpen:
-        inventory.drag(pos)
 
 
 def keyDown(key):
@@ -131,7 +131,6 @@ def keyUp(key):
 
 # Assign callbacks to event handlers
 frame.set_mouseclick_handler(click)
-frame.set_mousedrag_handler(drag)
 frame.set_keydown_handler(keyDown)
 frame.set_keyup_handler(keyUp)
 frame.set_draw_handler(draw)
