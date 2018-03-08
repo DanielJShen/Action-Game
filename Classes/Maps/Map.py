@@ -8,11 +8,14 @@ from Classes.Objects.Wall import Wall
 from Classes.Objects.Wall import WallBox
 from Classes.Vector import Vector
 import math
+from Classes.Enemy.FireEnemy import FireEnemy
+from Classes.Enemy.Bat import Bat
 
 class Map:
     def __init__(self,frame:simplegui.Frame,width,height):
         self.sprites = []
         self.walls = []
+        self.enemies = []
 
         self.zoom = 3
         self.mapSize = Vector(width*self.zoom,height*self.zoom)
@@ -21,11 +24,16 @@ class Map:
         #Load Images
         image_background = simplegui._load_local_image('Resources/images/MAP.png')
         image_wall = simplegui._load_local_image('Resources/images/Blank.png')
-        image_spike = simplegui.load_image('https://opengameart.org/sites/default/files/Spike_Pixel_0.png')
+        image_Bat = simplegui._load_local_image('Resources/images/Bat.png')
+        image_FireEnemy = simplegui._load_local_image('Resources/images/FireEnemy.png')
 
         #Background
         frame.set_canvas_background("#0170FE")
         self.sprites.append( Sprite( self.mapSize/2,image_background, self.mapSize.getP()))
+
+        #Enemies
+        self.enemies.append(FireEnemy(Vector(900, 1600), "Red", "Sniper", image_FireEnemy))
+        self.enemies.append(Bat(Vector(1200, 1000), "Blue", "Malee", image_Bat))
 
         #All sprites
         wallWidth = 50
