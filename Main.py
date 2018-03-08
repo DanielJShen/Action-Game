@@ -87,12 +87,10 @@ def draw(canvas):
     canvas.draw_text("Health: "+str(character.health), [50, 200], 48, "Red")
 
 def click(pos):
-    character.fire(Vector(pos[0],pos[1])-offset,projectiles)
-
     if inventory.isOpen:
         inventory.select()
     else:
-        character.fire(Vector(pos[0], pos[1]), projectiles)
+        character.fire(Vector(pos[0], pos[1])-offset, projectiles)
 
 
 def drag(pos):
