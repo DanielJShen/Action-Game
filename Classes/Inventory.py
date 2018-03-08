@@ -4,22 +4,22 @@ from os import walk
 
 class Inventory:
 
-    def __init__(self, CANVAS_WIDTH, CANVAS_HEIGHT):
+    def __init__(self, CANVAS_WIDTH, CANVAS_HEIGHT, player):
 
-        abilities: list = []
+        self.abilities: list = []
         for (dirpath, dirnames, filenames) in walk('Classes/Abilities/'):
-            abilities.extend(filenames)
+            self.abilities.extend(filenames)
             break
-        for file in abilities:
-            abilities[abilities.index(file)] = file = file.split('.')[0]
+        for file in self.abilities:
+            self.abilities[self.abilities.index(file)] = file = file.split('.')[0]
             command = 'from Classes.Abilities.' + file + ' import ' + file
             exec(command, globals())
 
-        self.enabledAbility = eval(abilities[0])()
-        self.abilities = []  # Items the user has
+        self.activeAbility = player.activeAbility = eval(self.abilities[0])()
+        self.availableAbilities = []  # Items the user has
         self.activePowerups = []  # Lists all active power ups
         self.powerups = []  # Lists all power ups
-        self.abilityCount = 9  # Temporary ability count for testing purposes
+        self.abilityCount = self.abilities.__len__()  # Ability count from abilities list
         self.released = True  # Stores if the inventory button has been released while the inventory is open
         self.isOpen = False  # Determines if the inventory should be open or closed
         self.radius = min(CANVAS_WIDTH, CANVAS_HEIGHT) // 9  # Radius of the inventory wheel
@@ -27,6 +27,7 @@ class Inventory:
         self.pos = []  # Position of the inventory wheel
         self.mousePos = [0, 0]  # Stores the current position of the mouse
         self.angle = 0  # Angle of the line between the inventory wheel and cursor
+        self.selected = 0
 
     def update(self, keyboard, pos, mousePos):  # Update method to be called each game loop
         self.pos = pos
@@ -49,22 +50,39 @@ class Inventory:
                                self.radius, self.thickness, '#666666', )
 
             for i in range(self.abilityCount):
+                if self.abilities[i] == self.activeAbility.__class__.__name__:
+                    borderColour = '#FF0000'
+                else:
+                    borderColour = '#555555'
                 radius = self.thickness // 2.2  # Radius of inventory wheel slots
                 if ((i - 0.5) / self.abilityCount * 2 * math.pi) <= self.angle <= (
                         (i + 0.5) / self.abilityCount * 2 * math.pi):
-                    radius = self.thickness // 1.8
+                    self.selected = i
                 #  Split for clarity
                 elif ((i - 0.5 - self.abilityCount) / self.abilityCount * 2 * math.pi) <= self.angle <= (
                         (i + 0.5 - self.abilityCount) / self.abilityCount * 2 * math.pi):
-                    radius = self.thickness // 1.8
+                    self.selected = i
+                else:
+                    canvas.draw_circle(
+                        (self.pos[0] + self.radius * -math.sin(i / self.abilityCount * 2 * math.pi),
+                         self.pos[1] + self.radius * -math.cos(i / self.abilityCount * 2 * math.pi)),
+                        radius, 2, borderColour, '#777777')
 
-                canvas.draw_circle(
-                    (self.pos[0] + self.radius * -math.sin(i / self.abilityCount * 2 * math.pi),
-                     self.pos[1] + self.radius * -math.cos(i / self.abilityCount * 2 * math.pi)),
-                    radius, 2, '#555555', '#777777')
+            #Draw selected circle
+            if self.abilities[self.selected] == self.activeAbility.__class__.__name__:
+                borderColour = '#FF0000'
+            else:
+                borderColour = '#555555'
+            radius = self.thickness // 1.8
+            canvas.draw_circle(
+                (self.pos[0] + self.radius * -math.sin(self.selected / self.abilityCount * 2 * math.pi),
+                 self.pos[1] + self.radius * -math.cos(self.selected / self.abilityCount * 2 * math.pi)),
+                radius, 2, borderColour, '#777777')
 
-    def select(self):  # Select either a powerup or ability in the inventory wheel
+    def select(self,player):  # Select either a powerup or ability in the inventory wheel
         self.isOpen = False
+        print("Clicked: ",self.abilities[self.selected])
+        self.activeAbility = player.activeAbility = eval(self.abilities[self.selected])()
 
     def enableAbility(self):  # Weapon being used
         pass
