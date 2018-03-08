@@ -14,8 +14,7 @@ from Classes.Enemy.Enemy import Enemy
 from Classes.Enemy.Enemy2 import Enemy2
 from Classes.Enemy.Line import Line
 from Classes.Inventory import Inventory
-
-
+import pygame
 import random
 
 CANVAS_HEIGHT=900
@@ -56,6 +55,11 @@ def draw(canvas):
     map.draw(canvas,offset)
     character.draw(canvas,offset)
     character.update(keyboard,map.zoom)
+
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEMOTION:
+            pos = (event.pos[0]-frame._canvas_x_offset,event.pos[1]-frame._canvas_y_offset)
+            canvas.draw_circle(pos, 20, 5, "blue")
 
     for enemy in enemies:
         enemy.draw(canvas,offset)
