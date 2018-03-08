@@ -32,9 +32,10 @@ class Map:
         self.sprites.append( Sprite( self.mapSize/2,image_background, self.mapSize.getP()))
 
         #Enemies
+        self.enemies.append(FireEnemy(Vector(3240, 1580), "Red", "Sniper", image_FireEnemy,180))
         self.enemies.append(FireEnemy(Vector(2620, 1910), "Red", "Sniper", image_FireEnemy,270))
         self.enemies.append(FireEnemy(Vector(900, 1600), "Red", "Sniper", image_FireEnemy))
-        self.enemies.append(Bat(Vector(1200, 1000), "Blue", "Malee", image_Bat))
+        self.enemies.append(Bat(Vector(1200, 950), "Blue", "Malee", image_Bat,160))
 
         #All sprites
         wallWidth = 50

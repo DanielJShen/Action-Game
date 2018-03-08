@@ -7,5 +7,5 @@ class Line:
         self.thickness = 4
         self.length = self.pB - self.pA
 
-    def draw(self, canvas):
-        canvas.draw_line(self.pA.getP(), self.pB.getP(), self.thickness, self.color)
+    def draw(self, canvas, offset):
+        canvas.draw_line((self.pA+offset).getP(), (self.pB+offset).getP(), self.thickness, self.color)
