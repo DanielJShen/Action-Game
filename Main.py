@@ -2,9 +2,8 @@ try:
     import simplegui
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
-from Classes.Objects.Projectile import Projectile
+
 from Classes.Interactions import Interactions
-from Classes.Objects.Wall import Wall
 from Classes.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
@@ -12,8 +11,10 @@ from Classes.Maps.Map import Map
 from Classes.View import View
 from Classes.Enemy.Enemy import Enemy
 from Classes.Enemy.Enemy2 import Enemy2
-from Classes.Enemy.Line import Line
 from Classes.Inventory import Inventory
+from Classes.Enemy.Line import Line
+from Classes.healthIMG import HealthIMG
+from Classes.Health import Health
 import pygame
 import random
 
@@ -22,8 +23,12 @@ CANVAS_WIDTH=1600
 offset = Vector(0,0)
 mousePos = (0,0)
 
-# Defining Objects
+#Defining Objects
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
+heart1 = simplegui._load_local_image('Resources/images/Health.png')
+Bat = simplegui._load_local_image('Resources/images/Bat.png')
+FireEnemy = simplegui._load_local_image('Resources/images/FireEnemy.png')
+
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
 map = Map(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
@@ -32,23 +37,37 @@ offset = -map.startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
 inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
 projectiles = []
 walls = map.walls
-enemies = [Enemy(Vector(900,1500),"Red",300,Line,"sniper"),Enemy2(Vector(1200,1000),"Blue",300,Line,"malee")]
+enemies = [Enemy(Vector(900,1600),"Red","Sniper",FireEnemy),Enemy2(Vector(1200,1000),"Blue","Malee",Bat)]
+heart1OB = HealthIMG(Vector(50,50),heart1)
+heart2OB = HealthIMG(Vector(100,50),heart1)
+heart3OB = HealthIMG(Vector(150,50),heart1)
+healthOB = [heart1OB,heart2OB,heart3OB]
+health = Health(heart1OB,heart2OB,heart3OB)
+incrementalTimer = 0
 
 # Handler to draw on canvas
 def attack():
     for enemy in enemies:
         if enemy.found:
             enemy.follow(character)
-            if enemy.type == "sniper":
+            if enemy.type == "Sniper":
                 enemy.fire(character.pos, projectiles)
-            elif enemy.type == "malee":
-                enemy.attack(character)
+            elif enemy.type == "Malee":
+                enemy.attack(character,health)
         if not enemy.found:
             enemy.losColour = 'rgba(255,255,0,0.6)'
 
 def draw(canvas):
     #Updating Mouse Position
     mousePos = (pygame.mouse.get_pos()[0]-frame._canvas_x_offset,pygame.mouse.get_pos()[1]-frame._canvas_y_offset)
+    global incrementalTimer
+    i = 0
+    while i < enemies.__len__()-1:
+        k = enemies.__len__()-1
+        while k > i:
+            enemies[i].alertDistance(enemies[k])
+            k -= 1
+        i += 1
 
     #Interactions
     for wall in walls:
@@ -61,19 +80,23 @@ def draw(canvas):
     character.update(keyboard,map.zoom)
 
     for enemy in enemies:
-        enemy.draw(canvas,offset)
+        enemy.draw(canvas,offset,Bat,enemy,character)
         enemy.update(map.zoom,character)
         if enemy.found:
+            if incrementalTimer%5 == 0:
+                enemy.spriteUpdate(character, enemy)
+            incrementalTimer += 1
             enemy.search(character)
             enemy.stop(character)
+        elif not enemy.found:
+            enemy.direction = Vector(0,0)
 
     #Moving Screen
     View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
-
     for proj in projectiles:
         proj.draw(canvas,offset)
         proj.update(projectiles,map.zoom)
-        Interactions().ballHitPlayer(proj,character,projectiles)
+        Interactions().ballHitPlayer(proj,character,projectiles,health)
 
         for enemy in enemies:
             Interactions().ballHitEnemy(proj,projectiles,enemy,enemies)
@@ -86,8 +109,12 @@ def draw(canvas):
     inventory.update(keyboard, (character.pos+offset).getP(), mousePos)
 
     #Draw HUD
-    canvas.draw_text("Testing", [50,112], 48, "white")
-    canvas.draw_text("Health: "+str(character.health), [50, 200], 48, "Red")
+    i = healthOB.__len__()-1
+    while i >= 0:
+        healthOB[i].draw(canvas, offset)
+        i -= 1
+    # canvas.draw_text("Testing", [50,112], 48, "white")
+    # canvas.draw_text("Health: "+str(character.health), [50, 200], 48, "Red")
 
 def click(pos):
     if inventory.isOpen:
@@ -107,7 +134,7 @@ frame.set_mouseclick_handler(click)
 frame.set_keydown_handler(keyDown)
 frame.set_keyup_handler(keyUp)
 frame.set_draw_handler(draw)
-timer = simplegui.create_timer(1000, attack)
+timer = simplegui.create_timer(500, attack)
 timer.start()
 # Start the frame animation
 frame.start()

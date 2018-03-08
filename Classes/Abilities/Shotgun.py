@@ -4,7 +4,6 @@ from Classes.Vector import Vector
 class Shotgun():
     def __init__(self):
         self.sprite = object
-
         self.radius = 7
         self.colour = "#ff5555"
         self.time = 0.3
