@@ -31,9 +31,11 @@ class Wall:
                 (pos - self.pos2).dot(-self.line.getNormalized()) >= 0):
                 return True
         return False
+
     def inBounds(self,projectile): #Checks if projectile is past the end of the line
         return ((projectile.pos - self.pos1).dot(self.line.getNormalized()) >= 0 and
                 (projectile.pos - self.pos2).dot(-self.line.getNormalized()) >= 0)
+
     def reflectEdge(self,projectile): #Checks if the projectile is colliding with the end of the line
         seperation = self.pos1.copy().subtract(projectile.pos)
         seperation2 = self.pos2.copy().subtract(projectile.pos)

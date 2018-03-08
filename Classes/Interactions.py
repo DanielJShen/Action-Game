@@ -15,12 +15,13 @@ class Interactions:
         else:
             projectiles.pop(projectiles.index(projectile))
 
-    def ballHitPlayer(self,projectile,player,projectiles):
+    def ballHitPlayer(self,projectile,player,projectiles,health):
         if projectiles.count(projectile) == 0: pass
         seperation = player.pos-projectile.pos
         if not projectile.owner == "player":
             if projectile.radius + player.radius >= seperation.length():
                 player.health -= projectile.damage
+                health.damageTaken()
                 projectiles.pop(projectiles.index(projectile))
 
     def playerHitWall(self,wall,player):
@@ -31,7 +32,6 @@ class Interactions:
 
                 player.vel:Vector = player.vel.getProj(wall.line.getNormalized())
                 player.pos.add(direction*distance)
-
 
     def ballHitEnemy(self,projectile,projectiles,enemy,enemylist):
         if projectiles.count(projectile) == 0: pass
