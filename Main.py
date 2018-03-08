@@ -20,6 +20,7 @@ import random
 CANVAS_HEIGHT=900
 CANVAS_WIDTH=1600
 offset = Vector(0,0)
+pos = [0,0]
 
 # Defining Objects
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
@@ -52,14 +53,21 @@ def draw(canvas):
             Interactions().bounceBallOffWall(projectile,wall,projectiles)
 
     #Drawing and Updates
-    map.draw(canvas,offset)
+    # map.draw(canvas,offset)
     character.draw(canvas,offset)
     character.update(keyboard,map.zoom)
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEMOTION:
+            global pos
             pos = (event.pos[0]-frame._canvas_x_offset,event.pos[1]-frame._canvas_y_offset)
-            canvas.draw_circle(pos, 20, 5, "blue")
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if inventory.isOpen:
+                inventory.select()
+                print("Clicked")
+            else:
+                character.fire(Vector(pos[0], pos[1]) - offset, projectiles)
+    canvas.draw_circle(pos, 20, 5, "blue")
 
     for enemy in enemies:
         enemy.draw(canvas,offset)
@@ -84,24 +92,19 @@ def draw(canvas):
         #To see collision walls
         # wall.draw(canvas,offset)
     inventory.draw(canvas)
-    inventory.update(keyboard, (character.pos+offset).getP())
+    inventory.update(keyboard, (character.pos+offset).getP(), pos)
 
     #Draw HUD
     canvas.draw_text("Testing", [50,112], 48, "white")
     canvas.draw_text("Health: "+str(character.health), [50, 200], 48, "Red")
 
-def click(pos):
-    character.fire(Vector(pos[0],pos[1])-offset,projectiles)
-
-    if inventory.isOpen:
-        inventory.select()
-    else:
-        character.fire(Vector(pos[0], pos[1]), projectiles)
-
-
-def drag(pos):
-    if inventory.isOpen:
-        inventory.drag(pos)
+# def click(pos):
+#     character.fire(Vector(pos[0],pos[1])-offset,projectiles)
+#
+#     if inventory.isOpen:
+#         inventory.select()
+#     else:
+#         character.fire(Vector(pos[0], pos[1]), projectiles)
 
 
 def keyDown(key):
@@ -111,8 +114,7 @@ def keyUp(key):
     keyboard.keyUp(key)
 
 # Assign callbacks to event handlers
-frame.set_mouseclick_handler(click)
-frame.set_mousedrag_handler(drag)
+# frame.set_mouseclick_handler(click)
 frame.set_keydown_handler(keyDown)
 frame.set_keyup_handler(keyUp)
 frame.set_draw_handler(draw)
