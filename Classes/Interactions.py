@@ -13,7 +13,10 @@ class Interactions:
             # else:
             #     wall.reflectEdge(projectile)
         else:
-            projectiles.pop(projectiles.index(projectile))
+            try:
+                projectiles.pop(projectiles.index(projectile))
+            except ValueError:
+                print("Projectile missing error")
 
     def ballHitPlayer(self,projectile,player,projectiles,health):
         if projectiles.count(projectile) == 0: pass
@@ -22,7 +25,10 @@ class Interactions:
             if projectile.radius + player.radius >= seperation.length():
                 player.health -= projectile.damage
                 health.damageTaken()
-                projectiles.pop(projectiles.index(projectile))
+                try:
+                    projectiles.pop(projectiles.index(projectile))
+                except ValueError:
+                    print("Projectile missing error")
 
     def playerHitWall(self,wall,player):
         if max(player.size[0],player.size[1])/2 + wall.halfThickness >= wall.distanceTo(player):
@@ -45,6 +51,9 @@ class Interactions:
                     enemy.health -= projectile.damage
                 else:
                     enemy.health -= projectile.damage
-                    projectiles.pop(projectiles.index(projectile))
+                    try:
+                        projectiles.pop(projectiles.index(projectile))
+                    except ValueError:
+                        print("Projectile missing error")
                 if enemy.health <= 0:
                     enemylist.pop(enemylist.index(enemy))
