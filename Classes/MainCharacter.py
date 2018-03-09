@@ -15,11 +15,12 @@ class Character:
         self.maxSpeed = 3
         self.health = 100
         self.activeAbility = Cannon()
-
         self.image:simplegui.Image = image
         self.rotation = rotation
-        self.dim = ( self.image.get_width() , self.image.get_height() )
-        self.center = ( self.image.get_width()/2 , self.image.get_height()/2 )
+        self.dim = ( self.image.get_width(), self.image.get_height())
+        self.center = ( self.image.get_width()/2, self.image.get_height()/2)
+        self.directions = ["UP", "LEFT", "DOWN", "RIGHT"]
+        self.direction = ""
 
         if size == 0:
             self.size = self.dim
@@ -34,7 +35,18 @@ class Character:
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
 
-    def update(self,keyboard,zoom):
+    def update(self,keyboard,zoom, mousePos, offset):
+        angle = math.atan2((self.pos + offset).getP()[0] - mousePos[0],
+                           (self.pos + offset).getP()[1] - mousePos[1])
+        for i in range(len(self.directions)):
+            if ((i - 0.5) / len(self.directions) * 2 * math.pi) <= angle <= (
+                    (i + 0.5) / len(self.directions) * 2 * math.pi):
+                self.direction = self.directions[i]
+                #  Split for clarity
+            elif ((i - 0.5 - len(self.directions)) / len(self.directions) * 2 * math.pi) <= angle <= (
+                    (i + 0.5 - len(self.directions)) / len(self.directions) * 2 * math.pi):
+                self.direction = self.directions[i]
+
         if keyboard.right:
             self.vel.add(Vector(self.speed,0))
         if keyboard.left:
