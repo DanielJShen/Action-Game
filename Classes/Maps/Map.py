@@ -192,7 +192,7 @@ class Map:
         # spriteGroup4.addTo(self.sprites)
 
         #All walls
-        lineHalfWidth = 8
+        lineHalfWidth = 15
         WallBox(lineHalfWidth,spriteGroup4).addTo(self.walls)
         WallBox(lineHalfWidth, spriteGroup13).addTo(self.walls)
         WallBox(lineHalfWidth, spriteGroup14).addTo(self.walls)
