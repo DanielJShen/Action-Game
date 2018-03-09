@@ -67,8 +67,9 @@ class EnemySuper:
                              ((self.rightBoundary.pB.x + offset.x), (self.rightBoundary.pB.y + offset.y)), ], 0, "white",
                             self.losColour)
 
-    def draw(self,canvas,offset,enemy,player):
-        self.drawLos(canvas, offset)
+    def draw(self, canvas, offset, enemy, player):
+        if not self.found:
+            self.drawLos(canvas, offset)
         self.enemyIMG.draw(canvas, offset)
 
     def stealthDistance(self, player):
@@ -79,7 +80,7 @@ class EnemySuper:
     def alertDistance(self,enemy2):
         distanceVector = self.pos.copy().subtract(enemy2.pos)
         if distanceVector.length() <= (self.radius+enemy2.radius):
-            print("Overlap")
+            enemy2.vel.x = -enemy2.vel.x
         elif distanceVector.length() < 520 and (enemy2.found or self.found):
             enemy2.found = True
             self.found = True
