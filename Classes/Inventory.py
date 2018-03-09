@@ -47,7 +47,7 @@ class Inventory:
     def draw(self, canvas):  # Draw method to be called each game loop
         if self.isOpen:
             canvas.draw_circle((self.pos[0], self.pos[1]),
-                               self.radius, self.thickness, '#666666', )
+                               self.radius, self.thickness, 'rgba(110,110,110,0.5)', )
 
             for i in range(self.abilityCount):
                 if self.abilities[i] == self.activeAbility.__class__.__name__:

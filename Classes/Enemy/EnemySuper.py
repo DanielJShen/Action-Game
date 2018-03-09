@@ -116,7 +116,7 @@ class EnemySuper:
 
     def follow(self, player):
         self.losColour = 'rgba(255,0,0,0.2)'
-        playertest = player.pos.copy().subtract(self.pos)
+        playertest:Vector = player.pos.copy().subtract(self.pos)
         self.direction = playertest
 
     def search(self, player):

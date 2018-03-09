@@ -5,7 +5,7 @@ class Interactions:
         pass
 
     def bounceBallOffWall(self,projectile,wall,projectiles):
-        if projectiles.count(projectile) == 0: pass
+        if projectiles.count(projectile) == 0: return
         if projectile.bounce():
             if projectile.radius + wall.halfThickness >= wall.distanceTo(projectile):
                 if wall.inBounds(projectile):
@@ -13,16 +13,22 @@ class Interactions:
             # else:
             #     wall.reflectEdge(projectile)
         else:
-            projectiles.pop(projectiles.index(projectile))
+            try:
+                projectiles.pop(projectiles.index(projectile))
+            except ValueError:
+                print("Projectile missing error")
 
     def ballHitPlayer(self,projectile,player,projectiles,health):
-        if projectiles.count(projectile) == 0: pass
+        if projectiles.count(projectile) == 0: return
         seperation = player.pos-projectile.pos
         if not projectile.owner == "player":
             if projectile.radius + player.radius >= seperation.length():
                 player.health -= projectile.damage
                 health.damageTaken()
-                projectiles.pop(projectiles.index(projectile))
+                try:
+                    projectiles.pop(projectiles.index(projectile))
+                except ValueError:
+                    print("Projectile missing error")
 
     def playerHitWall(self,wall,player):
         if max(player.size[0],player.size[1])/2 + wall.halfThickness >= wall.distanceTo(player):
@@ -34,7 +40,7 @@ class Interactions:
                 player.pos.add(direction*distance)
 
     def ballHitEnemy(self,projectile,projectiles,enemy,enemylist):
-        if  not projectiles.count(projectile) > 0: pass
+        if  not projectiles.count(projectile) > 0: return
         seperation = enemy.pos-projectile.pos
         if projectile.owner == "player":
             if projectile.radius + enemy.radius >= seperation.length():
@@ -45,6 +51,9 @@ class Interactions:
                     enemy.health -= projectile.damage
                 else:
                     enemy.health -= projectile.damage
-                    projectiles.pop(projectiles.index(projectile))
+                    try:
+                        projectiles.pop(projectiles.index(projectile))
+                    except ValueError:
+                        print("Projectile missing error")
                 if enemy.health <= 0:
                     enemylist.pop(enemylist.index(enemy))
