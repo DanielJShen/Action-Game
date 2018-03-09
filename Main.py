@@ -7,12 +7,13 @@ from Classes.Interactions import Interactions
 from Classes.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
-from Classes.Maps.Map import Map
+# from Classes.Maps.Map import Map
 from Classes.View import View
 from Classes.Inventory import Inventory
 from Classes.Enemy.Line import Line
 from Classes.healthIMG import HealthIMG
 from Classes.Health import Health
+from Classes.Maps.Mand import Map
 import pygame
 import random
 
