@@ -22,9 +22,9 @@ class Map:
         self.startPos = Vector(1500,1900) + Vector(50,125)
 
         #Load Images
-        image_background = simplegui._load_local_image('Resources/images/MAP.png')
+        image_background = simplegui._load_local_image('Resources/images/map.png')
         image_wall = simplegui._load_local_image('Resources/images/Blank.png')
-        image_Bat = simplegui._load_local_image('Resources/images/Bat.png')
+        image_Bat = simplegui._load_local_image('Resources/images/bat.png')
         image_FireEnemy = simplegui._load_local_image('Resources/images/FireEnemy.png')
 
         #Background
