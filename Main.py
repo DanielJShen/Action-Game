@@ -7,7 +7,7 @@ from Classes.Interactions import Interactions
 from Classes.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
-from Classes.Maps.Map import Map
+from Classes.Maps.Mand import Map
 from Classes.View import View
 from Classes.Inventory import Inventory
 from Classes.Enemy.Line import Line
@@ -99,7 +99,7 @@ def draw(canvas):
     for wall in walls:
         Interactions().playerHitWall(wall,character)
         #To see collision walls
-        # wall.draw(canvas,offset)
+        wall.draw(canvas,offset)
     inventory.draw(canvas)
     inventory.update(keyboard, (character.pos+offset).getP(), mousePos)
 
@@ -112,6 +112,7 @@ def draw(canvas):
     # canvas.draw_text("Health: "+str(character.health), [50, 200], 48, "Red")
 
 def click(pos):
+    print(Vector(pos[0],pos[1])-offset)
     if inventory.isOpen:
         inventory.select(character)
     else:
