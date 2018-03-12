@@ -31,7 +31,7 @@ class Interactions:
                     print("Projectile missing error")
 
     def playerHitWall(self,wall,player):
-        if max(player.size[0],player.size[1])/2 + wall.halfThickness >= wall.distanceTo(player):
+        if max(player.size[0],player.size[1])/1.8 + wall.halfThickness >= wall.distanceTo(player):
             if wall.playerInBounds(player):
                 direction:Vector = player.vel.getProj(wall.line.getNormal()).getNormalized().negate()
                 distance = ((player.radius + wall.halfThickness + 1) - wall.distanceTo(player))
