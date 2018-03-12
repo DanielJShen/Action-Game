@@ -23,17 +23,20 @@ class Wall:
         angle = line1.angle(self.line)
         return line1.length()*math.sin(angle)
     def playerInBounds(self,player):
-        width = player.size[0]-5
-        height = player.size[1]-5
-        positions = (player.pos-Vector(width/2,0),player.pos+Vector(width/2,0),player.pos-Vector(0,height/2),player.pos+Vector(0,height/2))
-        for pos in positions:
-            if ((pos - self.pos1).dot(self.line.getNormalized()) >= 0 and
-                (pos - self.pos2).dot(-self.line.getNormalized()) >= 0):
-                return True
+        #Stop player cutting corners
+        # width = player.size[0]-15
+        # height = player.size[1]-15
+        # positions = (player.pos-Vector(width/2,0),player.pos+Vector(width/2,0),player.pos-Vector(0,height/2),player.pos+Vector(0,height/2))
+        # for pos in positions:
+        if ((player.pos - self.pos1).dot(self.line.getNormalized()) >= 0 and
+            (player.pos - self.pos2).dot(-self.line.getNormalized()) >= 0):
+                 return True
         return False
+
     def inBounds(self,projectile): #Checks if projectile is past the end of the line
         return ((projectile.pos - self.pos1).dot(self.line.getNormalized()) >= 0 and
                 (projectile.pos - self.pos2).dot(-self.line.getNormalized()) >= 0)
+
     def reflectEdge(self,projectile): #Checks if the projectile is colliding with the end of the line
         seperation = self.pos1.copy().subtract(projectile.pos)
         seperation2 = self.pos2.copy().subtract(projectile.pos)
