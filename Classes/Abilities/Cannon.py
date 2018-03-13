@@ -9,7 +9,7 @@ class Cannon():
         self.baseDamage = 10
 
 
-    def fire(self,toPos,projectiles,fromPos,owner):
+    def fire(self,toPos,projectiles,lasers,fromPos,owner):
         vel = toPos.copy().subtract(fromPos).getNormalized()*7
-        projectiles.append( Projectile(vel,fromPos.copy(),self.radius,self.time,self.bounce,self.baseDamage,owner,self.colour) ) #TODO Fire type based on ability and powerups
+        projectiles.append( Projectile(vel,fromPos.copy(),self.radius,self.time,self.bounce,self.baseDamage,owner,self.colour) )
 

@@ -19,7 +19,7 @@ class Enemy2IMG:
         self.frameHeight = height / self.rows
         self.frameCentreX = self.frameWidth / 2
         self.frameCentreY = self.frameHeight / 2
-        self.scaleX = scaleX
+        d = scaleX
         self.scaleY = scaleY
         self.rotate = rotate
 

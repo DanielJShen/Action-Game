@@ -29,8 +29,8 @@ class Character:
 
         self.radius = max(size[0]/2,size[1]/2)
 
-    def fire(self,pos:Vector,projectiles:list):
-        self.activeAbility.fire(pos,projectiles,self.pos,"player")
+    def fire(self,pos:Vector,projectiles:list,lasers:list):
+        self.activeAbility.fire(pos,projectiles,lasers,self.pos,"player")
 
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
