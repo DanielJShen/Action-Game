@@ -10,11 +10,9 @@ from Classes.MainCharacter import Keyboard
 from Classes.Maps.Mand import Map
 from Classes.View import View
 from Classes.Inventory import Inventory
-from Classes.Enemy.Line import Line
 from Classes.healthIMG import HealthIMG
 from Classes.Health import Health
 import pygame
-import random
 
 CANVAS_HEIGHT=900
 CANVAS_WIDTH=1600
@@ -32,6 +30,7 @@ character = Character(Vector(0,0),map.startPos,character_image,0,(64,64))
 offset = -map.startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
 inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
 projectiles = []
+lasers = []
 walls = map.walls
 enemies = map.enemies
 heart1OB = HealthIMG(Vector(50,50),heart1)
@@ -47,7 +46,7 @@ def attack():
         if enemy.found:
             enemy.spriteUpdate(character, enemy)
             if enemy.type == "Sniper":
-                enemy.fire(character.pos, projectiles)
+                enemy.fire(character.pos, projectiles,lasers)
             elif enemy.type == "Malee":
                 enemy.attack(character,health)
         if not enemy.found:
@@ -67,6 +66,7 @@ def draw(canvas):
 
     #Interactions
     for wall in walls:
+        Interactions().playerHitWall(wall,character)
         for projectile in projectiles:
             Interactions().bounceBallOffWall(projectile,wall,projectiles)
 
@@ -92,12 +92,15 @@ def draw(canvas):
         proj.draw(canvas,offset)
         proj.update(projectiles,map.zoom)
         Interactions().ballHitPlayer(proj,character,projectiles,health)
-
         for enemy in enemies:
             Interactions().ballHitEnemy(proj,projectiles,enemy,enemies)
 
+    for laser in lasers:
+        laser.draw(canvas,offset)
+        for enemy in enemies:
+            Interactions().laserHitEnemy(laser,lasers,enemy,enemies)
+
     for wall in walls:
-        Interactions().playerHitWall(wall,character)
         #To see collision walls
         wall.draw(canvas,offset)
     inventory.draw(canvas)
@@ -116,7 +119,7 @@ def click(pos):
     if inventory.isOpen:
         inventory.select(character)
     else:
-        character.fire(Vector(pos[0], pos[1])-offset, projectiles)
+        character.fire(Vector(pos[0], pos[1])-offset, projectiles,lasers)
 
 
 def keyDown(key):

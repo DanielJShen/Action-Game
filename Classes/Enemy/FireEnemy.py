@@ -1,4 +1,3 @@
-from Classes.Enemy.Line import Line
 from Classes.Vector import Vector
 from Classes.Abilities.Cannon import Cannon
 from Classes.Enemy.EnemySuper import EnemySuper

@@ -1,5 +1,4 @@
-from Classes.Vector import Vector
-from Classes.Enemy.Line import Line
+from Classes.Utilities.Line import Line
 from Classes.Vector import Vector
 from Classes.Abilities.Cannon import Cannon
 from Classes.Enemy.Enemy2IMG import Enemy2IMG
@@ -38,8 +37,8 @@ class EnemySuper:
         self.enemyIMG.updateDirection(character,enemy)
         self.enemyIMG.update()
 
-    def fire(self,pos:Vector,projectiles:list):
-        self.ability.fire(pos,projectiles,self.pos,"enemy")
+    def fire(self,pos:Vector,projectiles:list,lasers:list):
+        self.ability.fire(pos,projectiles,lasers,self.pos,"enemy")
 
     def updateLOS(self):
         self.normalGen = Vector((self.pos.x + self.normalLine.x), (self.pos.y + self.normalLine.y))

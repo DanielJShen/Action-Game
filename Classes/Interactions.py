@@ -57,3 +57,13 @@ class Interactions:
                         print("Projectile missing error")
                 if enemy.health <= 0:
                     enemylist.pop(enemylist.index(enemy))
+
+    def laserHitEnemy(self,laser,lasers:list,enemy,enemylist:list):
+        if  not lasers.count(laser) > 0: return
+        enemyRadius = max(enemy.enemyIMG.scaleX,enemy.enemyIMG.scaleY)/2
+        if laser.distanceTo(enemy) <= enemyRadius + laser.thickness/2 and (laser.pA-enemy.pos).length() < laser.length:
+            enemy.health -= 10
+            enemy.found = True
+        if enemy.health <= 0:
+            enemylist.pop(enemylist.index(enemy))
+        lasers.pop(lasers.index(laser))

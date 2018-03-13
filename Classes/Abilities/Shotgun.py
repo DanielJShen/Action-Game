@@ -12,7 +12,7 @@ class Shotgun():
         self.speed = 5
 
 
-    def fire(self,toPos,projectiles,fromPos,owner):
+    def fire(self,toPos,projectiles,lasers,fromPos,owner):
         vel:Vector = toPos.copy().subtract(fromPos).getNormalized()*self.speed
         vel.rotate(-10)
         for i in range(4):
