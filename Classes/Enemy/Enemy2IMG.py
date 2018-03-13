@@ -3,7 +3,6 @@ try:
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 
-from Classes.Vector import Vector
 
 class Enemy2IMG:
     def __init__(self, pos, IMG,width,height,column,row,frameIndex,scaleX,scaleY,rotate):
@@ -19,7 +18,7 @@ class Enemy2IMG:
         self.frameHeight = height / self.rows
         self.frameCentreX = self.frameWidth / 2
         self.frameCentreY = self.frameHeight / 2
-        d = scaleX
+        self.scaleX = scaleX
         self.scaleY = scaleY
         self.rotate = rotate
 

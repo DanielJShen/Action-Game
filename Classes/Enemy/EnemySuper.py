@@ -1,5 +1,5 @@
 from Classes.Utilities.Line import Line
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 from Classes.Abilities.Cannon import Cannon
 from Classes.Enemy.Enemy2IMG import Enemy2IMG
 import math

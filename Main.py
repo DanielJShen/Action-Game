@@ -4,7 +4,7 @@ except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 
 from Classes.Interactions import Interactions
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
 from Classes.Maps.Mand import Map

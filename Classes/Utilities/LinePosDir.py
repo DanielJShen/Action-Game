@@ -1,4 +1,3 @@
-from Classes.Vector import Vector
 import math
 class LinePosDir:
     def __init__(self, point, direction,color):

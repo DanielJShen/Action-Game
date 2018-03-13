@@ -2,10 +2,8 @@ try:
     import simplegui
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
-from Classes.Vector import Vector
-from Classes.Objects.Projectile import Projectile
+from Classes.Utilities.Vector import Vector
 from Classes.Abilities.Cannon import Cannon
-from Classes.Abilities.Shotgun import Shotgun
 import math
 class Character:
     def __init__(self,vel,pos,image,rotation,size=0):
