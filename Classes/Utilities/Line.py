@@ -1,6 +1,3 @@
-from Classes.Vector import Vector
-
-
 class Line:
     def __init__(self, point1, point2, color):
         self.pA = point1

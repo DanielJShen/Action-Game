@@ -1,5 +1,6 @@
-from Classes.Vector import Vector
-import math
+from Classes.Utilities.Vector import Vector
+
+
 class Interactions:
     def __init__(self):
         pass

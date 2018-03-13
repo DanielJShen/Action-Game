@@ -1,4 +1,4 @@
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 class Projectile:
     def __init__(self,vel,pos,radius,timer,bounceState,damage,owner,colour="green"): #rof is Rate of Fire
         self.vel:Vector = vel

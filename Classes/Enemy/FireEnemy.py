@@ -1,4 +1,4 @@
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 from Classes.Abilities.Cannon import Cannon
 from Classes.Enemy.EnemySuper import EnemySuper
 from Classes.Enemy.Enemy2IMG import Enemy2IMG
