@@ -25,7 +25,7 @@ class EnemySuper:
         self.soundRange = 100
         self.stealthRange = 150
         self.color = color
-        self.speed = 0.15
+        self.speed = 0.45
         self.health = 100
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, image, 530, 172, 9, 4, [0, 2], 150, 150, 0)
@@ -58,7 +58,7 @@ class EnemySuper:
         self.vel.multiply(0.90)
         if self.found:
             self.vel.add(self.direction.getNormalized()*self.speed)
-        self.pos.add(self.vel*zoom)
+        self.pos.add(self.vel/zoom)
 
     def drawLos(self, canvas, offset):
         canvas.draw_polygon([((self.leftBoundary.pA.x + offset.x), (self.leftBoundary.pA.y + offset.y)),

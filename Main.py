@@ -38,7 +38,9 @@ heart2OB = HealthIMG(Vector(100,50),heart1)
 heart3OB = HealthIMG(Vector(150,50),heart1)
 healthOB = [heart1OB,heart2OB,heart3OB]
 health = Health(heart1OB,heart2OB,heart3OB)
+
 incrementalTimer = 0
+cooldownAbility = 0
 
 # Handler to draw on canvas
 def attack():
@@ -55,7 +57,18 @@ def attack():
 def draw(canvas):
     #Updating Mouse Position
     mousePos = (pygame.mouse.get_pos()[0]-frame._canvas_x_offset,pygame.mouse.get_pos()[1]-frame._canvas_y_offset)
-    global incrementalTimer
+    global incrementalTimer, cooldownAbility
+
+    if not character.activeAbility.__class__.__name__ == "Laser":
+        if cooldownAbility == 0:
+            cooldownAbility = 20
+            if not inventory.isOpen and pygame.mouse.get_pressed()[0]:
+                character.fire(Vector(mousePos[0], mousePos[1]) - offset, projectiles, lasers)
+        cooldownAbility -= 1
+    else:
+        if not inventory.isOpen and pygame.mouse.get_pressed()[0]:
+            character.fire(Vector(mousePos[0], mousePos[1]) - offset, projectiles, lasers)
+
     i = 0
     while i < enemies.__len__()-1:
         k = enemies.__len__()-1
@@ -96,9 +109,11 @@ def draw(canvas):
             Interactions().ballHitEnemy(proj,projectiles,enemy,enemies)
 
     for laser in lasers:
+        if not lasers.count(laser) > 0: continue
         laser.draw(canvas,offset)
         for enemy in enemies:
             Interactions().laserHitEnemy(laser,lasers,enemy,enemies)
+        lasers.pop(lasers.index(laser))
 
     for wall in walls:
         #To see collision walls
@@ -118,8 +133,6 @@ def click(pos):
     print(Vector(pos[0],pos[1])-offset)
     if inventory.isOpen:
         inventory.select(character)
-    else:
-        character.fire(Vector(pos[0], pos[1])-offset, projectiles,lasers)
 
 
 def keyDown(key):
@@ -133,7 +146,7 @@ frame.set_mouseclick_handler(click)
 frame.set_keydown_handler(keyDown)
 frame.set_keyup_handler(keyUp)
 frame.set_draw_handler(draw)
-timer = simplegui.create_timer(500, attack)
+timer = simplegui.create_timer(300, attack)
 timer.start()
 # Start the frame animation
 frame.start()
