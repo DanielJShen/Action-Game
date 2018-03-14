@@ -9,8 +9,8 @@ class Character:
     def __init__(self,vel,pos,image,rotation,size=0):
         self.vel:Vector = vel
         self.pos:Vector = pos
-        self.speed = 0.7
-        self.maxSpeed = 3
+        self.speed = 5
+        self.maxSpeed = 6
         self.health = 100
         self.activeAbility = Cannon()
         self.image:simplegui.Image = image
@@ -53,7 +53,7 @@ class Character:
             self.vel.add(Vector(0,-self.speed))
         if keyboard.down:
             self.vel.add(Vector(0,self.speed))
-        self.pos.add(self.vel*zoom)
+        self.pos.add(self.vel/zoom)
         self.vel = self.vel.getNormalized() * min(self.vel.length(),self.maxSpeed) * 0.935
 
 class Keyboard:
