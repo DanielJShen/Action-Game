@@ -9,6 +9,7 @@ from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
 from Classes.Maps.Map import Map
 from Classes.View import View
+from Classes.Spritesheet import Spritesheet
 from Classes.Inventory import Inventory
 from Classes.Enemy.Line import Line
 from Classes.healthIMG import HealthIMG
@@ -24,12 +25,22 @@ mousePos = (0,0)
 #Defining Objects
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
 heart1 = simplegui._load_local_image('Resources/images/Health.png')
+player = simplegui._load_local_image('Resources/image/player.png')
 
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
 map = Map(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
 character = Character(Vector(0,0),map.startPos,character_image,0,(64,64))
 offset = -map.startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
+spritesheet = Spritesheet(player, 10, 8, 1)
+spritesheet.addAnimation([0, 0], [2, 0])
+spritesheet.addAnimation([0, 1], [2, 1])
+spritesheet.addAnimation([0, 2], [0, 2])
+spritesheet.addAnimation([0, 3], [2, 3])
+spritesheet.addAnimation([0, 4], [7, 4])
+spritesheet.addAnimation([0, 5], [7, 5])
+spritesheet.addAnimation([0, 6], [7, 6])
+spritesheet.addAnimation([0, 7], [7, 7])
 inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
 projectiles = []
 walls = map.walls
@@ -74,6 +85,8 @@ def draw(canvas):
     map.draw(canvas,offset)
     character.draw(canvas,offset)
     character.update(keyboard,map.zoom, mousePos, offset)
+    spritesheet.draw(canvas)
+    spritesheet.update(character.pos, offset)
 
     canvas.draw_circle(mousePos,10,1,"darkblue","darkblue")
     for enemy in enemies:
