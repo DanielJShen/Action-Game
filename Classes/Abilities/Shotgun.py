@@ -10,10 +10,10 @@ class Shotgun():
         self.sprite = object
         self.radius = 7
         self.colour = "#ff5555"
-        self.time = 0.3
+        self.time = 0.9
         self.bounce = False
         self.baseDamage = 5
-        self.speed = 5
+        self.speed = 15
         self.image = image_background = simplegui._load_local_image("Resources/images/Shotgun.png")
 
 
