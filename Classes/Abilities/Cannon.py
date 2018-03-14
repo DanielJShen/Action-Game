@@ -8,7 +8,7 @@ class Cannon():
         self.sprite = object
         self.radius = 10
         self.colour = "#7a14ff"
-        self.time = 1
+        self.time = 1.5
         self.bounce = True
         self.baseDamage = 10
         self.image = image_background = simplegui._load_local_image("Resources/images/Cannon.png")
