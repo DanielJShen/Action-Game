@@ -4,19 +4,15 @@ except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 
 from Classes.Interactions import Interactions
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
-from Classes.Maps.Map import Map
+from Classes.Maps.Mand import Map
 from Classes.View import View
-from Classes.Enemy.Enemy import Enemy
-from Classes.Enemy.Enemy2 import Enemy2
 from Classes.Inventory import Inventory
-from Classes.Enemy.Line import Line
 from Classes.healthIMG import HealthIMG
 from Classes.Health import Health
 import pygame
-import random
 
 CANVAS_HEIGHT=900
 CANVAS_WIDTH=1600
@@ -26,8 +22,6 @@ mousePos = (0,0)
 #Defining Objects
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
 heart1 = simplegui._load_local_image('Resources/images/Health.png')
-Bat = simplegui._load_local_image('Resources/images/Bat.png')
-FireEnemy = simplegui._load_local_image('Resources/images/FireEnemy.png')
 
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
@@ -36,22 +30,25 @@ character = Character(Vector(0,0),map.startPos,character_image,0,(64,64))
 offset = -map.startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
 inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
 projectiles = []
+lasers = []
 walls = map.walls
-enemies = [Enemy(Vector(900,1600),"Red","Sniper",FireEnemy),Enemy2(Vector(1200,1000),"Blue","Malee",Bat)]
+enemies = map.enemies
 heart1OB = HealthIMG(Vector(50,50),heart1)
 heart2OB = HealthIMG(Vector(100,50),heart1)
 heart3OB = HealthIMG(Vector(150,50),heart1)
 healthOB = [heart1OB,heart2OB,heart3OB]
 health = Health(heart1OB,heart2OB,heart3OB)
+
 incrementalTimer = 0
+cooldownAbility = 0
 
 # Handler to draw on canvas
 def attack():
     for enemy in enemies:
         if enemy.found:
-            enemy.follow(character)
+            enemy.spriteUpdate(character, enemy)
             if enemy.type == "Sniper":
-                enemy.fire(character.pos, projectiles)
+                enemy.fire(character.pos, projectiles,lasers)
             elif enemy.type == "Malee":
                 enemy.attack(character,health)
         if not enemy.found:
@@ -60,7 +57,18 @@ def attack():
 def draw(canvas):
     #Updating Mouse Position
     mousePos = (pygame.mouse.get_pos()[0]-frame._canvas_x_offset,pygame.mouse.get_pos()[1]-frame._canvas_y_offset)
-    global incrementalTimer
+    global incrementalTimer, cooldownAbility
+
+    if not character.activeAbility.__class__.__name__ == "Laser":
+        if cooldownAbility == 0:
+            cooldownAbility = 20
+            if not inventory.isOpen and pygame.mouse.get_pressed()[0]:
+                character.fire(Vector(mousePos[0], mousePos[1]) - offset, projectiles, lasers)
+        cooldownAbility -= 1
+    else:
+        if not inventory.isOpen and pygame.mouse.get_pressed()[0]:
+            character.fire(Vector(mousePos[0], mousePos[1]) - offset, projectiles, lasers)
+
     i = 0
     while i < enemies.__len__()-1:
         k = enemies.__len__()-1
@@ -71,25 +79,25 @@ def draw(canvas):
 
     #Interactions
     for wall in walls:
+        Interactions().playerHitWall(wall,character)
         for projectile in projectiles:
             Interactions().bounceBallOffWall(projectile,wall,projectiles)
 
     #Drawing and Updates
     map.draw(canvas,offset)
     character.draw(canvas,offset)
-    character.update(keyboard,map.zoom)
+    character.update(keyboard,map.zoom, mousePos, offset)
 
+    canvas.draw_circle(mousePos,10,1,"darkblue","darkblue")
     for enemy in enemies:
-        enemy.draw(canvas,offset,Bat,enemy,character)
+        enemy.draw(canvas,offset,enemy,character)
         enemy.update(map.zoom,character)
         if enemy.found:
-            if incrementalTimer%5 == 0:
-                enemy.spriteUpdate(character, enemy)
-            incrementalTimer += 1
+            enemy.follow(character)
             enemy.search(character)
             enemy.stop(character)
         elif not enemy.found:
-            enemy.direction = Vector(0,0)
+            enemy.vel = Vector(0,0)
 
     #Moving Screen
     View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
@@ -97,14 +105,19 @@ def draw(canvas):
         proj.draw(canvas,offset)
         proj.update(projectiles,map.zoom)
         Interactions().ballHitPlayer(proj,character,projectiles,health)
-
         for enemy in enemies:
             Interactions().ballHitEnemy(proj,projectiles,enemy,enemies)
 
+    for laser in lasers:
+        if not lasers.count(laser) > 0: continue
+        laser.draw(canvas,offset)
+        for enemy in enemies:
+            Interactions().laserHitEnemy(laser,lasers,enemy,enemies)
+        lasers.pop(lasers.index(laser))
+
     for wall in walls:
-        Interactions().playerHitWall(wall,character)
         #To see collision walls
-        # wall.draw(canvas,offset)
+        wall.draw(canvas,offset)
     inventory.draw(canvas)
     inventory.update(keyboard, (character.pos+offset).getP(), mousePos)
 
@@ -117,10 +130,9 @@ def draw(canvas):
     # canvas.draw_text("Health: "+str(character.health), [50, 200], 48, "Red")
 
 def click(pos):
+    print(Vector(pos[0],pos[1])-offset)
     if inventory.isOpen:
         inventory.select(character)
-    else:
-        character.fire(Vector(pos[0], pos[1])-offset, projectiles)
 
 
 def keyDown(key):
@@ -134,7 +146,7 @@ frame.set_mouseclick_handler(click)
 frame.set_keydown_handler(keyDown)
 frame.set_keyup_handler(keyUp)
 frame.set_draw_handler(draw)
-timer = simplegui.create_timer(500, attack)
+timer = simplegui.create_timer(300, attack)
 timer.start()
 # Start the frame animation
 frame.start()

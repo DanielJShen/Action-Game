@@ -1,18 +1,23 @@
+try:
+    import simplegui
+except ImportError:
+    import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from Classes.Objects.Projectile import Projectile
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 
 class Shotgun():
     def __init__(self):
         self.sprite = object
         self.radius = 7
         self.colour = "#ff5555"
-        self.time = 0.3
+        self.time = 0.9
         self.bounce = False
         self.baseDamage = 5
-        self.speed = 5
+        self.speed = 15
+        self.image = image_background = simplegui._load_local_image("Resources/images/Shotgun.png")
 
 
-    def fire(self,toPos,projectiles,fromPos,owner):
+    def fire(self,toPos,projectiles,lasers,fromPos,owner):
         vel:Vector = toPos.copy().subtract(fromPos).getNormalized()*self.speed
         vel.rotate(-10)
         for i in range(4):
