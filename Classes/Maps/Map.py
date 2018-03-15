@@ -4,28 +4,38 @@ except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from Classes.Objects.Sprite import Sprite
 from Classes.Objects.Sprite import SpriteGroup
-from Classes.Objects.Wall import Wall
 from Classes.Objects.Wall import WallBox
-from Classes.Vector import Vector
-import math
+from Classes.Utilities.Vector import Vector
+from Classes.Enemy.FireEnemy import FireEnemy
+from Classes.Enemy.Bat import Bat
 
 class Map:
     def __init__(self,frame:simplegui.Frame,width,height):
         self.sprites = []
         self.walls = []
+        self.enemies = []
 
         self.zoom = 3
         self.mapSize = Vector(width*self.zoom,height*self.zoom)
         self.startPos = Vector(1500,1900) + Vector(50,125)
 
         #Load Images
-        image_background = simplegui._load_local_image('Resources/images/MAP.png')
+        image_background = simplegui._load_local_image('Resources/images/map.png')
         image_wall = simplegui._load_local_image('Resources/images/Blank.png')
-        image_spike = simplegui.load_image('https://opengameart.org/sites/default/files/Spike_Pixel_0.png')
+        image_Bat = simplegui._load_local_image('Resources/images/bat.png')
+        image_FireEnemy = simplegui._load_local_image('Resources/images/FireEnemy.png')
 
         #Background
         frame.set_canvas_background("#0170FE")
         self.sprites.append( Sprite( self.mapSize/2,image_background, self.mapSize.getP()))
+
+        #Enemies
+        self.enemies.append(FireEnemy(Vector(3240, 1580), "Red", "Sniper", image_FireEnemy,[0,0],180))
+        self.enemies.append(FireEnemy(Vector(2620, 1910), "Red", "Sniper", image_FireEnemy,[0,1],270))
+        self.enemies.append(FireEnemy(Vector(1050, 1640), "Red", "Sniper", image_FireEnemy,[0,2],90))
+        self.enemies.append(Bat(Vector(1200, 950), "Blue", "Malee", image_Bat,[0,3],160))
+        self.enemies.append(Bat(Vector(4040, 1080), "Blue", "Malee", image_Bat, [0, 3], 160))
+        self.enemies.append(Bat(Vector(3900, 1480), "Blue", "Malee", image_Bat, [0, 1], 260))
 
         #All sprites
         wallWidth = 50
@@ -180,7 +190,7 @@ class Map:
         # spriteGroup4.addTo(self.sprites)
 
         #All walls
-        lineHalfWidth = 4
+        lineHalfWidth = 15
         WallBox(lineHalfWidth,spriteGroup4).addTo(self.walls)
         WallBox(lineHalfWidth, spriteGroup13).addTo(self.walls)
         WallBox(lineHalfWidth, spriteGroup14).addTo(self.walls)
@@ -198,7 +208,6 @@ class Map:
         WallBox(lineHalfWidth, spriteGroup24).addTo(self.walls)
         WallBox(lineHalfWidth, spriteGroup25).addTo(self.walls)
         WallBox(lineHalfWidth, spriteGroup26).addTo(self.walls)
-
 
         WallBox(lineHalfWidth, spriteGroup12).addTo(self.walls)
         WallBox(lineHalfWidth, spriteGroup11).addTo(self.walls)

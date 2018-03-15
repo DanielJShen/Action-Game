@@ -47,7 +47,7 @@ class Inventory:
     def draw(self, canvas):  # Draw method to be called each game loop
         if self.isOpen:
             canvas.draw_circle((self.pos[0], self.pos[1]),
-                               self.radius, self.thickness, '#666666', )
+                               self.radius, self.thickness, 'rgba(110,110,110,0.5)', )
 
             for i in range(self.abilityCount):
                 if self.abilities[i] == self.activeAbility.__class__.__name__:
@@ -63,10 +63,12 @@ class Inventory:
                         (i + 0.5 - self.abilityCount) / self.abilityCount * 2 * math.pi):
                     self.selected = i
                 else:
+                    center = (self.pos[0] + self.radius * -math.sin(i / self.abilityCount * 2 * math.pi) , self.pos[1] + self.radius * -math.cos(i / self.abilityCount * 2 * math.pi))
                     canvas.draw_circle(
-                        (self.pos[0] + self.radius * -math.sin(i / self.abilityCount * 2 * math.pi),
-                         self.pos[1] + self.radius * -math.cos(i / self.abilityCount * 2 * math.pi)),
+                        center,
                         radius, 2, borderColour, '#777777')
+                    ability = eval(self.abilities[i])()
+                    canvas.draw_image(ability.image,(ability.image.get_width()/2,ability.image.get_height()/2),(ability.image.get_width(),ability.image.get_height()), center, (radius+25,radius+25))
 
             #Draw selected circle
             if self.abilities[self.selected] == self.activeAbility.__class__.__name__:
@@ -74,10 +76,13 @@ class Inventory:
             else:
                 borderColour = '#555555'
             radius = self.thickness // 1.8
+            center = (self.pos[0] + self.radius * -math.sin(self.selected / self.abilityCount * 2 * math.pi),
+                 self.pos[1] + self.radius * -math.cos(self.selected / self.abilityCount * 2 * math.pi))
             canvas.draw_circle(
-                (self.pos[0] + self.radius * -math.sin(self.selected / self.abilityCount * 2 * math.pi),
-                 self.pos[1] + self.radius * -math.cos(self.selected / self.abilityCount * 2 * math.pi)),
+                center,
                 radius, 2, borderColour, '#777777')
+            ability = eval(self.abilities[self.selected])()
+            canvas.draw_image(ability.image,(ability.image.get_width()/2,ability.image.get_height()/2),(ability.image.get_width(),ability.image.get_height()), center, (radius+25,radius+25))
 
     def select(self,player):  # Select either a powerup or ability in the inventory wheel
         self.isOpen = False

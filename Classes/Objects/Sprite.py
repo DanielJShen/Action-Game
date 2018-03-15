@@ -2,7 +2,7 @@ try:
     import simplegui
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 
 class Sprite:
     def __init__(self,pos,image,size=(0,0),rotation=0):

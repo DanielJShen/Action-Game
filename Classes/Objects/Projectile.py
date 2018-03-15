@@ -1,4 +1,4 @@
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 class Projectile:
     def __init__(self,vel,pos,radius,timer,bounceState,damage,owner,colour="green"): #rof is Rate of Fire
         self.vel:Vector = vel
@@ -13,7 +13,7 @@ class Projectile:
     def draw(self,canvas,offset):
         canvas.draw_circle((self.pos+offset).getP(),self.radius,0.001,self.colour,self.colour)
     def update(self,projectiles:list,zoom):
-        self.pos.add(self.vel*zoom)
+        self.pos.add(self.vel/zoom)
         if self.incrementTimer() <= 0:
             projectiles.pop(projectiles.index(self))
 
