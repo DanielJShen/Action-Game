@@ -1,5 +1,6 @@
-from Classes.Vector import Vector
-import math
+from Classes.Utilities.Vector import Vector
+
+
 class Interactions:
     def __init__(self):
         pass
@@ -57,3 +58,11 @@ class Interactions:
                         print("Projectile missing error")
                 if enemy.health <= 0:
                     enemylist.pop(enemylist.index(enemy))
+
+    def laserHitEnemy(self,laser,lasers:list,enemy,enemylist:list):
+        enemyRadius = max(enemy.enemyIMG.scaleX,enemy.enemyIMG.scaleY)/2
+        if laser.distanceTo(enemy) <= enemyRadius + laser.thickness/2 and (laser.pA-enemy.pos).length() < laser.length:
+            enemy.health -= 1
+            enemy.found = True
+        if enemy.health <= 0:
+            enemylist.pop(enemylist.index(enemy))

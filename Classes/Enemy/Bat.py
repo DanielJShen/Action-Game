@@ -1,5 +1,4 @@
-from Classes.Enemy.Line import Line
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 from Classes.Abilities.Cannon import Cannon
 from Classes.Enemy.EnemySuper import EnemySuper
 from Classes.Enemy.Enemy2IMG import Enemy2IMG
@@ -9,7 +8,7 @@ class Bat(EnemySuper):
         self.defineVariables(pos,color,type,image)
         self.soundRange = 100
         self.stealthRange = 150
-        self.speed = 0.6
+        self.speed = 1.7
         self.health = 100
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, image,330,232,9,4,FrameIndex,100,100,0)
