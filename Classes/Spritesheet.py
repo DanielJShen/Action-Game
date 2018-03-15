@@ -1,10 +1,9 @@
-from Classes.Vector import Vector
-
 try:
     import simplegui
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
-
+from Classes.Vector import Vector
+import math
 
 class Spritesheet:
     def __init__(self, img, columns, rows, scale):
@@ -20,23 +19,44 @@ class Spritesheet:
         self.frameHeight = self.imgHeight / self.rows
         self.frameCentreX = self.frameWidth / 2
         self.frameCentreY = self.frameHeight / 2
-        self.fr_idx = [-1, -1]
+        self.fr_idx = [0,0]
         self.animations = []
         self.currentAnimation = 0
+        self.counter = 0
 
     def addAnimation(self, start, end):
         self.animations.append(Animation(self, start, end))
 
-    def draw(self, canvas):
+    def draw(self, canvas,offset):
         canvas.draw_image(self.img, (self.frameWidth * self.fr_idx[0] + self.frameCentreX,
                                      self.frameHeight * self.fr_idx[1] + self.frameCentreY),
-                          (self.frameWidth * self.scale, self.frameHeight * self.scale),
-                          self.pos.getP(),
+                          (self.frameWidth, self.frameHeight),
+                          (self.pos+offset).getP(),
                           (self.imgWidth * self.scale, self.imgHeight * self.scale))
 
-    def update(self, pos, offset):
-        self.pos = pos + offset
-        self.fr_idx = self.animations[self.currentAnimation].nextFrame(self.fr_idx)
+    def updatePlayer(self, player):
+        self.pos = player.pos
+        self.counter -= 1
+
+        if player.vel.length() >= player.speed/2:
+            angleToX = player.vel.angleToX()*180/math.pi
+            if 315 <= angleToX or angleToX <= 45:
+                self.currentAnimation = 7
+            elif 45 <= angleToX <= 135:
+                self.currentAnimation = 4
+            elif 135 <= angleToX <= 225:
+                self.currentAnimation = 5
+            elif 225 <= angleToX <= 315:
+                self.currentAnimation = 6
+            self.fr_idx = self.animations[self.currentAnimation].nextFrame(self.fr_idx)
+        else:
+            if not self.currentAnimation == 0:
+                self.currentAnimation = 0
+                self.fr_idx = self.animations[self.currentAnimation].nextFrame(self.fr_idx)
+            if self.counter <= 0:
+                self.fr_idx = self.animations[self.currentAnimation].nextFrame(self.fr_idx)
+                if self.fr_idx == [0,0]:
+                    self.counter = 50
 
 
 class Animation:
