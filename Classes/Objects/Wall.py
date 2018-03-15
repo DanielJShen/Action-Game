@@ -1,4 +1,4 @@
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 import math
 class Wall:
     def __init__(self,halfThickness,pos1,pos2):

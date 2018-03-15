@@ -4,10 +4,8 @@ except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from Classes.Objects.Sprite import Sprite
 from Classes.Objects.Sprite import SpriteGroup
-from Classes.Objects.Wall import Wall
 from Classes.Objects.Wall import WallBox
-from Classes.Vector import Vector
-import math
+from Classes.Utilities.Vector import Vector
 from Classes.Enemy.FireEnemy import FireEnemy
 from Classes.Enemy.Bat import Bat
 

@@ -2,17 +2,15 @@ try:
     import simplegui
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
-from Classes.Vector import Vector
-from Classes.Objects.Projectile import Projectile
+from Classes.Utilities.Vector import Vector
 from Classes.Abilities.Cannon import Cannon
-from Classes.Abilities.Shotgun import Shotgun
 import math
 class Character:
     def __init__(self,vel,pos,image,rotation,size=0):
         self.vel:Vector = vel
         self.pos:Vector = pos
-        self.speed = 0.7
-        self.maxSpeed = 3
+        self.speed = 5
+        self.maxSpeed = 6
         self.health = 100
         self.activeAbility = Cannon()
         self.image:simplegui.Image = image
@@ -29,8 +27,8 @@ class Character:
 
         self.radius = max(size[0]/2,size[1]/2)
 
-    def fire(self,pos:Vector,projectiles:list):
-        self.activeAbility.fire(pos,projectiles,self.pos,"player")
+    def fire(self,pos:Vector,projectiles:list,lasers:list):
+        self.activeAbility.fire(pos,projectiles,lasers,self.pos,"player")
 
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
@@ -55,7 +53,7 @@ class Character:
             self.vel.add(Vector(0,-self.speed))
         if keyboard.down:
             self.vel.add(Vector(0,self.speed))
-        self.pos.add(self.vel*zoom)
+        self.pos.add(self.vel/zoom)
         self.vel = self.vel.getNormalized() * min(self.vel.length(),self.maxSpeed) * 0.935
 
 class Keyboard:

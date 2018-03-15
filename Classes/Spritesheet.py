@@ -1,4 +1,4 @@
-from Classes.Vector import Vector
+from Classes.Utilities.Vector import Vector
 
 try:
     import simplegui

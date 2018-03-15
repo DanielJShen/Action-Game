@@ -3,11 +3,8 @@ try:
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from Classes.Objects.Sprite import Sprite
-from Classes.Objects.Sprite import SpriteGroup
 from Classes.Objects.Wall import Wall
-from Classes.Objects.Wall import WallBox
-from Classes.Vector import Vector
-import math
+from Classes.Utilities.Vector import Vector
 from Classes.Enemy.FireEnemy import FireEnemy
 from Classes.Enemy.Bat import Bat
 
@@ -24,7 +21,7 @@ class Map:
         #Load Images
         image_background = simplegui._load_local_image('Resources/images/cal.png')
         image_wall = simplegui._load_local_image('Resources/images/Blank.png')
-        image_Bat = simplegui._load_local_image('Resources/images/Bat.png')
+        image_Bat = simplegui._load_local_image('Resources/images/bat.png')
         image_FireEnemy = simplegui._load_local_image('Resources/images/FireEnemy.png')
 
         #Background
