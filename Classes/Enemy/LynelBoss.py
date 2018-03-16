@@ -17,7 +17,7 @@ class LynelBoss(LynelSprite):
         self.health = 100
         self.detectedRadius = 500
         self.followRadius = 800
-        self.speed = 20
+        self.speed = 60
         self.direction = Vector()
         self.ability = Cannon()
         self.incrementalTimer = 0
@@ -26,6 +26,7 @@ class LynelBoss(LynelSprite):
         self.boss = LynelSprite(self.pos, baseimage, 175, 300, 3, 6, [0, 2],image, 608, 130, 8, 2, [1, 1], 0)
         self.start(self.pos, baseimage, 175, 300, 3, 6, [0.2],
                    image, 608, 130, 8  , 2, [1,1], 0)
+        self.moving = False
 
     def drawHealthBar(self,canvas,offset):
         canvas.draw_line((390, 50), (1410, 50), 50, "black")
@@ -46,32 +47,32 @@ class LynelBoss(LynelSprite):
         self.ability.fire(player.pos, projectiles, lasers, self.pos, "enemy",trident)
 
 
-    def detectionArea(self,player:Character,canvas,offset):
+    def detectionArea(self,player:Character):
         distanceToPlayer = player.pos.copy().subtract(self.pos)
         if distanceToPlayer.length() >= self.detectedRadius+player.radius:
-            if self.incrementalTimer2 % 7 == 0:
+            if self.incrementalTimer2 % 1 == 0:
                 self.positions.append(self.pos.copy())
-                if self.positions.__len__() == 7:
+                if self.positions.__len__() == 10:
                     self.positions.pop(0)
-                print("----------------")
-
                 self.incrementalTimer2 = 0
             self.incrementalTimer2 += 1
-            if self.incrementalTimer % 40 == 0:
+
+            if self.incrementalTimer % 30 == 0 and not self.moving:
+                self.moving = True
                 self.vel = distanceToPlayer.getNormalized()*self.speed
                 self.incrementalTimer = 0
             self.incrementalTimer += 1
             self.trident = False
 
-
-        else:
+        if self.vel.length() < 5:
+            self.moving = False
             self.positions = []
-            self.trident = True
             self.vel = Vector(0,0)
+            if not distanceToPlayer.length() >= self.detectedRadius+player.radius:
+                self.trident = True
 
     def drawDupes(self,canvas,offset):
         for pos in self.positions:
-            print(pos)
             canvas.draw_image(self.sprites[self.current], (
                 self.frameWidthL[self.current] * self.frameIndex[self.current][0] + self.frameCentreXL[self.current],
                 self.frameHeightL[self.current] * self.frameIndex[self.current][1] + self.frameCentreYL[self.current]),
