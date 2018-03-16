@@ -14,7 +14,7 @@ from Classes.Enemy.Bat import Bat
 from Classes.Enemy.Enemy2IMG import Enemy2IMG
 
 class LynelMap:
-    def __init__(self,frame:simplegui.Frame,width,height):
+    def start(self,frame:simplegui.Frame,width,height):
         self.sprites = []
         self.walls = []
         self.enemies = []
