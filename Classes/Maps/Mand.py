@@ -32,8 +32,8 @@ class ManMap:
         frame.set_canvas_background("#0170FE")
         self.sprites.append( Sprite( self.mapSize/2,image_background, self.mapSize.getP()))
 
-
-        self.teleporter = Sprite(Vector(width, height) - Vector(300, 300), image_teleporter, [150, 150])
+        #Teleporter
+        self.teleporter = Sprite(Vector(width*3, height*3) - Vector(300, 300), image_teleporter, [150, 150])
         self.sprites.append(self.teleporter)
 
         #Pickups

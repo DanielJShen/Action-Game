@@ -31,7 +31,7 @@ heart1 = simplegui._load_local_image('Resources/images/Health.png')
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
 currentMap = 0
-map = [Tutorial(),Map(),ManMap()]
+map = [Tutorial(),ManMap(),Map()]
 map[currentMap].start(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
 character = Character(Vector(0,0), map[currentMap].startPos, character_image, 0, (64, 64))
 offset = -map[currentMap].startPos + (Vector(CANVAS_WIDTH, CANVAS_HEIGHT) / 2)

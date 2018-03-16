@@ -79,5 +79,4 @@ class Interactions:
         if seperation < max(teleporter.dim[0],teleporter.dim[0]) + player.radius:
             player.vel = Vector(0,0)
             player.pos = teleporter.pos.copy()
-            pygame.time.wait(1000)
             nextMap()
