@@ -14,8 +14,8 @@ from Classes.View import View
 from Classes.Inventory import Inventory
 from Classes.healthIMG import HealthIMG
 from Classes.Health import Health
-# from Classes.Enemy.LynelBoss import LynelBoss
-# from Classes.Maps.LynelBoss import LynelMap
+from Classes.Enemy.LynelBoss import LynelBoss
+from Classes.Maps.LynelBoss import LynelMap
 
 import pygame
 
@@ -31,7 +31,7 @@ heart1 = simplegui._load_local_image('Resources/images/Health.png')
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
 currentMap = 0
-map = [Tutorial(),ManMap(),Map()]
+map = [Tutorial(),ManMap(),Map(),LynelMap()]
 map[currentMap].start(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
 character = Character(Vector(0,0), map[currentMap].startPos, character_image, 0, (64, 64))
 offset = -map[currentMap].startPos + (Vector(CANVAS_WIDTH, CANVAS_HEIGHT) / 2)
@@ -39,8 +39,10 @@ interactions = Interactions()
 inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
 projectiles = []
 lasers = []
-if current == 2:
-    boss = map[current].Boss
+if currentMap == 3:
+    boss = map[currentMap].Boss
+else:
+    boss = None
 teleporter = map[currentMap].teleporter
 walls = map[currentMap].walls
 enemies = map[currentMap].enemies
@@ -60,8 +62,8 @@ cooldownAbility = 0
 def attack():
     global incrementalTimer
     incrementalTimer += 1
-    if boss.trident:
-        if incrementalTimer % 3 == 0:
+    if boss != None:
+        if boss.trident and incrementalTimer % 3 == 0:
             boss.fireTridents(character,projectiles,lasers,trident)
             incrementalTimer = 0
     for enemy in enemies:
@@ -96,7 +98,7 @@ def draw(canvas):
             enemies[i].alertDistance(enemies[k])
             k -= 1
         i += 1
-    if current == 2:
+    if currentMap == 3:
         boss.detectionArea(character,canvas,offset)
         boss.drawDetectionArea(canvas,offset)
         boss.updateSprite(canvas,offset,character)
@@ -120,7 +122,7 @@ def draw(canvas):
 
     canvas.draw_circle(mousePos,10,1,"darkblue","darkblue")
     for enemy in enemies:
-        enemy.draw(canvas,offset,enemy,character)
+        enemy.draw(canvas,offset)
         enemy.update(map[currentMap].zoom, character)
         if enemy.found:
             enemy.follow(character)
