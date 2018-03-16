@@ -7,11 +7,15 @@ from Classes.Interactions import Interactions
 from Classes.Utilities.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
-from Classes.Maps.Mand import Map
+from Classes.Maps.LynelBoss import LynelMap
+from Classes.Maps.Map import Map
+from Classes.Maps.Mand import ManMap
 from Classes.View import View
 from Classes.Inventory import Inventory
 from Classes.healthIMG import HealthIMG
 from Classes.Health import Health
+from Classes.Enemy.LynelBoss import LynelBoss
+
 import pygame
 
 CANVAS_HEIGHT=900
@@ -25,14 +29,15 @@ heart1 = simplegui._load_local_image('Resources/images/Health.png')
 
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
-map = Map(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
-character = Character(Vector(0,0),map.startPos,character_image,0,(64,64))
-offset = -map.startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
+map = [Map(frame,CANVAS_WIDTH,CANVAS_HEIGHT),ManMap(frame,CANVAS_WIDTH,CANVAS_HEIGHT),LynelMap(frame,CANVAS_WIDTH,CANVAS_HEIGHT)]
+current = 2
+character = Character(Vector(0,0),map[current].startPos,character_image,0,(64,64))
+offset = -map[current].startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
 inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
 projectiles = []
 lasers = []
-walls = map.walls
-enemies = map.enemies
+walls = map[current].walls
+enemies = map[current].enemies
 heart1OB = HealthIMG(Vector(50,50),heart1)
 heart2OB = HealthIMG(Vector(100,50),heart1)
 heart3OB = HealthIMG(Vector(150,50),heart1)
@@ -41,6 +46,8 @@ health = Health(heart1OB,heart2OB,heart3OB)
 
 incrementalTimer = 0
 cooldownAbility = 0
+
+
 
 # Handler to draw on canvas
 def attack():
@@ -84,14 +91,14 @@ def draw(canvas):
             Interactions().bounceBallOffWall(projectile,wall,projectiles)
 
     #Drawing and Updates
-    map.draw(canvas,offset)
+    map[current].draw(canvas,offset)
     character.draw(canvas,offset)
-    character.update(keyboard,map.zoom, mousePos, offset)
+    character.update(keyboard,map[current].zoom, mousePos, offset)
 
     canvas.draw_circle(mousePos,10,1,"darkblue","darkblue")
     for enemy in enemies:
         enemy.draw(canvas,offset,enemy,character)
-        enemy.update(map.zoom,character)
+        enemy.update(map[current].zoom,character)
         if enemy.found:
             enemy.follow(character)
             enemy.search(character)
@@ -103,7 +110,7 @@ def draw(canvas):
     View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
     for proj in projectiles:
         proj.draw(canvas,offset)
-        proj.update(projectiles,map.zoom)
+        proj.update(projectiles,map[current].zoom)
         Interactions().ballHitPlayer(proj,character,projectiles,health)
         for enemy in enemies:
             Interactions().ballHitEnemy(proj,projectiles,enemy,enemies)
