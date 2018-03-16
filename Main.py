@@ -7,11 +7,16 @@ from Classes.Interactions import Interactions
 from Classes.Utilities.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
-from Classes.Maps.Mand import Map
+from Classes.Maps.Map import Map
+from Classes.Maps.Mand import ManMap
+from Classes.Maps.Tutorial import Tutorial
 from Classes.View import View
 from Classes.Inventory import Inventory
 from Classes.healthIMG import HealthIMG
 from Classes.Health import Health
+from Classes.Enemy.LynelBoss import LynelBoss
+from Classes.Maps.LynelBoss import LynelMap
+
 import pygame
 
 CANVAS_HEIGHT=900
@@ -25,25 +30,42 @@ heart1 = simplegui._load_local_image('Resources/images/Health.png')
 
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
-map = Map(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
-character = Character(Vector(0,0),map.startPos,character_image,0,(64,64))
-offset = -map.startPos+(Vector(CANVAS_WIDTH, CANVAS_HEIGHT)/2)
+currentMap = 0
+map = [Tutorial(),ManMap(),Map(),LynelMap()]
+map[currentMap].start(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
+character = Character(Vector(0,0), map[currentMap].startPos, character_image, 0, (64, 64))
+offset = -map[currentMap].startPos + (Vector(CANVAS_WIDTH, CANVAS_HEIGHT) / 2)
+interactions = Interactions()
 inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
 projectiles = []
 lasers = []
-walls = map.walls
-enemies = map.enemies
+if currentMap == 3:
+    boss = map[currentMap].Boss
+else:
+    boss = None
+teleporter = map[currentMap].teleporter
+walls = map[currentMap].walls
+enemies = map[currentMap].enemies
+pickups = map[currentMap].pickups
 heart1OB = HealthIMG(Vector(50,50),heart1)
 heart2OB = HealthIMG(Vector(100,50),heart1)
 heart3OB = HealthIMG(Vector(150,50),heart1)
 healthOB = [heart1OB,heart2OB,heart3OB]
 health = Health(heart1OB,heart2OB,heart3OB)
-
+trident = simplegui._load_local_image('Resources/images/Trident.png')
 incrementalTimer = 0
 cooldownAbility = 0
 
+
+
 # Handler to draw on canvas
 def attack():
+    global incrementalTimer
+    incrementalTimer += 1
+    if boss != None:
+        if boss.trident and incrementalTimer % 3 == 0:
+            boss.fireTridents(character,projectiles,lasers,trident)
+            incrementalTimer = 0
     for enemy in enemies:
         if enemy.found:
             enemy.spriteUpdate(character, enemy)
@@ -76,22 +98,32 @@ def draw(canvas):
             enemies[i].alertDistance(enemies[k])
             k -= 1
         i += 1
+    if currentMap == 3:
+        boss.detectionArea(character,canvas,offset)
+        boss.drawDetectionArea(canvas,offset)
+        boss.updateSprite(canvas,offset,character)
+        boss.update()
 
     #Interactions
     for wall in walls:
-        Interactions().playerHitWall(wall,character)
+        interactions.playerHitWall(wall,character)
         for projectile in projectiles:
-            Interactions().bounceBallOffWall(projectile,wall,projectiles)
+            interactions.bounceBallOffWall(projectile,wall,projectiles)
+
+    for pickup in pickups:
+        interactions.playerTouchPickup(pickup,pickups,character,inventory)
+
+    interactions.playerTouchTeleporter(teleporter,character,nextMap)
 
     #Drawing and Updates
-    map.draw(canvas,offset)
+    map[currentMap].draw(canvas, offset, character, inventory)
     character.draw(canvas,offset)
-    character.update(keyboard,map.zoom, mousePos, offset)
+    character.update(keyboard, map[currentMap].zoom, mousePos, offset)
 
     canvas.draw_circle(mousePos,10,1,"darkblue","darkblue")
     for enemy in enemies:
-        enemy.draw(canvas,offset,enemy,character)
-        enemy.update(map.zoom,character)
+        enemy.draw(canvas,offset)
+        enemy.update(map[currentMap].zoom, character)
         if enemy.found:
             enemy.follow(character)
             enemy.search(character)
@@ -99,25 +131,28 @@ def draw(canvas):
         elif not enemy.found:
             enemy.vel = Vector(0,0)
 
+    for pickup in pickups:
+        pickup.draw(canvas,offset)
+
     #Moving Screen
     View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
     for proj in projectiles:
         proj.draw(canvas,offset)
-        proj.update(projectiles,map.zoom)
+        proj.update(projectiles, map[currentMap].zoom)
         Interactions().ballHitPlayer(proj,character,projectiles,health)
         for enemy in enemies:
-            Interactions().ballHitEnemy(proj,projectiles,enemy,enemies)
+            interactions.ballHitEnemy(proj,projectiles,enemy,enemies)
 
     for laser in lasers:
         if not lasers.count(laser) > 0: continue
         laser.draw(canvas,offset)
         for enemy in enemies:
-            Interactions().laserHitEnemy(laser,lasers,enemy,enemies)
+            interactions.laserHitEnemy(laser,lasers,enemy,enemies)
         lasers.pop(lasers.index(laser))
 
-    for wall in walls:
+    # for wall in walls:
         #To see collision walls
-        wall.draw(canvas,offset)
+        # wall.draw(canvas,offset)
     inventory.draw(canvas)
     inventory.update(keyboard, (character.pos+offset).getP(), mousePos)
 
@@ -134,12 +169,27 @@ def click(pos):
     if inventory.isOpen:
         inventory.select(character)
 
-
 def keyDown(key):
     keyboard.keyDown(key)
 
 def keyUp(key):
     keyboard.keyUp(key)
+
+def nextMap():
+    global currentMap,offset,projectiles,lasers,teleporter,walls,enemies,pickups,inventory,character
+    currentMap += 1
+    if map[currentMap] != None:
+        map[currentMap].start(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
+        offset = -map[currentMap].startPos + (Vector(CANVAS_WIDTH, CANVAS_HEIGHT) / 2)
+        projectiles = []
+        lasers = []
+        teleporter = map[currentMap].teleporter
+        walls = map[currentMap].walls
+        enemies = map[currentMap].enemies
+        pickups = map[currentMap].pickups
+        inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
+        character.pos = map[currentMap].startPos
+
 
 # Assign callbacks to event handlers
 frame.set_mouseclick_handler(click)

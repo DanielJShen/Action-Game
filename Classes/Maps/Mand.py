@@ -7,12 +7,14 @@ from Classes.Objects.Wall import Wall
 from Classes.Utilities.Vector import Vector
 from Classes.Enemy.FireEnemy import FireEnemy
 from Classes.Enemy.Bat import Bat
+from Classes.Pickup import Pickup
 
-class Map:
-    def __init__(self,frame:simplegui.Frame,width,height):
+class ManMap:
+    def start(self,frame,width,height):
         self.sprites = []
         self.walls = []
         self.enemies = []
+        self.pickups = []
 
         self.zoom = 3
         self.mapSize = Vector(width*self.zoom,height*self.zoom)
@@ -23,10 +25,19 @@ class Map:
         image_wall = simplegui._load_local_image('Resources/images/Blank.png')
         image_Bat = simplegui._load_local_image('Resources/images/bat.png')
         image_FireEnemy = simplegui._load_local_image('Resources/images/FireEnemy.png')
+        image_laser = simplegui._load_local_image("Resources/images/Laser.png")
+        image_teleporter = simplegui._load_local_image('Resources/images/blue_power_up.png')
 
         #Background
         frame.set_canvas_background("#0170FE")
         self.sprites.append( Sprite( self.mapSize/2,image_background, self.mapSize.getP()))
+
+        #Teleporter
+        self.teleporter = Sprite(Vector(width*3, height*3) - Vector(300, 300), image_teleporter, [150, 150])
+        self.sprites.append(self.teleporter)
+
+        #Pickups
+        self.pickups.append(Pickup(Vector(300,300),image_laser,1,1,"Ability","Laser"))
 
         #Enemies
         self.enemies.append(FireEnemy(Vector(640, 110), "Red", "Sniper", image_FireEnemy,[0,0],230))
@@ -48,6 +59,6 @@ class Map:
                 pos2 = Vector(wallPoint[i+1][0],wallPoint[i+1][1])
                 self.walls.append(Wall(lineHalfWidth, pos1,pos2))
 
-    def draw(self,canvas,offset):
+    def draw(self,canvas,offset,character,inventory):
         for sprite in self.sprites:
             sprite.draw(canvas,offset)

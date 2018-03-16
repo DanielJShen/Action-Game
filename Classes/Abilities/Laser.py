@@ -11,7 +11,7 @@ class Laser():
         self.time = 0.5
         self.bounce = True
         self.baseDamage = 1
-        self.image = image_background = simplegui._load_local_image("Resources/images/Laser.png")
+        self.image = simplegui._load_local_image("Resources/images/Laser.png")
 
 
     def fire(self,toPos,projectiles,lasers,fromPos,owner):
