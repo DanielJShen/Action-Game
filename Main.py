@@ -96,7 +96,7 @@ def draw(canvas):
             k -= 1
         i += 1
     if currentMap == 2:
-        boss.detectionArea(character,canvas,offset)
+        boss.detectionArea(character)
         boss.drawDetectionArea(canvas,offset)
         boss.updateSprite(canvas,offset,character)
         boss.update()
@@ -147,9 +147,9 @@ def draw(canvas):
             interactions.laserHitEnemy(laser,lasers,enemy,enemies)
         lasers.pop(lasers.index(laser))
 
-    # for wall in walls:
+    for wall in walls:
         #To see collision walls
-        # wall.draw(canvas,offset)
+        wall.draw(canvas,offset)
     inventory.draw(canvas)
     inventory.update(keyboard, (character.pos+offset).getP(), mousePos)
 
