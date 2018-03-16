@@ -13,14 +13,10 @@ class FireEnemy(EnemySuper):
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, FireEnemy, 530, 172, 9, 4, FrameIndex, 150, 150, 0)
         self.stopDistance = 200
-
         self.lineLeftGen.rotate(rotation)
         self.normalLine.rotate(rotation)
         self.lineRightGen.rotate(rotation)
-
         self.updateLOS()
-
-
 
     # def healthBar(self,canvas):
     #     line1 = Line(Vector(self.pos.x,self.pos.y-100),Vector(self.pos.x+self.health,self.pos.y),"Red")

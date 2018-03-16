@@ -39,6 +39,8 @@ interactions = Interactions()
 inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
 projectiles = []
 lasers = []
+if current == 2:
+    boss = map[current].Boss
 teleporter = map[currentMap].teleporter
 walls = map[currentMap].walls
 enemies = map[currentMap].enemies
@@ -48,7 +50,7 @@ heart2OB = HealthIMG(Vector(100,50),heart1)
 heart3OB = HealthIMG(Vector(150,50),heart1)
 healthOB = [heart1OB,heart2OB,heart3OB]
 health = Health(heart1OB,heart2OB,heart3OB)
-
+trident = simplegui._load_local_image('Resources/images/Trident.png')
 incrementalTimer = 0
 cooldownAbility = 0
 
@@ -56,6 +58,12 @@ cooldownAbility = 0
 
 # Handler to draw on canvas
 def attack():
+    global incrementalTimer
+    incrementalTimer += 1
+    if boss.trident:
+        if incrementalTimer % 3 == 0:
+            boss.fireTridents(character,projectiles,lasers,trident)
+            incrementalTimer = 0
     for enemy in enemies:
         if enemy.found:
             enemy.spriteUpdate(character, enemy)
@@ -88,6 +96,11 @@ def draw(canvas):
             enemies[i].alertDistance(enemies[k])
             k -= 1
         i += 1
+    if current == 2:
+        boss.detectionArea(character,canvas,offset)
+        boss.drawDetectionArea(canvas,offset)
+        boss.updateSprite(canvas,offset,character)
+        boss.update()
 
     #Interactions
     for wall in walls:

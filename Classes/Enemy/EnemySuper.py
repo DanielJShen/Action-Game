@@ -17,7 +17,6 @@ class EnemySuper:
         self.line = Line
         self.direction = Vector()
         self.looking = False
-        self.rotate = False
         self.rotation = 5
         self.losColour = 'rgba(255,255,0,0.6)'
         self.found = False
@@ -31,7 +30,6 @@ class EnemySuper:
         self.enemyIMG = Enemy2IMG(self.pos, image, 530, 172, 9, 4, [0, 2], 150, 150, 0)
         self.stopDistance = 0
         self.updateLOS()
-
 
     def spriteUpdate(self,character,enemy):
         self.enemyIMG.updateDirection(character,enemy)
@@ -66,7 +64,7 @@ class EnemySuper:
                              ((self.rightBoundary.pB.x + offset.x), (self.rightBoundary.pB.y + offset.y)), ], 0, "white",
                             self.losColour)
 
-    def draw(self, canvas, offset, enemy, player):
+    def draw(self, canvas, offset):
         if not self.found:
             self.drawLos(canvas, offset)
         self.enemyIMG.draw(canvas, offset)
