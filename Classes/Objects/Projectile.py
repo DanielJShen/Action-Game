@@ -18,7 +18,7 @@ class Projectile:
             canvas.draw_image(self.image, (self.image.get_width()/2,
                                          self.image.get_height()/2),
                               (self.image.get_width(), self.image.get_height()), ((self.pos + offset).getP()),
-                              (self.image.get_width()*4, self.image.get_height()*4), rotation
+                              (self.radius*2, self.radius*2), rotation
                               )
     def update(self,projectiles:list,zoom):
         self.pos.add(self.vel/zoom)

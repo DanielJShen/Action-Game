@@ -31,7 +31,7 @@ heart1 = simplegui._load_local_image('Resources/images/Health.png')
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
 currentMap = 0
-map = [Tutorial(),ManMap(),Map(),LynelMap()]
+map = [Tutorial(),ManMap(),LynelMap()]
 map[currentMap].start(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
 character = Character(Vector(0,0), map[currentMap].startPos, character_image, 0, (64, 64))
 offset = -map[currentMap].startPos + (Vector(CANVAS_WIDTH, CANVAS_HEIGHT) / 2)
@@ -39,14 +39,11 @@ interactions = Interactions()
 inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
 projectiles = []
 lasers = []
-if currentMap == 3:
-    boss = map[currentMap].Boss
-else:
-    boss = None
 teleporter = map[currentMap].teleporter
 walls = map[currentMap].walls
 enemies = map[currentMap].enemies
 pickups = map[currentMap].pickups
+boss = None
 heart1OB = HealthIMG(Vector(50,50),heart1)
 heart2OB = HealthIMG(Vector(100,50),heart1)
 heart3OB = HealthIMG(Vector(150,50),heart1)
@@ -98,7 +95,7 @@ def draw(canvas):
             enemies[i].alertDistance(enemies[k])
             k -= 1
         i += 1
-    if currentMap == 3:
+    if currentMap == 2:
         boss.detectionArea(character,canvas,offset)
         boss.drawDetectionArea(canvas,offset)
         boss.updateSprite(canvas,offset,character)
@@ -176,7 +173,7 @@ def keyUp(key):
     keyboard.keyUp(key)
 
 def nextMap():
-    global currentMap,offset,projectiles,lasers,teleporter,walls,enemies,pickups,inventory,character
+    global currentMap,offset,projectiles,lasers,teleporter,walls,enemies,pickups,inventory,character,boss
     currentMap += 1
     if map[currentMap] != None:
         map[currentMap].start(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
@@ -187,7 +184,10 @@ def nextMap():
         walls = map[currentMap].walls
         enemies = map[currentMap].enemies
         pickups = map[currentMap].pickups
-        inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
+        if currentMap == 1:
+            inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
+        if currentMap == 2:
+            boss = map[2].Boss
         character.pos = map[currentMap].startPos
 
 

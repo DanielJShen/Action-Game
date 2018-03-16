@@ -49,9 +49,9 @@ class LynelBoss(LynelSprite):
     def detectionArea(self,player:Character,canvas,offset):
         distanceToPlayer = player.pos.copy().subtract(self.pos)
         if distanceToPlayer.length() >= self.detectedRadius+player.radius:
-            if self.incrementalTimer2 % 5 == 0:
+            if self.incrementalTimer2 % 7 == 0:
                 self.positions.append(self.pos.copy())
-                if self.positions.__len__() == 10:
+                if self.positions.__len__() == 7:
                     self.positions.pop(0)
                 print("----------------")
 

@@ -18,6 +18,9 @@ class LynelMap:
         self.sprites = []
         self.walls = []
         self.enemies = []
+        self.pickups = []
+
+        self.defeated = False
 
         self.zoom = 3
         self.mapSize = Vector(width*self.zoom,height*self.zoom)
@@ -27,10 +30,16 @@ class LynelMap:
         Ganon = simplegui._load_local_image("Resources/images/GanonStand.png")
         GanonTrans = simplegui._load_local_image("Resources/images/GanonTrident.png")
         image_background = simplegui._load_local_image('Resources/images/Blank.png')
+        image_teleporter = simplegui._load_local_image('Resources/images/blue_power_up.png')
 
         #Background
         frame.set_canvas_background("#0170FE")
         self.sprites.append( Sprite( self.mapSize/2,image_background, self.mapSize.getP()))
+
+        #Teleporter
+        self.teleporter = Sprite(Vector(width*self.zoom/2, height*self.zoom/2) + Vector(1500, 0), image_teleporter, [150, 150])
+        if self.defeated:
+            self.sprites.append(self.teleporter)
 
         #Enemies
         self.Boss = LynelBoss(Vector(500,500),Vector(0,0),Ganon,GanonTrans)
@@ -47,7 +56,7 @@ class LynelMap:
                 pos2 = Vector(wallPoint[i+1][0],wallPoint[i+1][1])
                 self.walls.append(Wall(lineHalfWidth, pos1,pos2))
 
-    def draw(self,canvas,offset):
+    def draw(self,canvas,offset, character, inventory):
         self.Boss.drawHealthBar(canvas,offset)
         for sprite in self.sprites:
             sprite.draw(canvas,offset)
