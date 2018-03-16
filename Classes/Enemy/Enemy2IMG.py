@@ -39,6 +39,9 @@ class Enemy2IMG:
         elif (player.pos.y > enemy.pos.y) and (player.pos.x > enemy.pos.x):
             self.frameIndex[1] = 3
 
+    def updateDirectionFireEnemy(self, player, enemy):
+        pass
+
 
     def update(self):
         self.frameIndex[0] = (self.frameIndex[0] + 1) % self.column
