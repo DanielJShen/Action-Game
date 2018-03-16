@@ -7,6 +7,7 @@ class Inventory:
     def __init__(self, CANVAS_WIDTH, CANVAS_HEIGHT, player):
 
         self.abilities: list = []
+        self.possibleAbilities = []
         for (dirpath, dirnames, filenames) in walk('Classes/Abilities/'):
             self.abilities.extend(filenames)
             break
@@ -14,12 +15,14 @@ class Inventory:
             self.abilities[self.abilities.index(file)] = file = file.split('.')[0]
             command = 'from Classes.Abilities.' + file + ' import ' + file
             exec(command, globals())
+        for ability in self.abilities:
+            self.possibleAbilities.append(eval(ability)())
 
-        self.activeAbility = player.activeAbility = eval(self.abilities[0])()
-        self.availableAbilities = []  # Items the user has
+        self.activeAbility = player.activeAbility = eval("Cannon")()
+        self.availableAbilities = [eval("Cannon")()]  # Items the user has
         self.activePowerups = []  # Lists all active power ups
         self.powerups = []  # Lists all power ups
-        self.abilityCount = self.abilities.__len__()  # Ability count from abilities list
+        self.abilityCount = self.availableAbilities.__len__()  # Ability count from abilities list
         self.released = True  # Stores if the inventory button has been released while the inventory is open
         self.isOpen = False  # Determines if the inventory should be open or closed
         self.radius = min(CANVAS_WIDTH, CANVAS_HEIGHT) // 9  # Radius of the inventory wheel
@@ -46,11 +49,12 @@ class Inventory:
 
     def draw(self, canvas):  # Draw method to be called each game loop
         if self.isOpen:
+            self.abilityCount = self.availableAbilities.__len__()
             canvas.draw_circle((self.pos[0], self.pos[1]),
                                self.radius, self.thickness, 'rgba(110,110,110,0.5)', )
 
             for i in range(self.abilityCount):
-                if self.abilities[i] == self.activeAbility.__class__.__name__:
+                if self.availableAbilities[i].__class__.__name__ == self.activeAbility.__class__.__name__:
                     borderColour = '#FF0000'
                 else:
                     borderColour = '#555555'
@@ -67,11 +71,11 @@ class Inventory:
                     canvas.draw_circle(
                         center,
                         radius, 2, borderColour, '#777777')
-                    ability = eval(self.abilities[i])()
+                    ability = self.availableAbilities[i]
                     canvas.draw_image(ability.image,(ability.image.get_width()/2,ability.image.get_height()/2),(ability.image.get_width(),ability.image.get_height()), center, (radius+25,radius+25))
 
             #Draw selected circle
-            if self.abilities[self.selected] == self.activeAbility.__class__.__name__:
+            if self.availableAbilities[self.selected].__class__.__name__ == self.activeAbility.__class__.__name__:
                 borderColour = '#FF0000'
             else:
                 borderColour = '#555555'
@@ -81,16 +85,25 @@ class Inventory:
             canvas.draw_circle(
                 center,
                 radius, 2, borderColour, '#777777')
-            ability = eval(self.abilities[self.selected])()
+            ability = self.availableAbilities[self.selected]
             canvas.draw_image(ability.image,(ability.image.get_width()/2,ability.image.get_height()/2),(ability.image.get_width(),ability.image.get_height()), center, (radius+25,radius+25))
 
     def select(self,player):  # Select either a powerup or ability in the inventory wheel
         self.isOpen = False
-        print("Clicked: ",self.abilities[self.selected])
-        self.activeAbility = player.activeAbility = eval(self.abilities[self.selected])()
+        print("Clicked: ",self.availableAbilities[self.selected])
+        self.activeAbility = player.activeAbility = self.availableAbilities[self.selected]
 
-    def enableAbility(self):  # Weapon being used
-        pass
+    def enableAbility(self,ability):  # Weapon being used
+        for availableAbility in self.availableAbilities:
+            if availableAbility.__class__.__name__ == ability:
+                print("Ability already enabled")
+                return
+        for availableAbility in self.possibleAbilities:
+            if availableAbility.__class__.__name__ == ability:
+                print("Ability enabled")
+                self.availableAbilities.append(eval(ability)())
+                print(self.availableAbilities)
+                return
 
     def usePowerUp(self, powerup):  # Remove it from inventory and add to game loop
         pass

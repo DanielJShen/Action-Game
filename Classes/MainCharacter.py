@@ -30,6 +30,10 @@ class Character:
     def fire(self,pos:Vector,projectiles:list,lasers:list):
         self.activeAbility.fire(pos,projectiles,lasers,self.pos,"player")
 
+    def pickup(self,pickup,inventory):
+        if pickup.type == "Ability":
+            inventory.enableAbility(pickup.value)
+
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
 

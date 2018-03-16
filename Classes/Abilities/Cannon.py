@@ -11,7 +11,7 @@ class Cannon():
         self.time = 1.5
         self.bounce = True
         self.baseDamage = 10
-        self.image = image_background = simplegui._load_local_image("Resources/images/Cannon.png")
+        self.image = simplegui._load_local_image("Resources/images/Cannon.png")
 
 
     def fire(self,toPos,projectiles,lasers,fromPos,owner):

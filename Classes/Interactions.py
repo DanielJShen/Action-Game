@@ -1,5 +1,5 @@
 from Classes.Utilities.Vector import Vector
-
+import pygame
 
 class Interactions:
     def __init__(self):
@@ -66,3 +66,18 @@ class Interactions:
             enemy.found = True
         if enemy.health <= 0:
             enemylist.pop(enemylist.index(enemy))
+
+    def playerTouchPickup(self,pickup,pickups:list,character,inventory):
+        if pickups.count(pickup) > 0:
+            seperation:Vector = (pickup.pos-character.pos).length()
+            if seperation <= pickup.radius +character.radius:
+                character.pickup(pickup,inventory)
+                pickups.pop(pickups.index(pickup))
+
+    def playerTouchTeleporter(self,teleporter,player,nextMap):
+        seperation = (teleporter.pos-player.pos).length()
+        if seperation < max(teleporter.dim[0],teleporter.dim[0]) + player.radius:
+            player.vel = Vector(0,0)
+            player.pos = teleporter.pos.copy()
+            pygame.time.wait(1000)
+            nextMap()

@@ -14,7 +14,7 @@ class Shotgun():
         self.bounce = False
         self.baseDamage = 5
         self.speed = 15
-        self.image = image_background = simplegui._load_local_image("Resources/images/Shotgun.png")
+        self.image = simplegui._load_local_image("Resources/images/Shotgun.png")
 
 
     def fire(self,toPos,projectiles,lasers,fromPos,owner):

@@ -8,7 +8,7 @@ class Bat(EnemySuper):
         self.defineVariables(pos,color,type,image)
         self.soundRange = 100
         self.stealthRange = 150
-        self.speed = 1.7
+        self.speed = 1.4
         self.health = 100
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, image,330,232,9,4,FrameIndex,100,100,0)
@@ -22,5 +22,5 @@ class Bat(EnemySuper):
         if (self.radius + player.radius) + 20 >= (self.pos-player.pos).length():
             self.direction = Vector(0, 0)
             health.damageTaken()
-            self.vel.add(self.vel.getNormalized().negate()*12)
+            self.vel.add(self.vel.getNormalized().negate()*55)
             player.health -= 10
