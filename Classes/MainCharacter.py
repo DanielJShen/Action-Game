@@ -49,14 +49,20 @@ class Character:
                     (i + 0.5 - len(self.directions)) / len(self.directions) * 2 * math.pi):
                 self.direction = self.directions[i]
 
+
+        if keyboard.shift:
+            speed = self.speed*3
+        else:
+            speed = self.speed
+
         if keyboard.right:
-            self.vel.add(Vector(self.speed,0))
+            self.vel.add(Vector(speed,0))
         if keyboard.left:
-            self.vel.add(Vector(-self.speed,0))
+            self.vel.add(Vector(-speed,0))
         if keyboard.up:
-            self.vel.add(Vector(0,-self.speed))
+            self.vel.add(Vector(0,-speed))
         if keyboard.down:
-            self.vel.add(Vector(0,self.speed))
+            self.vel.add(Vector(0,speed))
         self.pos.add(self.vel/zoom)
         self.vel = self.vel.getNormalized() * min(self.vel.length(),self.maxSpeed) * 0.935
 
@@ -68,6 +74,7 @@ class Keyboard:
         self.down = False
         self.space = False
         self.i = False
+        self.shift = False
 
     def keyDown(self, key):
         if key == simplegui.KEY_MAP['d']:
@@ -82,6 +89,8 @@ class Keyboard:
             self.space = True
         if key == simplegui.KEY_MAP['i']:
             self.i = True
+        if key == 17:
+            self.shift = True
 
     def keyUp(self, key):
         if key == simplegui.KEY_MAP['d']:
@@ -96,3 +105,5 @@ class Keyboard:
             self.space = False
         if key == simplegui.KEY_MAP['i']:
             self.i = False
+        if key == 17:
+            self.shift = False
