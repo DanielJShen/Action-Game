@@ -17,6 +17,7 @@ class FireEnemy(EnemySuper):
         self.normalLine.rotate(rotation)
         self.lineRightGen.rotate(rotation)
         self.updateLOS()
+        self.entity = "fireEnemy"
 
     # def healthBar(self,canvas):
     #     line1 = Line(Vector(self.pos.x,self.pos.y-100),Vector(self.pos.x+self.health,self.pos.y),"Red")

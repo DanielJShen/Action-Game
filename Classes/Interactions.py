@@ -59,6 +59,19 @@ class Interactions:
                 if enemy.health <= 0:
                     enemylist.pop(enemylist.index(enemy))
 
+    def ballHitBoss(self,projectile,projectiles,boss):
+        if  not projectiles.count(projectile) > 0: return
+        seperation = boss.pos-projectile.pos
+        if projectile.owner == "player":
+            if projectile.radius + boss.radius >= seperation.length():
+                    boss.health -= projectile.damage
+                    try:
+                        projectiles.pop(projectiles.index(projectile))
+                    except ValueError:
+                        print("Projectile missing error")
+            if boss.health <= 0:
+                boss.death = True
+
     def laserHitEnemy(self,laser,lasers:list,enemy,enemylist:list):
         enemyRadius = max(enemy.enemyIMG.scaleX,enemy.enemyIMG.scaleY)/2
         if laser.distanceTo(enemy) <= enemyRadius + laser.thickness/2 and (laser.pA-enemy.pos).length() < laser.length:

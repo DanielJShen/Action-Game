@@ -14,8 +14,8 @@ class Cannon():
         self.image = simplegui._load_local_image("Resources/images/Cannon.png")
 
 
-    def fire(self,toPos,projectiles,lasers,fromPos,owner,image=None):
+    def fire(self,toPos,projectiles,lasers,fromPos,owner,timer=1.5,scaleState=False,image=None):
         if image==None: image=self.projectileImage
         vel = toPos.copy().subtract(fromPos).getNormalized()*30
-        projectiles.append( Projectile(vel,fromPos.copy(),self.radius,self.time,self.bounce,self.baseDamage,owner,image) )
+        projectiles.append( Projectile(vel,fromPos.copy(),self.radius,timer,self.bounce,self.baseDamage,owner,scaleState,image))
 
