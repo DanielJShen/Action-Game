@@ -152,6 +152,8 @@ def draw(canvas):
         laser.draw(canvas,offset)
         for enemy in enemies:
             interactions.laserHitEnemy(laser,lasers,enemy,enemies)
+        if currentMap == 2:
+            interactions.laserHitBoss(laser, lasers,boss)
         lasers.pop(lasers.index(laser))
 
     for wall in walls:
@@ -185,6 +187,10 @@ def draw(canvas):
     while i >= 0:
         healthOB[i].draw(canvas, offset)
         i -= 1
+
+    canvas.draw_line((20, 100), (175, 100), 30, "white")
+    canvas.draw_line((25, 100), (170, 100), 25, "black")
+    canvas.draw_line((25, 100), (170-character.stamina, 100), 25, character.staminaColor)
     # canvas.draw_text("Testing", [50,112], 48, "white")
     # canvas.draw_text("Health: "+str(character.health), [50, 200], 48, "Red")
 

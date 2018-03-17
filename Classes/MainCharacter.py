@@ -19,6 +19,9 @@ class Character:
         self.center = ( self.image.get_width()/2, self.image.get_height()/2)
         self.directions = ["UP", "LEFT", "DOWN", "RIGHT"]
         self.direction = ""
+        self.stamina = 0
+        self.staminaColor = "green"
+        self.rest = False
 
         if size == 0:
             self.size = self.dim
@@ -51,10 +54,31 @@ class Character:
 
 
         if keyboard.shift:
-            speed = self.speed*3
-        else:
-            speed = self.speed
+            if self.rest and self.stamina > 0:
+                self.stamina -= 0.5
+                self.staminaColor = "red"
+            elif self.rest and self.stamina <= 0:
+                self.rest = False
 
+            speed = self.speed
+            if self.stamina <= 144 and not self.rest:
+                speed = self.speed*3
+                self.stamina += 0.5
+                self.staminaColor = "green"
+            elif not self.rest:
+                self.rest = True
+                speed = self.speed
+            print(self.stamina)
+        else:
+
+            if self.stamina > 0:
+                self.stamina -= 0.5
+            else:
+                self.staminaColor = "green"
+                self.rest = False
+
+            speed = self.speed
+            print(self.stamina)
         if keyboard.right:
             self.vel.add(Vector(speed,0))
         if keyboard.left:

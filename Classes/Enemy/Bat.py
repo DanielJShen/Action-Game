@@ -8,7 +8,7 @@ class Bat(EnemySuper):
         self.defineVariables(pos,color,type,image)
         self.soundRange = 100
         self.stealthRange = 150
-        self.speed = 1.4
+        self.speed = 2
         self.health = 100
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, image,330,232,9,4,FrameIndex,100,100,0)
