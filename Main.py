@@ -14,7 +14,7 @@ from Classes.View import View
 from Classes.Inventory import Inventory
 from Classes.healthIMG import HealthIMG
 from Classes.Health import Health
-from Classes.Enemy.LynelBoss import LynelBoss
+from Classes.Enemy.flameBat import flameBat
 from Classes.Maps.LynelBoss import LynelMap
 
 import pygame
@@ -27,6 +27,7 @@ mousePos = (0,0)
 #Defining Objects
 character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
 heart1 = simplegui._load_local_image('Resources/images/Health.png')
+image_Bat = simplegui._load_local_image('Resources/images/hellBat.png')
 
 frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
 keyboard = Keyboard()
@@ -51,18 +52,25 @@ healthOB = [heart1OB,heart2OB,heart3OB]
 health = Health(heart1OB,heart2OB,heart3OB)
 trident = simplegui._load_local_image('Resources/images/Trident.png')
 incrementalTimer = 0
+batTimer = 0
 cooldownAbility = 0
-
+detect = False
 
 
 # Handler to draw on canvas
 def attack():
     global incrementalTimer
     incrementalTimer += 1
-    if boss != None:
-        if boss.trident and incrementalTimer % 3 == 0:
-            boss.fireTridents(character,projectiles,lasers,trident)
-            incrementalTimer = 0
+    if boss != None and not boss.death and detect:
+        if boss.health > 800 or boss.health < 500 and boss.health > 300:
+            if boss.trident and incrementalTimer % 3 == 0:
+                boss.fireTridents(character,projectiles,lasers,trident)
+                incrementalTimer = 0
+        elif boss.health <= 800 and boss.health > 700 or boss.health < 300 and boss.health > 200:
+            boss.spawn = True
+        else:
+            boss.spawn = False
+
     for enemy in enemies:
         if enemy.found:
             enemy.spriteUpdate(character, enemy)
@@ -95,11 +103,8 @@ def draw(canvas):
             enemies[i].alertDistance(enemies[k])
             k -= 1
         i += 1
-    if currentMap == 2:
-        boss.detectionArea(character)
-        boss.drawDetectionArea(canvas,offset)
-        boss.updateSprite(canvas,offset,character)
-        boss.update()
+
+
 
     #Interactions
     for wall in walls:
@@ -139,6 +144,8 @@ def draw(canvas):
         Interactions().ballHitPlayer(proj,character,projectiles,health)
         for enemy in enemies:
             interactions.ballHitEnemy(proj,projectiles,enemy,enemies)
+        if currentMap == 2:
+            interactions.ballHitBoss(proj,projectiles,boss)
 
     for laser in lasers:
         if not lasers.count(laser) > 0: continue
@@ -152,6 +159,26 @@ def draw(canvas):
         wall.draw(canvas,offset)
     inventory.draw(canvas)
     inventory.update(keyboard, (character.pos+offset).getP(), mousePos)
+
+
+    if currentMap == 2:
+        global detect
+        if character.pos.x >= 2881:
+            detect = True
+        if boss.health <= 0:
+            boss.death = True
+        if not boss.death and detect:
+            global batTimer
+            boss.detectionArea(character)
+            boss.drawDetectionArea(canvas, offset)
+            boss.update()
+            if boss.spawn and batTimer % 100 == 0:
+                enemies.append(flameBat(boss.pos + Vector(0, -80), "Blue", "Malee", image_Bat, [0, 0], 160))
+                batTimer = 0
+            if boss.health < 700 and boss.health > 500 or boss.health < 200:
+                boss.drawFire(canvas, offset, character, projectiles, lasers)
+            batTimer += 1
+        boss.updateSprite(canvas, offset, character)
 
     #Draw HUD
     i = healthOB.__len__()-1
@@ -180,7 +207,8 @@ def nextMap():
         offset = -map[currentMap].startPos + (Vector(CANVAS_WIDTH, CANVAS_HEIGHT) / 2)
         projectiles = []
         lasers = []
-        teleporter = map[currentMap].teleporter
+        if currentMap != 2:
+            teleporter = map[currentMap].teleporter
         walls = map[currentMap].walls
         enemies = map[currentMap].enemies
         pickups = map[currentMap].pickups

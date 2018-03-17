@@ -3,20 +3,21 @@ from Classes.Abilities.Cannon import Cannon
 from Classes.Enemy.EnemySuper import EnemySuper
 from Classes.Enemy.Enemy2IMG import Enemy2IMG
 
-class Bat(EnemySuper):
+class flameBat(EnemySuper):
     def __init__(self,pos:Vector,color,type,image,FrameIndex,rotation=0):
         self.defineVariables(pos,color,type,image)
         self.soundRange = 100
         self.stealthRange = 150
-        self.speed = 1.4
-        self.health = 100
+        self.speed = 3
+        self.health = 50
         self.ability = Cannon()
-        self.enemyIMG = Enemy2IMG(self.pos, image,330,232,9,4,FrameIndex,100,100,0)
-        self.entity = "Bat"
+        self.enemyIMG = Enemy2IMG(self.pos, image,170,20,5,1,FrameIndex,100,100,0)
         self.lineLeftGen.rotate(rotation)
         self.normalLine.rotate(rotation)
         self.lineRightGen.rotate(rotation)
         self.updateLOS()
+        self.found = True
+        self.entity = "flameBat"
 
     def attack(self,player,health):
         if (self.radius + player.radius) + 20 >= (self.pos-player.pos).length():

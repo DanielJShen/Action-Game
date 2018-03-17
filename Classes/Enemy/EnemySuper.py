@@ -33,7 +33,7 @@ class EnemySuper:
 
     def spriteUpdate(self,character,enemy):
         self.enemyIMG.updateDirection(character,enemy)
-        self.enemyIMG.update()
+        self.enemyIMG.update(enemy)
 
     def fire(self,pos:Vector,projectiles:list,lasers:list):
         self.ability.fire(pos,projectiles,lasers,self.pos,"enemy")
@@ -92,7 +92,7 @@ class EnemySuper:
         # canvas.draw_line((self.pos+offset).getP(), (self.pos+offset+Vector(1,0).rotateRad(playerVector.angleToX())).getP(), 9, "black")
 
         if self.length >= playerVector.length():
-            if rightVision.angleToX() >= playerVector.angleToX() >= leftVision.angleToX():
+            if rightVision.angleToX() >= playerVector.angleToX() >= leftVision.angleToX() :
                 self.found = True
                 self.normalBoundary.color = 'rgba(255,0,0,1)'
             elif (rightVision.angleToX() < math.pi/2 and leftVision.angleToX() > 3*math.pi/2):
@@ -100,7 +100,7 @@ class EnemySuper:
                     or rightVision.angleToX() >= playerVector.angleToX() >= leftVision.angleToX()-2*math.pi):
                     self.found = True
                     self.normalBoundary.color = 'rgba(255,0,0,1)'
-        elif self.length * 2 < playerVector.length():
+        elif self.length * 2 < playerVector.length() and self.entity != "flameBat":
             self.found = False
 
     def updateSoundDistance(self, player):

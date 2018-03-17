@@ -20,5 +20,5 @@ class Shotgun():
         vel:Vector = toPos.copy().subtract(fromPos).getNormalized()*self.speed
         vel.rotate(-10)
         for i in range(4):
-            projectiles.append( Projectile(vel.copy().rotate(5*i),fromPos.copy(),self.radius,self.time,self.bounce,self.baseDamage,owner) )
+            projectiles.append( Projectile(vel.copy().rotate(5*i),fromPos.copy(),self.radius,self.time,self.bounce,self.baseDamage,owner,False) )
 
