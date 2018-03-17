@@ -72,6 +72,13 @@ class Interactions:
             if boss.health <= 0:
                 boss.death = True
 
+    def laserHitBoss(self,laser,lasers:list,boss):
+        enemyRadius = max(boss.boss.scaleX,boss.boss.scaleY)/2
+        if laser.distanceTo(boss) <= enemyRadius + laser.thickness/2 and (laser.pA-boss.pos).length() < laser.length:
+            boss.health -= 0.3
+        if boss.health <= 0:
+            boss.death = True
+
     def laserHitEnemy(self,laser,lasers:list,enemy,enemylist:list):
         enemyRadius = max(enemy.enemyIMG.scaleX,enemy.enemyIMG.scaleY)/2
         if laser.distanceTo(enemy) <= enemyRadius + laser.thickness/2 and (laser.pA-enemy.pos).length() < laser.length:

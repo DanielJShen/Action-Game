@@ -29,7 +29,7 @@ class LynelBoss(LynelSprite):
         self.positions = []
         self.enemies = []
         self.health = 1000
-        self.radius = 50
+        self.radius = 100
         self.spawn = False
         self.boss = LynelSprite(self.pos, baseimage, 175, 300, 3, 6, [0, 2],image, 608, 130, 8, 2, [1, 1], fadedBase, 175, 300, 3, 6, [0, 2],death, 270, 50, 6, 1, [0, 0],0)
         self.start(self.pos, baseimage, 175, 300, 3, 6, [0.2],
@@ -93,6 +93,7 @@ class LynelBoss(LynelSprite):
     def drawDetectionArea(self,canvas,offset):
         canvas.draw_circle((self.pos + offset).getP(), self.detectedRadius, 1, "red")
         canvas.draw_circle((self.pos + offset).getP(), self.followRadius, 1, "white")
+        canvas.draw_circle((self.pos + offset).getP(), self.radius, 1, "white")
 
     def fireBombard(self):
         angle = 360 / 9
@@ -114,7 +115,7 @@ class LynelBoss(LynelSprite):
                               )
 
             if self.incrementalTimer3 % 50 == 0:
-                self.ability.fire(player.pos, projectiles, lasers, self.vertices[i], "enemy", 0.5, True, self.fire)
+                self.ability.fire(player.pos, projectiles, lasers, self.vertices[i], "enemy", 1, True, self.fire)
                 self.incrementalTimer3 = 0
 
             self.incrementalTimer3 += 1
