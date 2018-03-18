@@ -1,6 +1,6 @@
 from Classes.Utilities.Vector import Vector
 class Projectile:
-    def __init__(self,vel,pos,radius,timer,bounceState,damage,owner,scaleState,image="green"): #rof is Rate of Fire
+    def __init__(self,vel,pos,radius,timer,bounceState,damage,owner,scale,image="black"): #rof is Rate of Fire
         self.vel:Vector = vel
         self.pos:Vector = pos
         self.radius = radius
@@ -9,18 +9,18 @@ class Projectile:
         self.bounceState = bounceState #Whether an object bounces of the wall
         self.damage = damage #TODO use
         self.owner = owner #TODO use
-        self.scaleState = scaleState
+        self.scale = scale
 
     def draw(self,canvas,offset):
-        if self.image == "green":
+        if self.image == "black":
             canvas.draw_circle((self.pos+offset).getP(),self.radius,0.001,self.image,self.image)
         else:
             rotation = self.vel.getNormalized().angleToX()
-            if self.scaleState:
+            if self.scale != 0:
                 canvas.draw_image(self.image, (self.image.get_width()/2,
                                          self.image.get_height()/2),
                               (self.image.get_width(), self.image.get_height()), ((self.pos + offset).getP()),
-                              (self.image.get_width()*4, self.image.get_height()*4), rotation
+                              (self.image.get_width()*self.scale, self.image.get_height()*self.scale), rotation
                               )
             else:
                 canvas.draw_image(self.image, (self.image.get_width() / 2,

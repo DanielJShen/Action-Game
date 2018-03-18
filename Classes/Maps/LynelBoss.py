@@ -23,7 +23,7 @@ class LynelMap:
         self.defeated = False
 
         self.zoom = 3
-        self.mapSize = Vector(width*self.zoom,height*self.zoom)
+        self.mapSize = Vector(4800,2700)
         self.startPos = Vector(400, 1100)
 
         #Load Images
@@ -51,7 +51,7 @@ class LynelMap:
         # Walls
         wallWidth = 50
         lineHalfWidth = 8
-        wallPoints1 = [(267, 939), (540, 939), (540, 941), (540, 1103), (548, 1111), (2245, 1111),(2246,219),(4349,219),(4349,2233),(2245,2233),(2245,1244),(540,1228),(540,1378),(268,1378),(267,939)]
+        wallPoints1 = [(267, 939), (540, 941), (540, 1111), (2245, 1111),(2246,219),(4349,219),(4349,2233),(2245,2233),(2245,1244),(540,1228),(540,1378),(268,1378),(267,939)]
         wallPoints = [wallPoints1]
         for wallPoint in wallPoints:
             for i in range(wallPoint.__len__() - 1):

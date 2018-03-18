@@ -18,7 +18,7 @@ class ManMap:
         self.pickups = []
         self.hearts = []
         self.zoom = 3
-        self.mapSize = Vector(width*self.zoom,height*self.zoom)
+        self.mapSize = Vector(4800,2700)
         self.startPos = Vector(300,450)
 
         #Load Images
