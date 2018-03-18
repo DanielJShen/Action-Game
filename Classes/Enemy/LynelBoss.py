@@ -115,7 +115,7 @@ class LynelBoss(LynelSprite):
                               )
 
             if self.incrementalTimer3 % 50 == 0:
-                self.ability.fire(player.pos, projectiles, lasers, self.vertices[i], "enemy", 1, True, self.fire)
+                self.ability.fire(player.pos, projectiles, lasers, self.vertices[i], "enemy", 1, 4, self.fire)
                 self.incrementalTimer3 = 0
 
             self.incrementalTimer3 += 1
