@@ -8,7 +8,7 @@ from Classes.Utilities.Vector import Vector
 class Shotgun():
     def __init__(self):
         self.sprite = object
-        self.radius = 7
+        self.radius = 4
         self.time = 0.9
         self.bounce = False
         self.baseDamage = 5
@@ -20,5 +20,5 @@ class Shotgun():
         vel:Vector = toPos.copy().subtract(fromPos).getNormalized()*self.speed
         vel.rotate(-10)
         for i in range(4):
-            projectiles.append( Projectile(vel.copy().rotate(5*i),fromPos.copy(),self.radius,self.time,self.bounce,self.baseDamage,owner,False) )
+            projectiles.append( Projectile(vel.copy().rotate(5*i),fromPos.copy(),self.radius,self.time,self.bounce,self.baseDamage,owner,0) )
 
