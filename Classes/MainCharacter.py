@@ -63,7 +63,7 @@ class Character:
 
             speed = self.speed
             if self.stamina <= 144 and not self.rest:
-                speed = self.speed*3
+                speed = self.speed*2.5
                 self.stamina += 0.5
                 self.staminaColor = "green"
             elif not self.rest:
