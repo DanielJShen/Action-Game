@@ -17,7 +17,7 @@ class ManMap:
         self.pickups = []
         self.hearts = []
         self.zoom = 3
-        self.mapSize = Vector(width*self.zoom,height*self.zoom)
+        self.mapSize = Vector(4800,2700)
         self.startPos = Vector(300,450)
 
         #Load Images
@@ -33,7 +33,7 @@ class ManMap:
         self.sprites.append( Sprite( self.mapSize/2,image_background, self.mapSize.getP()))
 
         #Teleporter
-        self.teleporter = Sprite(Vector(width*3, height*3) - Vector(300, 300), image_teleporter, [150, 150])
+        self.teleporter = Sprite(Vector(4800,2700) - Vector(300, 300), image_teleporter, [150, 150])
         self.sprites.append(self.teleporter)
 
         #Pickups
