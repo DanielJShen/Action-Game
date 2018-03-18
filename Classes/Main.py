@@ -22,8 +22,10 @@ import pygame
 
 class game():
 
-    def __init__(self,resolution):
-        global frame,pygame,simplegui
+    def __init__(self,resolution,drawWalls1):
+        global frame,pygame,simplegui,drawWalls
+
+        drawWalls = drawWalls1
 
         CANVAS_HEIGHT=resolution[1] #900
         CANVAS_WIDTH=resolution[0] #1600
@@ -124,7 +126,7 @@ class game():
                 enemy.losColour = 'rgba(255,255,0,0.6)'
 
     def draw(self,canvas):
-        global noHearts,interactions,health,previous,healthList,heart1,frame,keyboard,CANVAS_WIDTH,CANVAS_HEIGHT,healthOB,image_Bat,timer,pygame,frame,simplegui
+        global noHearts,interactions,health,previous,healthList,heart1,frame,keyboard,CANVAS_WIDTH,CANVAS_HEIGHT,healthOB,image_Bat,timer,pygame,frame,simplegui,drawWalls
 
         for pickup in pickups:
             if interactions.playerTouchPickup(pickup, pickups, character, inventory):
@@ -239,9 +241,10 @@ class game():
                 interactions.laserHitBoss(laser, lasers,boss)
             lasers.pop(lasers.index(laser))
 
-        for wall in walls:
-            #To see collision walls
-            wall.draw(canvas,offset)
+        if drawWalls:
+            for wall in walls:
+                #To see collision walls
+                wall.draw(canvas,offset)
         inventory.draw(canvas)
         inventory.update(keyboard, (character.pos+offset).getP(), mousePos)
 

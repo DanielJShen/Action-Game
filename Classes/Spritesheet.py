@@ -33,7 +33,7 @@ class Spritesheet:
             canvas.draw_image(self.img, (self.frameWidth * self.fr_idx[0] + self.frameCentreX,
                                          self.frameHeight * self.fr_idx[1] + self.frameCentreY),
                               (self.frameWidth, self.frameHeight),
-                              (self.pos+offset).getP(),
+                              (pos+offset).getP(),
                               (self.imgWidth * self.scale, self.imgHeight * self.scale))
         else:
             canvas.draw_image(self.img, (self.frameWidth * self.fr_idx[0] + self.frameCentreX,
