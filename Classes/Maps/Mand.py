@@ -15,7 +15,7 @@ class ManMap:
         self.walls = []
         self.enemies = []
         self.pickups = []
-
+        self.hearts = []
         self.zoom = 3
         self.mapSize = Vector(width*self.zoom,height*self.zoom)
         self.startPos = Vector(300,450)

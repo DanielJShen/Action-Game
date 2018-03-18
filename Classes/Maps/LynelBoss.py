@@ -19,7 +19,7 @@ class LynelMap:
         self.walls = []
         self.enemies = []
         self.pickups = []
-
+        self.hearts = []
         self.defeated = False
 
         self.zoom = 3

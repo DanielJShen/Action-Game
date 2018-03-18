@@ -6,11 +6,21 @@ from Classes.healthIMG import HealthIMG
 
 
 class Health(HealthIMG):
-    def __init__(self,first:HealthIMG,second:HealthIMG,third:HealthIMG):
-        self.hearts = [first,second,third]
-        self.heart1=self.heart2=self.heart3=self.heart4 = 1
-        self.heartList = [self.heart1,self.heart2,self.heart3,self.heart4]
-        self.last = 3
+    def __init__(self,healthList,noHearts):
+        self.hearts:list = healthList
+        self.heartList = []
+        for i in range(0,self.hearts.__len__()+1):
+            self.heart = 1
+            self.heartList.append(self.heart)
+        self.lastHeart = noHearts
+        self.last = noHearts
+        print(self.last , "test")
+
+
+    def updateHearts(self):
+        self.heart = 1
+        self.heartList.append(self.heart)
+        self.last += 1
 
     def damageTaken(self):
         if self.last > 0:

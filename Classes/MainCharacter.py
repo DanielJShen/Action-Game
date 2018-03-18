@@ -22,6 +22,7 @@ class Character:
         self.stamina = 0
         self.staminaColor = "green"
         self.rest = False
+        self.staminaReg = 0.5
 
         if size == 0:
             self.size = self.dim
@@ -55,7 +56,7 @@ class Character:
 
         if keyboard.shift:
             if self.rest and self.stamina > 0:
-                self.stamina -= 0.5
+                self.stamina -= self.staminaReg
                 self.staminaColor = "red"
             elif self.rest and self.stamina <= 0:
                 self.rest = False
@@ -68,17 +69,15 @@ class Character:
             elif not self.rest:
                 self.rest = True
                 speed = self.speed
-            print(self.stamina)
         else:
 
             if self.stamina > 0:
-                self.stamina -= 0.5
+                self.stamina -= self.staminaReg
             else:
                 self.staminaColor = "green"
                 self.rest = False
 
             speed = self.speed
-            print(self.stamina)
         if keyboard.right:
             self.vel.add(Vector(speed,0))
         if keyboard.left:
