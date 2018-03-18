@@ -11,6 +11,7 @@ from Classes.Maps.Map import Map
 from Classes.Maps.Mand import ManMap
 from Classes.Maps.Tutorial import Tutorial
 from Classes.View import View
+from Classes.Spritesheet import Spritesheet
 from Classes.Inventory import Inventory
 from Classes.healthIMG import HealthIMG
 from Classes.Health import Health
@@ -30,7 +31,7 @@ class game():
         mousePos = (0,0)
 
         #Defining Objects
-        character_image = simplegui._load_local_image('Resources/images/Deku_Link.png')
+        character_image = simplegui._load_local_image('Resources/images/player.png')
         heart1 = simplegui._load_local_image('Resources/images/Health.png')
         image_Bat = simplegui._load_local_image('Resources/images/hellBat.png')
 
@@ -41,7 +42,18 @@ class game():
         currentMap = 0
         map = [Tutorial(),ManMap(),LynelMap()]
         map[currentMap].start(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
-        character = Character(Vector(0,0), map[currentMap].startPos, character_image, 0, (64, 64))
+        
+        spritesheet = Spritesheet(character_image, 10, 8, 1/10)
+        spritesheet.addAnimation([0, 0], [2, 0])
+        spritesheet.addAnimation([0, 1], [2, 1])
+        spritesheet.addAnimation([0, 2], [0, 2])
+        spritesheet.addAnimation([0, 3], [2, 3])
+        spritesheet.addAnimation([0, 4], [7, 4])
+        spritesheet.addAnimation([0, 5], [7, 5])
+        spritesheet.addAnimation([0, 6], [7, 6])
+        spritesheet.addAnimation([0, 7], [7, 7])
+        
+        character = Character(Vector(0,0),map[currentMap].startPos,spritesheet,0,(64,64))
         offset = -map[currentMap].startPos + (Vector(CANVAS_WIDTH, CANVAS_HEIGHT) / 2)
         interactions = Interactions()
         inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
