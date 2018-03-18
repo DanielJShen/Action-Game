@@ -11,6 +11,7 @@ class Laser():
         self.time = 0.5
         self.bounce = True
         self.baseDamage = 1
+        self.speed = 0
         self.image = simplegui._load_local_image("Resources/images/Laser.png")
 
 

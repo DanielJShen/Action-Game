@@ -10,6 +10,7 @@ from Classes.Utilities.Vector import Vector
 from Classes.Enemy.FireEnemy import FireEnemy
 from Classes.Enemy.Bat import Bat
 from Classes.Pickup import Pickup
+from Classes.Objects.heart import heart
 
 class Tutorial:
     def start(self,frame,width,height):
@@ -20,7 +21,7 @@ class Tutorial:
         self.walls = []
         self.enemies = []
         self.pickups = []
-
+        self.hearts = []
         self.zoom = 3
         self.mapSize = Vector(width*self.zoom,height*self.zoom)
         self.startPos = Vector(width/2-1200,height/2)
@@ -34,7 +35,11 @@ class Tutorial:
         image_Bat = simplegui._load_local_image('Resources/images/bat.png')
         image_FireEnemy = simplegui._load_local_image('Resources/images/FireEnemy.png')
         image_laser = simplegui._load_local_image("Resources/images/Laser.png")
+        image_speed = simplegui._load_local_image("Resources/images/speed.png")
+        image_damage = simplegui._load_local_image("Resources/images/damage.png")
+        image_stamina = simplegui._load_local_image("Resources/images/stamina.png")
         image_shotgun = simplegui._load_local_image("Resources/images/Shotgun.png")
+        hearts = simplegui._load_local_image("Resources/images/heartsprite.png")
 
         #Background
         frame.set_canvas_background("#c5ccd8")
@@ -43,6 +48,13 @@ class Tutorial:
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(-1200,-200),image_shotgun,1,1,"Ability","Shotgun"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(-1200,200),image_shotgun,1,1,"Ability","Shotgun"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(500,0),image_laser,1,1,"Ability","Laser"))
+        self.pickups.append(Pickup(Vector(400,400), image_speed, 1, 1, "powerup", "speed"))
+        self.pickups.append(Pickup(Vector(400, 600), image_damage, 1, 1, "powerup", "damage"))
+        self.pickups.append(Pickup(Vector(400, 700), image_stamina, 1, 1, "powerup", "stamina"))
+        self.pickups.append(Pickup(Vector(500, 700), image_stamina, 1, 1, "powerup", "stamina"))
+        self.pickups.append(Pickup(Vector(600, 700), image_stamina, 1, 1, "powerup", "stamina"))
+        self.pickups.append(Pickup(Vector(300, 500), hearts, 4, 1, "powerup", "heart"))
+        self.pickups.append(Pickup(Vector(500, 500), hearts, 4, 1, "powerup", "heart"))
 
         #Enemies
         self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(400,0), "Red", "Sniper", image_FireEnemy,[0,0],270))

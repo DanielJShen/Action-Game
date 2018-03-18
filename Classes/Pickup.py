@@ -10,10 +10,8 @@ class Pickup:
     def __init__(self,pos,img,colunms,rows,type,value):
         self.spritesheet = Spritesheet(img,colunms,rows,0)
         self.pos = pos
-
         self.width, self.height = 50,50
         self.radius = max(self.width,self.height)/2
-
         self.type = type
         self.value = value
 

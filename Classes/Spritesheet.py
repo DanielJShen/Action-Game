@@ -11,7 +11,7 @@ class Spritesheet:
         self.columns = columns
         self.rows = rows
         self.endOffset = endOffset
-
+        self.incrementalTimer = 0
         self.pos = Vector(0,0)
         self.frameWidth = self.img.get_width()/self.columns
         self.frameHeight = self.img.get_height()/self.rows
@@ -29,9 +29,12 @@ class Spritesheet:
                                     (self.pos+offset).getP(),
                                     (self.imgWidth, self.imgHeight))
     def update(self):
-        self.fr_idx[0] = (self.fr_idx[0] + 1) % self.columns
-        if self.fr_idx[0] == 0:
-            self.fr_idx[1] = (self.fr_idx[1] + 1) % self.rows
-        if self.fr_idx[1] == self.rows-1 and self.fr_idx[0] >= self.columns-(self.endOffset-1):
-            self.fr_idx[0] = 0
-            self.fr_idx[1] = 0
+        if self.incrementalTimer % 12 == 0:
+            self.fr_idx[0] = (self.fr_idx[0] + 1) % self.columns
+            if self.fr_idx[0] == 0:
+                self.fr_idx[1] = (self.fr_idx[1] + 1) % self.rows
+            if self.fr_idx[1] == self.rows-1 and self.fr_idx[0] >= self.columns-(self.endOffset-1):
+                self.fr_idx[0] = 0
+                self.fr_idx[1] = 0
+            self.incrementalTimer = 0
+        self.incrementalTimer += 1

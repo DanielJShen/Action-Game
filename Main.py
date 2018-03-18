@@ -44,12 +44,21 @@ teleporter = map[currentMap].teleporter
 walls = map[currentMap].walls
 enemies = map[currentMap].enemies
 pickups = map[currentMap].pickups
+hearts = map[currentMap].hearts
 boss = None
-heart1OB = HealthIMG(Vector(50,50),heart1)
-heart2OB = HealthIMG(Vector(100,50),heart1)
-heart3OB = HealthIMG(Vector(150,50),heart1)
-healthOB = [heart1OB,heart2OB,heart3OB]
-health = Health(heart1OB,heart2OB,heart3OB)
+defaultHearts = 3
+noHearts = defaultHearts
+previous = 50
+healthList = []
+for i in range(0,noHearts):
+    healthList.append(HealthIMG(Vector(previous,50),heart1))
+    previous += 50
+
+healthOB = []
+for i in range(0,noHearts):
+    healthOB.append(healthList[i])
+
+health = Health(healthOB,noHearts)
 trident = simplegui._load_local_image('Resources/images/Trident.png')
 incrementalTimer = 0
 batTimer = 0
@@ -82,7 +91,52 @@ def attack():
             enemy.losColour = 'rgba(255,255,0,0.6)'
 
 def draw(canvas):
+    global previous, noHearts,health,healthOB,healthList
+
+    for pickup in pickups:
+        if interactions.playerTouchPickup(pickup, pickups, character, inventory):
+            if health.heartList[health.last] > 1:
+                health.heartList[health.last] = 1
+                health.hearts[health.last - 1].frameIndex = [0, 0]
+            elif health.last < noHearts:
+                health.last += 1
+                health.heartList[health.last] = 1
+                health.hearts[health.last - 1].frameIndex = [0, 0]
+            else:
+                noHearts += 1
+                healthList.append(HealthIMG(Vector(previous, 50), heart1))
+                previous += 50
+                health.hearts.append(healthList[noHearts - 1])
+                health.heartList.append(1)
+                health.last += 1
+
+    for pickup in pickups:
+        pickup.draw(canvas, offset)
+
+    # for heart in hearts:
+    #     if interactions.playerPickupsHeart(noHearts, heart, hearts, character):
+    #         if health.heartList[health.last] > 1:
+    #             health.heartList[health.last] = 1
+    #             health.hearts[health.last - 1].frameIndex = [0, 0]
+    #         elif health.last < noHearts:
+    #             health.last += 1
+    #             health.heartList[health.last] = 1
+    #             health.hearts[health.last - 1].frameIndex = [0, 0]
+    #         else:
+    #             noHearts += 1
+    #             healthList.append(HealthIMG(Vector(previous, 50), heart1))
+    #             previous += 50
+    #             health.hearts.append(healthList[noHearts-1])
+    #             health.heartList.append(1)
+    #             health.last += 1
+    #
+    #     # health = Health(healthOB, noHearts)
+    #     heart.draw(canvas, offset)
+
     #Updating Mouse Position
+
+
+
     mousePos = (pygame.mouse.get_pos()[0]-frame._canvas_x_offset,pygame.mouse.get_pos()[1]-frame._canvas_y_offset)
     global incrementalTimer, cooldownAbility
 
@@ -106,14 +160,16 @@ def draw(canvas):
 
 
 
+
     #Interactions
     for wall in walls:
         interactions.playerHitWall(wall,character)
         for projectile in projectiles:
             interactions.bounceBallOffWall(projectile,wall,projectiles)
 
-    for pickup in pickups:
-        interactions.playerTouchPickup(pickup,pickups,character,inventory)
+
+
+
 
     interactions.playerTouchTeleporter(teleporter,character,nextMap)
 
@@ -133,8 +189,7 @@ def draw(canvas):
         elif not enemy.found:
             enemy.vel = Vector(0,0)
 
-    for pickup in pickups:
-        pickup.draw(canvas,offset)
+
 
     #Moving Screen
     View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
@@ -182,11 +237,11 @@ def draw(canvas):
             batTimer += 1
         boss.updateSprite(canvas, offset, character)
 
+
+
     #Draw HUD
-    i = healthOB.__len__()-1
-    while i >= 0:
+    for i in range(0,noHearts):
         healthOB[i].draw(canvas, offset)
-        i -= 1
 
     canvas.draw_line((20, 100), (175, 100), 30, "white")
     canvas.draw_line((25, 100), (170, 100), 25, "black")

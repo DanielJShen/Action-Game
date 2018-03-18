@@ -1,4 +1,7 @@
 from Classes.Utilities.Vector import Vector
+from Classes.PowerUps.SpeedPowerUp import SpeedPowerUp
+from Classes.PowerUps.DamagePowerUp import DamagePowerUp
+from Classes.PowerUps.StaminaPowerUp import StaminaPowerUp
 import pygame
 
 class Interactions:
@@ -91,8 +94,28 @@ class Interactions:
         if pickups.count(pickup) > 0:
             seperation:Vector = (pickup.pos-character.pos).length()
             if seperation <= pickup.radius +character.radius:
-                character.pickup(pickup,inventory)
+                if pickup.type == "powerup":
+                    if pickup.value == "speed":
+                        SpeedPowerUp().Apply(character,inventory)
+                    elif pickup.value == "damage":
+                        DamagePowerUp().Apply(character,inventory)
+                    elif pickup.value == "stamina":
+                        StaminaPowerUp().Apply(character)
+                    elif pickup.value == "heart":
+                        pickups.pop(pickups.index(pickup))
+                        return True
+                else:
+                    character.pickup(pickup,inventory)
                 pickups.pop(pickups.index(pickup))
+                return False
+
+    def playerPickupsHeart(self,noHeart, heart,hearts:list, character):
+        seperation: Vector = (heart.pos - character.pos).length()
+        if seperation <= heart.radius + character.radius:
+            hearts.pop(hearts.index(heart))
+            return True
+        return False
+        # print(noHeart)
 
     def playerTouchTeleporter(self,teleporter,player,nextMap):
         seperation = (teleporter.pos-player.pos).length()
