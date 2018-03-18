@@ -41,7 +41,7 @@ class Character:
     def draw(self,canvas,offset):
         canvas.draw_image(self.image, self.center, self.dim, (self.pos+offset).getP(), self.size, self.rotation)
 
-    def update(self,keyboard,zoom, mousePos, offset):
+    def update(self,keyboard,zoom, mousePos, offset,frame,timer):
         angle = math.atan2((self.pos + offset).getP()[0] - mousePos[0],
                            (self.pos + offset).getP()[1] - mousePos[1])
         for i in range(len(self.directions)):
@@ -53,6 +53,11 @@ class Character:
                     (i + 0.5 - len(self.directions)) / len(self.directions) * 2 * math.pi):
                 self.direction = self.directions[i]
 
+        if self.health <= 0:
+            frame.stop()
+            timer.stop()
+            import runpy
+            file_globals = runpy.run_path("Classes/PyGamesGameOver.py")
 
         if keyboard.shift:
             if self.rest and self.stamina > 0:

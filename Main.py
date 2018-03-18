@@ -1,5 +1,3 @@
-import runpy
-file_globals = runpy.run_path("Classes/PyGamesMenu.py") #Run menu before importing for seperate pygame's
 try:
     import simplegui
 except ImportError:
@@ -23,9 +21,11 @@ import pygame
 
 class game():
 
-    def __init__(self):
-        CANVAS_HEIGHT=900
-        CANVAS_WIDTH=1600
+    def __init__(self,resolution):
+        global frame,pygame,simplegui
+
+        CANVAS_HEIGHT=resolution[1] #900
+        CANVAS_WIDTH=resolution[0] #1600
         offset = Vector(0,0)
         mousePos = (0,0)
 
@@ -34,7 +34,9 @@ class game():
         heart1 = simplegui._load_local_image('Resources/images/Health.png')
         image_Bat = simplegui._load_local_image('Resources/images/hellBat.png')
 
-        frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
+        if not globals().__contains__("frame"):
+            frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
+
         keyboard = Keyboard()
         currentMap = 0
         map = [Tutorial(),ManMap(),LynelMap()]
@@ -70,17 +72,19 @@ class game():
         cooldownAbility = 0
         detect = False
 
-        globals().update(locals())
-
         # Assign callbacks to event handlers
         frame.set_mouseclick_handler(self.click)
         frame.set_keydown_handler(self.keyDown)
         frame.set_keyup_handler(self.keyUp)
         frame.set_draw_handler(self.draw)
         timer = simplegui.create_timer(300, self.attack)
+
+        globals().update(locals())
+
         timer.start()
         # Start the frame animation
-        frame.start()
+        while True:
+            frame.start()
 
 
     # Handler to draw on canvas
@@ -108,7 +112,7 @@ class game():
                 enemy.losColour = 'rgba(255,255,0,0.6)'
 
     def draw(self,canvas):
-        global noHearts,interactions,health,previous,healthList,heart1,frame,keyboard,CANVAS_WIDTH,CANVAS_HEIGHT,healthOB,image_Bat
+        global noHearts,interactions,health,previous,healthList,heart1,frame,keyboard,CANVAS_WIDTH,CANVAS_HEIGHT,healthOB,image_Bat,timer,pygame,frame,simplegui
 
         for pickup in pickups:
             if interactions.playerTouchPickup(pickup, pickups, character, inventory):
@@ -176,8 +180,6 @@ class game():
             i += 1
 
 
-
-
         #Interactions
         for wall in walls:
             interactions.playerHitWall(wall,character)
@@ -185,15 +187,12 @@ class game():
                 interactions.bounceBallOffWall(projectile,wall,projectiles)
 
 
-
-
-
         interactions.playerTouchTeleporter(teleporter,character,self.nextMap)
 
         #Drawing and Updates
         map[currentMap].draw(canvas, offset, character, inventory)
         character.draw(canvas,offset)
-        character.update(keyboard, map[currentMap].zoom, mousePos, offset)
+        character.update(keyboard, map[currentMap].zoom, mousePos, offset,frame,timer)
 
         canvas.draw_circle(mousePos,10,1,"darkblue","darkblue")
         for enemy in enemies:
@@ -295,6 +294,3 @@ class game():
             if currentMap == 2:
                 boss = map[2].Boss
             character.pos = map[currentMap].startPos
-
-
-game()
