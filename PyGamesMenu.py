@@ -45,8 +45,8 @@ def call_game():
     menu=False
 
 def change_walls():
-    global wallsVisible
-    wallsVisible = not wallsVisible
+    global drawWalls
+    drawWalls = not drawWalls
 
 def change_resolution():
     global resolution
@@ -61,8 +61,8 @@ def change_resolution():
 pygame.init()
 
 menu = True
-global wallsVisible,resolution
-wallsVisible = False
+global drawWalls,resolution
+drawWalls = False
 resolution = (1600,900)
 screen = pygame.display.set_mode((900, 900))
 display = pygame.display.get_surface()
@@ -95,6 +95,7 @@ while menu==True:
 
     font = pygame.font.Font(None, 40)
     screen.blit(font.render(resolution.__str__(), True, (100, 100, 100)), (600, 285))
+    screen.blit(font.render(drawWalls.__str__(), True, (100, 100, 100)), (600, 345))
 
     for option in menu_options:
         if option.rect.collidepoint(pygame.mouse.get_pos()):
@@ -110,6 +111,6 @@ while menu==True:
 pygame.quit()
 del pygame
 
-from Main import game
+from Classes.Main import game
 
-game(resolution)
+game(resolution,drawWalls)
