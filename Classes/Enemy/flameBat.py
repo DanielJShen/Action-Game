@@ -8,7 +8,7 @@ class flameBat(EnemySuper):
         self.defineVariables(pos,color,type,image)
         self.soundRange = 100
         self.stealthRange = 150
-        self.speed = 2.5
+        self.speed = 2
         self.health = 50
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, image,170,20,5,1,FrameIndex,100,100,0)

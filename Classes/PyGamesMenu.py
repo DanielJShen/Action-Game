@@ -41,8 +41,8 @@ class Menu:
         return(self.text)
 
 def call_game():
-    print("Play game")
-    #call the main game method from this function
+    global menu
+    menu=False
 
 def change_sound():
     print("change sound")
@@ -53,16 +53,17 @@ def change_resolution():
 
 pygame.init()
 
+menu = True
 screen = pygame.display.set_mode((900, 900))
 display = pygame.display.get_surface()
-background_image = pygame.image.load("bg.bmp").convert()
+background_image = pygame.image.load("Resources/images/bg.bmp").convert()
 menu_font = pygame.font.Font(None, 40)
 menu_options = [Menu("PLAY GAME", (345, 225)), Menu("RESOLUTION", (345, 285)),Menu("SOUND",(345,345)),Menu("QUIT", (345, 405))]
 font = pygame.font.Font(None, 70)
 text = font.render("ACTION GAME", True, (0,0,0))
 
 
-while True:
+while menu==True:
 
     screen.fill((0,0,0))
     
@@ -71,6 +72,7 @@ while True:
             if event.type == pygame.MOUSEBUTTONUP and mo.rect.collidepoint(pygame.mouse.get_pos()):
                 if mo.get() == "PLAY GAME":
                     call_game()
+                    print(menu)
                 elif mo.get() == "RESOLUTION":
                     change_resolution()
                 elif mo.get() == "SOUND":
@@ -91,3 +93,7 @@ while True:
         option.draw()
 
     pygame.display.update()
+
+
+pygame.quit()
+del pygame

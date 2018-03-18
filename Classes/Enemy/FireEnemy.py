@@ -8,7 +8,7 @@ class FireEnemy(EnemySuper):
         self.defineVariables(pos,color,type,FireEnemy)
 
         #Specific to this enemy
-        self.speed = 1.5
+        self.speed = 0.7
         self.health = 100
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, FireEnemy, 530, 172, 9, 4, FrameIndex, 150, 150, 0)
