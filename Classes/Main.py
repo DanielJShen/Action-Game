@@ -19,9 +19,6 @@ from Classes.Abilities.Laser import Laser
 from Classes.Abilities.Shotgun import Shotgun
 from Classes.Enemy.flameBat import flameBat
 from Classes.Maps.LynelBoss import LynelMap
-from Classes.PowerUps.SpeedPowerUp import SpeedPowerUp
-from Classes.PowerUps.DamagePowerUp import DamagePowerUp
-from Classes.PowerUps.StaminaPowerUp import StaminaPowerUp
 
 import pygame
 heart1 = simplegui._load_local_image('Resources/images/Health.png')
@@ -256,6 +253,7 @@ class game():
                     boss.drawFire(canvas, offset, character, projectiles, lasers)
                 batTimer += 1
             boss.updateSprite(canvas, offset, character)
+
 
         #Draw HUD
         fps.draw_fct(canvas)

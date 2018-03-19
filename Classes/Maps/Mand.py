@@ -50,8 +50,7 @@ class ManMap:
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1450, 0), image_speed, 1, 1, "powerup", "speed"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, -300), image_damage, 1, 1, "powerup", "damage"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, -150), image_speed, 1, 1, "powerup", "speed"))
-        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), image_damage, 1, 1, "powerup", "damage"))
-        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), hearts, 1, 1, "powerup", "heart"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), hearts, 4, 1, "powerup", "heart",True))
 
 
         #Pathway2
@@ -60,7 +59,7 @@ class ManMap:
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1200, 1150), image_damage, 1, 1, "powerup", "heart"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1250, 1150), image_speed, 1, 1, "powerup", "speed"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1300, 1150), image_damage, 1, 1, "powerup", "damage"))
-        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1350, 1150), image_damage, 1, 1, "powerup", "heart"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1350, 1150), hearts, 1, 1, "powerup", "heart",True))
 
     #Enemies
         #Beginning
