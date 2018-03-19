@@ -27,7 +27,7 @@ class LynelBoss(LynelSprite):
         self.inBoundary = False
         self.positions = []
         self.enemies = []
-        self.health = 2000
+        self.health = 1000
         self.radius = 100
         self.spawn = False
         self.boss = LynelSprite(self.pos, baseimage, 175, 300, 3, 6, [0, 2],image, 608, 130, 8, 2, [1, 1], fadedBase, 175, 300, 3, 6, [0, 2],death, 270, 50, 6, 1, [0, 0],0)
