@@ -74,7 +74,7 @@ class Character:
                 self.last -= 1
 
     def fire(self,pos:Vector,projectiles:list,lasers:list):
-        self.activeAbility.fire(pos,projectiles,lasers,self.pos,"player",1)
+        self.activeAbility.fire(pos,projectiles,lasers,self.pos,"player")
 
     def pickup(self,pickup,inventory):
         if pickup.type == "Ability":
