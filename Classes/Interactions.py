@@ -38,10 +38,21 @@ class Interactions:
         if max(player.size[0],player.size[1])/1.8 + wall.halfThickness >= wall.distanceTo(player):
             if wall.playerInBounds(player):
                 direction:Vector = player.vel.getProj(wall.line.getNormal()).getNormalized().negate()
-                distance = ((player.radius + wall.halfThickness + 1) - wall.distanceTo(player))
+                distance = max(((player.radius + wall.halfThickness + 1) - wall.distanceTo(player)),0)
 
                 player.vel:Vector = player.vel.getProj(wall.line.getNormalized())
                 player.pos.add(direction*distance)
+        if max(player.size[0],player.size[1])/1.8 + wall.halfThickness >= (player.pos-wall.pos1).length():
+            direction = (player.pos-wall.pos1).getNormalized()
+            distance = max((player.radius+wall.halfThickness+1) - (player.pos-wall.pos1).length() , 0)
+            player.vel = player.vel.getProj(direction.getNormal())
+            player.pos.add(direction*distance)
+        elif max(player.size[0],player.size[1])/1.8 + wall.halfThickness >= (player.pos-wall.pos2).length():
+            direction = (player.pos-wall.pos1).getNormalized()
+            distance = max((player.radius+wall.halfThickness+1) - (player.pos-wall.pos2).length() , 0)
+            player.vel = player.vel.getProj(direction.getNormal())
+            player.pos.add(direction*distance)
+
 
     def ballHitEnemy(self,projectile,projectiles,enemy,enemylist):
         if  not projectiles.count(projectile) > 0: return

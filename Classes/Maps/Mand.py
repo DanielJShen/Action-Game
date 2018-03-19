@@ -28,6 +28,11 @@ class ManMap:
         image_laser = simplegui._load_local_image("Resources/images/Laser.png")
         image_teleporter = simplegui._load_local_image('Resources/images/blue_power_up.png')
         image_CannonMob = simplegui._load_local_image('Resources/images/CannonMob.png')
+        image_speed = simplegui._load_local_image("Resources/images/speed.png")
+        image_damage = simplegui._load_local_image("Resources/images/damage.png")
+        image_stamina = simplegui._load_local_image("Resources/images/stamina.png")
+        image_shotgun = simplegui._load_local_image("Resources/images/Shotgun.png")
+        hearts = simplegui._load_local_image("Resources/images/heartsprite.png")
 
         #Background
         frame.set_canvas_background("#0170FE")
@@ -38,24 +43,43 @@ class ManMap:
         self.sprites.append(self.teleporter)
 
         #Pickups
-        self.pickups.append(Pickup(Vector(300,300),image_laser,1,1,"Ability","Laser"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(-50,500),image_laser,1,1,"Ability","Laser"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1450, -300), image_speed, 1, 1, "powerup", "speed"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1450, -150), image_damage, 1, 1, "powerup", "damage"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1450, 0), image_speed, 1, 1, "powerup", "speed"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, -300), image_damage, 1, 1, "powerup", "damage"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, -150), image_speed, 1, 1, "powerup", "speed"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), image_damage, 1, 1, "powerup", "damage"))
 
-        #Enemies
+    #Enemies
+        #Beginning
         self.enemies.append(FireEnemy(Vector(640, 110), "Red", "Sniper", image_FireEnemy,[0,1],230))
+        self.enemies.append(CannonMob(Vector(width / 2, height / 2) + Vector(400, 10), "Blue", "Sniper", image_CannonMob, [0, 0],0))
+        #Side Area
+        self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(1600, -300), "Red", "Sniper", image_FireEnemy,[0,1],95))
+        self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(1600, -150), "Red", "Sniper", image_FireEnemy,[0,1],100))
+        self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(1600, 0), "Red", "Sniper", image_FireEnemy,[0,2],60))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(2600, -300), "Blue", "Malee", image_Bat,[0,3],250))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(2600, -150), "Blue", "Malee", image_Bat, [0, 3], 280))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(2600, 0), "Blue", "Malee", image_Bat, [0, 1], 275))
+        #Guarding Laser
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 375), "Blue", "Malee", image_Bat,[0,3],100))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 475), "Blue", "Malee", image_Bat, [0, 3], 80))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 575), "Blue", "Malee", image_Bat, [0, 1], 90))
+        #Pathwaysprites
         self.enemies.append(FireEnemy(Vector(2620, 1910), "Red", "Sniper", image_FireEnemy,[0,1],270))
-        self.enemies.append(FireEnemy(Vector(900, 1600), "Red", "Sniper", image_FireEnemy,[0,2]))
+        self.enemies.append(FireEnemy(Vector(width / 2, height / 2)+Vector(10, 700), "Red", "Sniper", image_FireEnemy,[0,2],270))
         self.enemies.append(Bat(Vector(1200, 950), "Blue", "Malee", image_Bat,[0,3],160))
         self.enemies.append(Bat(Vector(4040, 1080), "Blue", "Malee", image_Bat, [0, 3], 160))
         self.enemies.append(Bat(Vector(3900, 1480), "Blue", "Malee", image_Bat, [0, 1], 260))
-        self.enemies.append(
-            CannonMob(Vector(width / 2, height / 2) + Vector(1100, -150), "Blue", "Sniper", image_CannonMob, [0, 0],
-                      270))
+
+
 
         #Walls
         wallWidth = 50
         lineHalfWidth = 8
         wallPoints1 = [(90, 70), (4740, 70), (4740, 2630), (90, 2630), (90, 70)]
-        wallPoints2 = [(165, 680), (580, 670), (570, 290), (1120, 320), (1130, 710), (4170, 725)]
+        wallPoints2 = [(90, 670), (570, 670), (570, 290), (650, 290), (650, 320), (1130, 320), (1130, 725), (4170, 725)]
         wallPoints3 = [(1638, 154), (1638, 379), (1855, 379), (1855, 154),(1638, 154)]
         wallPoints4 = [(2169, 72), (2169, 537), (2809, 537)]
         wallPoints5 = [(3039, 518), (3770, 518), (3770, 71)]

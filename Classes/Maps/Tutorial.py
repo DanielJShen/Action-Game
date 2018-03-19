@@ -57,8 +57,8 @@ class Tutorial:
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(600, 200), image_stamina, 1, 1, "powerup", "stamina"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(650, 200), image_stamina, 1, 1, "powerup", "stamina"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(700, 200), image_stamina, 1, 1, "powerup", "stamina"))
-        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(-250, 200), hearts, 4, 1, "powerup", "heart"))
-        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(-250, -250), hearts, 4, 1, "powerup", "heart"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(-250, 200), hearts, 4, 1, "powerup", "heart",True))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(-250, -250), hearts, 4, 1, "powerup", "heart",True))
 
         #Enemies
         self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(400,0), "Red", "Sniper", image_FireEnemy,[0,0],270))

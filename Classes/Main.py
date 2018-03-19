@@ -3,6 +3,7 @@ try:
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 
+import SimpleGUICS2Pygame.simplegui_lib_fps
 from Classes.Interactions import Interactions
 from Classes.Utilities.Vector import Vector
 from Classes.MainCharacter import Character
@@ -24,7 +25,7 @@ heart1 = simplegui._load_local_image('Resources/images/Health.png')
 class game():
 
     def __init__(self,resolution,drawWalls1):
-        global frame,pygame,simplegui,drawWalls
+        global frame,pygame,simplegui,drawWalls,fps,pickups
 
         drawWalls = drawWalls1
 
@@ -58,7 +59,6 @@ class game():
 
         global noHearts
 
-
         # health = Health(healthOB, noHearts)
 
         character = Character(Vector(0,0),map[currentMap].startPos,spritesheet,0,(64,64))
@@ -82,6 +82,9 @@ class game():
         cooldownAbility = 0
         detect = False
 
+        fps = SimpleGUICS2Pygame.simplegui_lib_fps.FPS(x=CANVAS_WIDTH-50, y=10, font_color='Red', font_size=40)
+        fps.start()
+
         # Assign callbacks to event handlers
         frame.set_mouseclick_handler(self.click)
         frame.set_keydown_handler(self.keyDown)
@@ -93,8 +96,7 @@ class game():
 
         timer.start()
         # Start the frame animation
-        while True:
-            frame.start()
+        frame.start()
 
 
     # Handler to draw on canvas
@@ -119,30 +121,10 @@ class game():
                 elif enemy.type == "Malee":
                     enemy.attack(character)
             if not enemy.found:
-                enemy.losColour = 'rgba(255,255,0,0.6)'
+                enemy.losColour = 'rgb(255,255,0)'
 
     def draw(self,canvas):
-        global noHearts,interactions,health,previous,healthList,heart1,frame,keyboard,CANVAS_WIDTH,CANVAS_HEIGHT,healthOB,image_Bat,timer,pygame,frame,simplegui,drawWalls
-
-        for pickup in pickups:
-            if interactions.playerTouchPickup(pickup, pickups, character, inventory):
-                if character.heartList[character.last] > 1:
-                    character.heartList[character.last] = 1
-                    character.hearts[character.last - 1].frameIndex = [0, 0]
-                elif character.last < character.noHearts:
-                    character.last += 1
-                    character.heartList[character.last] = 1
-                    character.hearts[character.last - 1].frameIndex = [0, 0]
-                else:
-                    character.noHearts += 1
-                    character.healthListInit.append(HealthIMG(Vector(character.previous, 50), heart1))
-                    character.previous += 50
-                    character.hearts.append(character.healthListInit[character.noHearts - 1])
-                    character.heartList.append(1)
-                    character.last += 1
-
-        for pickup in pickups:
-            pickup.draw(canvas, offset)
+        global noHearts,interactions,health,previous,healthList,heart1,frame,keyboard,CANVAS_WIDTH,CANVAS_HEIGHT,healthOB,image_Bat,timer,pygame,frame,simplegui,drawWalls,fps
 
         # for heart in hearts:
         #     if interactions.playerPickupsHeart(noHearts, heart, hearts, character):
@@ -216,6 +198,25 @@ class game():
                 enemy.vel = Vector(0,0)
 
 
+        for pickup in pickups:
+            if interactions.playerTouchPickup(pickup, pickups, character, inventory):
+                if character.heartList[character.last] > 1:
+                    character.heartList[character.last] = 1
+                    character.hearts[character.last - 1].frameIndex = [0, 0]
+                elif character.last < character.noHearts:
+                    character.last += 1
+                    character.heartList[character.last] = 1
+                    character.hearts[character.last - 1].frameIndex = [0, 0]
+                else:
+                    character.noHearts += 1
+                    character.healthListInit.append(HealthIMG(Vector(character.previous, 50), heart1))
+                    character.previous += 50
+                    character.hearts.append(character.healthListInit[character.noHearts - 1])
+                    character.heartList.append(1)
+                    character.last += 1
+
+        for pickup in pickups:
+            pickup.draw(canvas, offset)
 
         #Moving Screen
         View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
@@ -273,6 +274,7 @@ class game():
 
 
         #Draw HUD
+        fps.draw_fct(canvas)
         for i in range(0,character.noHearts):
             character.healthOB[i].draw(canvas, offset)
 
