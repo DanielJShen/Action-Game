@@ -15,7 +15,6 @@ class LynelBoss(LynelSprite):
         self.trident = False
         self.pos = pos
         self.vel = vel
-        self.health = 100
         self.detectedRadius = 500
         self.followRadius = 800
         self.speed = 60
