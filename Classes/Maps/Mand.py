@@ -55,6 +55,8 @@ class ManMap:
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 150), hearts, 4, 1, "powerup", "heart",True))
 
         #Pathway
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(-460,1300),image_shotgun,1,1,"Ability","Shotgun"))
+
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(115, -250), image_stamina, 1, 1, "powerup", "stamina"))
 
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(900, -155), image_stamina, 1, 1, "powerup", "stamina"))
