@@ -125,28 +125,7 @@ class game():
 
     def draw(self,canvas):
         global noHearts,interactions,health,previous,healthList,heart1,frame,keyboard,CANVAS_WIDTH,CANVAS_HEIGHT,healthOB,image_Bat,timer,pygame,frame,simplegui,drawWalls,fps
-
-        # for heart in hearts:
-        #     if interactions.playerPickupsHeart(noHearts, heart, hearts, character):
-        #         if health.heartList[health.last] > 1:
-        #             health.heartList[health.last] = 1
-        #             health.hearts[health.last - 1].frameIndex = [0, 0]
-        #         elif health.last < noHearts:
-        #             health.last += 1
-        #             health.heartList[health.last] = 1
-        #             health.hearts[health.last - 1].frameIndex = [0, 0]
-        #         else:
-        #             noHearts += 1
-        #             healthList.append(HealthIMG(Vector(previous, 50), heart1))
-        #             previous += 50
-        #             health.hearts.append(healthList[noHearts-1])
-        #             health.heartList.append(1)
-        #             health.last += 1
-        #
-        #     # health = Health(healthOB, noHearts)
-        #     heart.draw(canvas, offset)
-
-        #Updating Mouse Position
+     #Updating Mouse Position
 
 
 
@@ -248,7 +227,7 @@ class game():
 
         if currentMap == 2:
             global detect
-            if character.pos.x >= 2881:
+            if character.pos.x >= 2881 or boss.health != 1000:
                 detect = True
                 if map[2].trap:
                     map[2].wallPoints2.append((2244, 1112))
