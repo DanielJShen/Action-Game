@@ -42,7 +42,8 @@ class ManMap:
         self.teleporter = Sprite(Vector(274,2100), image_teleporter, [150, 150])
         self.sprites.append(self.teleporter)
 
-        #Pickups
+    #Pickups
+        #Side Area
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(-50,500),image_laser,1,1,"Ability","Laser"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1450, -300), image_speed, 1, 1, "powerup", "speed"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1450, -150), image_damage, 1, 1, "powerup", "damage"))
@@ -50,7 +51,16 @@ class ManMap:
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, -300), image_damage, 1, 1, "powerup", "damage"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, -150), image_speed, 1, 1, "powerup", "speed"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), image_damage, 1, 1, "powerup", "damage"))
-        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), image_damage, 1, 1, "powerup", "heart"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), hearts, 1, 1, "powerup", "heart"))
+
+
+        #Pathway2
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1100, 1150), image_speed, 1, 1, "powerup", "speed"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1150, 1150), image_damage, 1, 1, "powerup", "damage"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1200, 1150), image_damage, 1, 1, "powerup", "heart"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1250, 1150), image_speed, 1, 1, "powerup", "speed"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1300, 1150), image_damage, 1, 1, "powerup", "damage"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1350, 1150), image_damage, 1, 1, "powerup", "heart"))
 
     #Enemies
         #Beginning
@@ -68,10 +78,16 @@ class ManMap:
         self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 475), "Blue", "Malee", image_Bat, [0, 3], 80))
         self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 575), "Blue", "Malee", image_Bat, [0, 1], 90))
         #Pathwaysprites
-        self.enemies.append(FireEnemy(Vector(2620, 1910), "Red", "Sniper", image_FireEnemy,[0,1],270))
         self.enemies.append(FireEnemy(Vector(width / 2, height / 2)+Vector(-50, 750), "Red", "Sniper", image_FireEnemy,[0,2],120))
         self.enemies.append(Bat(Vector(4040, 1080), "Blue", "Malee", image_Bat, [0, 3], 160))
         self.enemies.append(Bat(Vector(3900, 1420), "Blue", "Malee", image_Bat, [0, 1], 260))
+        #Pathway2
+        self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(-200, 1150), "Red", "Sniper", image_FireEnemy,[0,1],270))
+        self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(100, 1150), "Red", "Sniper", image_FireEnemy,[0,2],250))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1000, 1150), "Blue", "Malee", image_Bat, [0, 3], 120))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1500, 1150), "Blue", "Malee", image_Bat, [0, 1], 200))
+        self.enemies.append(FireEnemy(Vector(2620, 1810), "Red", "Sniper", image_FireEnemy,[0,1],270))
+
 
 
 
