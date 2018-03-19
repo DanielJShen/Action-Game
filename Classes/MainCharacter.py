@@ -27,7 +27,7 @@ class Character:
         self.staminaStack = 0
 
         #GodMode for testing
-        self.god = True
+        self.god = False
 
         if size == 0:
             self.size = self.dim
