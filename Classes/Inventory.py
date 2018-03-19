@@ -51,7 +51,7 @@ class Inventory:
         if self.isOpen:
             self.abilityCount = self.availableAbilities.__len__()
             canvas.draw_circle((self.pos[0], self.pos[1]),
-                               self.radius, self.thickness, 'rgba(110,110,110,0.5)', )
+                               self.radius, self.thickness, 'rgb(110,110,110)', )
 
             for i in range(self.abilityCount):
                 if self.availableAbilities[i].__class__.__name__ == self.activeAbility.__class__.__name__:

@@ -18,7 +18,7 @@ class EnemySuper:
         self.direction = Vector()
         self.looking = False
         self.rotation = 5
-        self.losColour = 'rgba(255,255,0,0.6)'
+        self.losColour = 'rgb(255,255,0)'
         self.found = False
         self.type = type
         self.soundRange = 100
@@ -59,6 +59,7 @@ class EnemySuper:
         self.pos.add(self.vel/zoom)
 
     def drawLos(self, canvas, offset):
+        pass
         canvas.draw_polygon([((self.leftBoundary.pA.x + offset.x), (self.leftBoundary.pA.y + offset.y)),
                              ((self.leftBoundary.pB.x + offset.x), (self.leftBoundary.pB.y + offset.y)),
                              ((self.rightBoundary.pB.x + offset.x), (self.rightBoundary.pB.y + offset.y)), ], 0, "white",
@@ -78,7 +79,7 @@ class EnemySuper:
         distanceVector = self.pos.copy().subtract(enemy2.pos)
         if distanceVector.length() <= (self.radius+enemy2.radius):
             enemy2.vel.x = -enemy2.vel.x
-        elif distanceVector.length() < 520 and (enemy2.found or self.found):
+        elif distanceVector.length() < 350 and (enemy2.found or self.found):
             enemy2.found = True
             self.found = True
 
@@ -94,12 +95,12 @@ class EnemySuper:
         if self.length >= playerVector.length():
             if rightVision.angleToX() >= playerVector.angleToX() >= leftVision.angleToX() :
                 self.found = True
-                self.normalBoundary.color = 'rgba(255,0,0,1)'
+                self.normalBoundary.color = 'rgb(255,0,0)'
             elif (rightVision.angleToX() < math.pi/2 and leftVision.angleToX() > 3*math.pi/2):
                 if(rightVision.angleToX()+2*math.pi >= playerVector.angleToX() >= leftVision.angleToX() \
                     or rightVision.angleToX() >= playerVector.angleToX() >= leftVision.angleToX()-2*math.pi):
                     self.found = True
-                    self.normalBoundary.color = 'rgba(255,0,0,1)'
+                    self.normalBoundary.color = 'rgb(255,0,0)'
         elif self.length * 2 < playerVector.length() and self.entity != "flameBat":
             self.found = False
 
@@ -112,7 +113,7 @@ class EnemySuper:
             self.direction = Vector(0, 0)
 
     def follow(self, player):
-        self.losColour = 'rgba(255,0,0,0.2)'
+        self.losColour = 'rgb(255,0,0)'
         playertest:Vector = player.pos.copy().subtract(self.pos)
         self.direction = playertest
 
