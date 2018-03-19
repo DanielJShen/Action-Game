@@ -165,7 +165,7 @@ class game():
         character.draw(canvas,offset)
         character.update(keyboard, map[currentMap].zoom, mousePos, offset,frame,timer)
 
-        canvas.draw_circle(mousePos,10,1,"darkblue","darkblue")
+        canvas.draw_circle(mousePos,10,1,"black","black")
         for enemy in enemies:
             enemy.draw(canvas,offset)
             enemy.update(map[currentMap].zoom, character)
@@ -260,8 +260,6 @@ class game():
         canvas.draw_line((20, 100), (175, 100), 30, "white")
         canvas.draw_line((25, 100), (170, 100), 25, "black")
         canvas.draw_line((25, 100), (170-character.stamina, 100), 25, character.staminaColor)
-        # canvas.draw_text("Testing", [50,112], 48, "white")
-        # canvas.draw_text("Health: "+str(character.health), [50, 200], 48, "Red")
 
     def click(self,pos):
         print(Vector(pos[0],pos[1])-offset)
