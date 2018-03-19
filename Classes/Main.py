@@ -266,12 +266,12 @@ class game():
 
         canvas.draw_image(self.image_damage, (self.image_damage.get_width() / 2, self.image_damage.get_height() / 2), (self.image_damage.get_width(), self.image_damage.get_height()), (40, 150), (50, 50))
         if character.damageStack > 0:
-            canvas.draw_text(("x" + str(character.damageStack-2)), [50,160], 20, "white")
+            canvas.draw_text(("x" + str(character.damageStack)), [50,160], 20, "white")
 
         canvas.draw_image(self.image_speed, (self.image_speed.get_width() / 2, self.image_speed.get_height() / 2),
                           (self.image_speed.get_width(), self.image_speed.get_height()), (90, 150), (50, 50))
         if character.speedStack > 0:
-            canvas.draw_text(("x" + str(character.speedStack-2)), [100, 160], 20, "white")
+            canvas.draw_text(("x" + str(character.speedStack)), [100, 160], 20, "white")
 
         canvas.draw_image(self.image_stamina, (self.image_stamina.get_width() / 2, self.image_stamina.get_height() / 2),
                           (self.image_stamina.get_width(), self.image_stamina.get_height()), (140, 150), (50, 50))
