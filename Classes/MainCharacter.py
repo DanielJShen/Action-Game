@@ -22,6 +22,10 @@ class Character:
         self.rest = False
         self.staminaReg = 0.5
         self.running = False
+        self.damageStack = 0
+        self.speedStack = 0
+        self.staminaStack = 0
+
         #GodMode for testing
         self.god = True
 
@@ -72,7 +76,7 @@ class Character:
             print("DEAD")
 
     def fire(self,pos:Vector,projectiles:list,lasers:list):
-        self.activeAbility.fire(pos,projectiles,lasers,self.pos,"player")
+        self.activeAbility.fire(pos,projectiles,lasers,self.pos,"player",1)
 
     def pickup(self,pickup,inventory):
         if pickup.type == "Ability":

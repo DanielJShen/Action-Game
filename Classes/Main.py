@@ -19,6 +19,9 @@ from Classes.Abilities.Laser import Laser
 from Classes.Abilities.Shotgun import Shotgun
 from Classes.Enemy.flameBat import flameBat
 from Classes.Maps.LynelBoss import LynelMap
+from Classes.PowerUps.SpeedPowerUp import SpeedPowerUp
+from Classes.PowerUps.DamagePowerUp import DamagePowerUp
+from Classes.PowerUps.StaminaPowerUp import StaminaPowerUp
 
 import pygame
 heart1 = simplegui._load_local_image('Resources/images/Health.png')
@@ -36,7 +39,9 @@ class game():
 
         #Defining Objects
         character_image = simplegui._load_local_image('Resources/images/player.png')
-
+        self.image_speed = simplegui._load_local_image("Resources/images/speed.png")
+        self.image_damage = simplegui._load_local_image("Resources/images/damage.png")
+        self.image_stamina = simplegui._load_local_image("Resources/images/stamina.png")
         image_Bat = simplegui._load_local_image('Resources/images/hellBat.png')
 
         if not globals().__contains__("frame"):
@@ -178,7 +183,7 @@ class game():
 
 
         for pickup in pickups:
-            if interactions.playerTouchPickup(pickup, pickups, character, inventory):
+            if interactions.playerTouchPickup(pickup, pickups, character, inventory,canvas):
                 if character.heartList[character.last] > 1:
                     character.heartList[character.last] = 1
                     character.hearts[character.last - 1].frameIndex = [0, 0]
@@ -197,6 +202,9 @@ class game():
         for pickup in pickups:
             pickup.draw(canvas, offset)
 
+        inventory.draw(canvas)
+        inventory.update(keyboard, (character.pos + offset).getP(), mousePos)
+
         #Moving Screen
         View().moveScreen(offset,character.pos,CANVAS_WIDTH,CANVAS_HEIGHT)
         for proj in projectiles:
@@ -206,7 +214,7 @@ class game():
             for enemy in enemies:
                 interactions.ballHitEnemy(proj,projectiles,enemy,enemies)
             if currentMap == 2:
-                interactions.ballHitBoss(proj,projectiles,boss)
+                interactions.ballHitBoss(proj,projectiles,boss,inventory)
 
         for laser in lasers:
             if not lasers.count(laser) > 0: continue
@@ -221,8 +229,7 @@ class game():
             for wall in walls:
                 #To see collision walls
                 wall.draw(canvas,offset)
-        inventory.draw(canvas)
-        inventory.update(keyboard, (character.pos+offset).getP(), mousePos)
+
 
 
         if currentMap == 2:
@@ -250,8 +257,6 @@ class game():
                 batTimer += 1
             boss.updateSprite(canvas, offset, character)
 
-
-
         #Draw HUD
         fps.draw_fct(canvas)
         for i in range(0,character.noHearts):
@@ -260,8 +265,20 @@ class game():
         canvas.draw_line((20, 100), (175, 100), 30, "white")
         canvas.draw_line((25, 100), (170, 100), 25, "black")
         canvas.draw_line((25, 100), (170-character.stamina, 100), 25, character.staminaColor)
-        # canvas.draw_text("Testing", [50,112], 48, "white")
-        # canvas.draw_text("Health: "+str(character.health), [50, 200], 48, "Red")
+
+        canvas.draw_image(self.image_damage, (self.image_damage.get_width() / 2, self.image_damage.get_height() / 2), (self.image_damage.get_width(), self.image_damage.get_height()), (40, 150), (50, 50))
+        if character.damageStack > 0:
+            canvas.draw_text(("x" + str(character.damageStack-2)), [50,160], 20, "white")
+
+        canvas.draw_image(self.image_speed, (self.image_speed.get_width() / 2, self.image_speed.get_height() / 2),
+                          (self.image_speed.get_width(), self.image_speed.get_height()), (90, 150), (50, 50))
+        if character.speedStack > 0:
+            canvas.draw_text(("x" + str(character.speedStack-2)), [100, 160], 20, "white")
+
+        canvas.draw_image(self.image_stamina, (self.image_stamina.get_width() / 2, self.image_stamina.get_height() / 2),
+                          (self.image_stamina.get_width(), self.image_stamina.get_height()), (140, 150), (50, 50))
+        if character.staminaStack > 0:
+            canvas.draw_text(("x" + str(character.staminaStack)), [150, 160], 20, "white")
 
     def click(self,pos):
         print(Vector(pos[0],pos[1])-offset)
@@ -295,6 +312,8 @@ class game():
                 Laser().baseDamage = Laser().resetDamage
                 Shotgun().baseDamage = Shotgun().resetDamage
                 character.staminaReg = 0.5
+                character.stamina = 0
+                character.staminaStack=character.speedStack=character.damageStack= 0
             if currentMap == 2:
                 boss = map[2].Boss
             character.pos = map[currentMap].startPos
