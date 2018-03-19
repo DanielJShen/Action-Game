@@ -64,10 +64,10 @@ class Tutorial:
         self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(400,0), "Red", "Sniper", image_FireEnemy,[0,0],270))
         self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(300,250), "Red", "Sniper", image_FireEnemy,[0,1],300))
         self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(300,-250), "Red", "Sniper", image_FireEnemy,[0,2],240))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(-600,0), "Blue", "Malee", image_Bat,[0,3],270))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1100,0), "Blue", "Malee", image_Bat, [0, 3], 270))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1100,150), "Blue", "Malee", image_Bat, [0, 3], 270))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1100,-150), "Blue", "Malee", image_Bat, [0, 1], 270))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(-600,0), "Blue", "Melee", image_Bat,[0,3],270))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1100,0), "Blue", "Melee", image_Bat, [0, 3], 270))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1100,150), "Blue", "Melee", image_Bat, [0, 3], 270))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1100,-150), "Blue", "Melee", image_Bat, [0, 1], 270))
 
         #All sprites
         wallWidth = 100
