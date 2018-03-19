@@ -30,9 +30,6 @@ class Health(HealthIMG):
             elif self.heartList[self.last] == 4:
                 self.hearts[self.last-1].frameIndex = [4,0]
                 self.last -= 1
-        else:
-            print("DEAD")
-
 
 
 

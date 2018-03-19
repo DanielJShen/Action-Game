@@ -68,8 +68,6 @@ class Character:
             elif self.heartList[self.last] == 4:
                 self.hearts[self.last - 1].frameIndex = [4, 0]
                 self.last -= 1
-        else:
-            print("DEAD")
 
     def fire(self,pos:Vector,projectiles:list,lasers:list):
         self.activeAbility.fire(pos,projectiles,lasers,self.pos,"player")

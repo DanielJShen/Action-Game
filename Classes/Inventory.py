@@ -102,7 +102,6 @@ class Inventory:
             if availableAbility.__class__.__name__ == ability:
                 print("Ability enabled")
                 self.availableAbilities.append(eval(ability)())
-                print(self.availableAbilities)
                 return
 
     def usePowerUp(self, powerup):  # Remove it from inventory and add to game loop
