@@ -34,7 +34,7 @@ class ManMap:
         self.sprites.append( Sprite( self.mapSize/2,image_background, self.mapSize.getP()))
 
         #Teleporter
-        self.teleporter = Sprite(Vector(276,2102), image_teleporter, [150, 150])
+        self.teleporter = Sprite(Vector(274,2100), image_teleporter, [150, 150])
         self.sprites.append(self.teleporter)
 
         #Pickups

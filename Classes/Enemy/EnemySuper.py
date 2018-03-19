@@ -6,11 +6,11 @@ import math
 
 class EnemySuper:
 
-    def defineVariables(self,pos:Vector,color,type,image):
+    def defineVariables(self,pos:Vector,color,type,image,length=300):
         self.pos = pos
         self.vel = Vector()
         self.radius = 30
-        self.length = 300
+        self.length = length
         self.normalLine = Vector(0, -self.length)
         self.lineLeftGen = Vector(-self.radius * 2, -self.length)
         self.lineRightGen = Vector(+self.radius * 2, -self.length)

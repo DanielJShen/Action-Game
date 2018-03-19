@@ -18,9 +18,9 @@ class Bat(EnemySuper):
         self.lineRightGen.rotate(rotation)
         self.updateLOS()
 
-    def attack(self,player,health):
+    def attack(self,player):
         if (self.radius + player.radius) + 20 >= (self.pos-player.pos).length():
             self.direction = Vector(0, 0)
-            health.damageTaken()
+            player.damageTaken()
             self.vel.add(self.vel.getNormalized().negate()*55)
             player.health -= 10

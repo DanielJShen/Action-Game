@@ -60,7 +60,7 @@ class LynelBoss(LynelSprite):
 
 
     def fireTridents(self,player,projectiles,lasers,trident):
-        self.ability.fire(player.pos, projectiles, lasers, self.pos, "enemy",1.5,True,trident)
+        self.ability.fire(player.pos, projectiles, lasers, self.pos, "enemy",1.5,4,trident)
 
 
     def detectionArea(self,player:Character):
