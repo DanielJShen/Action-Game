@@ -40,6 +40,7 @@ class LynelBoss(LynelSprite):
         self.fire = simplegui._load_local_image('Resources/images/fireBall.png')
         self.fireEnabled = False
         self.death = False
+        self.damageResistence = 3
 
 
     def drawHealthBar(self,canvas,offset):
