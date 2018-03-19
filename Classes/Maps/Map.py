@@ -45,9 +45,9 @@ class Map:
         self.enemies.append(FireEnemy(Vector(3240, 1580), "Red", "Sniper", image_FireEnemy,[0,0],180))
         self.enemies.append(FireEnemy(Vector(2620, 1910), "Red", "Sniper", image_FireEnemy,[0,1],270))
         self.enemies.append(FireEnemy(Vector(1050, 1640), "Red", "Sniper", image_FireEnemy,[0,2],90))
-        self.enemies.append(Bat(Vector(1200, 950), "Blue", "Malee", image_Bat,[0,3],160))
-        self.enemies.append(Bat(Vector(4040, 1080), "Blue", "Malee", image_Bat, [0, 3], 160))
-        self.enemies.append(Bat(Vector(3900, 1480), "Blue", "Malee", image_Bat, [0, 1], 260))
+        self.enemies.append(Bat(Vector(1200, 950), "Blue", "Melee", image_Bat,[0,3],160))
+        self.enemies.append(Bat(Vector(4040, 1080), "Blue", "Melee", image_Bat, [0, 3], 160))
+        self.enemies.append(Bat(Vector(3900, 1480), "Blue", "Melee", image_Bat, [0, 1], 260))
 
         # #All sprites
         # wallWidth = 50
