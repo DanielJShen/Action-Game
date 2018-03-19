@@ -5,10 +5,10 @@ class Projectile:
         self.pos:Vector = pos
         self.radius = radius
         self.image = image
-        self.timer = round(timer*60) #TODO use
+        self.timer = round(timer*60)
         self.bounceState = bounceState #Whether an object bounces of the wall
-        self.damage = damage #TODO use
-        self.owner = owner #TODO use
+        self.damage = damage
+        self.owner = owner
         self.scale = scale
 
     def draw(self,canvas,offset):

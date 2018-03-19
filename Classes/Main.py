@@ -118,7 +118,7 @@ class game():
                 enemy.spriteUpdate(character, enemy)
                 if enemy.type == "Sniper":
                     enemy.fire(character.pos, projectiles,lasers)
-                elif enemy.type == "Malee":
+                elif enemy.type == "Melee":
                     enemy.attack(character)
             if not enemy.found:
                 enemy.losColour = 'rgb(255,255,0)'
@@ -243,7 +243,7 @@ class game():
                 boss.drawDetectionArea(canvas, offset)
                 boss.update()
                 if boss.spawn and batTimer % 100 == 0:
-                    enemies.append(flameBat(boss.pos + Vector(0, -80), "Blue", "Malee", image_Bat, [0, 0], 160))
+                    enemies.append(flameBat(boss.pos + Vector(0, -80), "Blue", "Melee", image_Bat, [0, 0], 160))
                     batTimer = 0
                 if boss.health < 700 and boss.health > 500 or boss.health < 200:
                     boss.drawFire(canvas, offset, character, projectiles, lasers)

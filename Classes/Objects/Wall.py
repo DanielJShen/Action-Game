@@ -43,12 +43,12 @@ class Wall:
         radius = math.sqrt(self.halfThickness ** 2 + self.halfThickness ** 2)
 
         if (radius + projectile.radius) >= seperation.length():
-            if seperation.angle(projectile.vel) < math.pi/2 or seperation.angle(projectile.vel) > math.pi*3/2: #TODO Test to see if this is actually working
+            if seperation.angle(projectile.vel) < math.pi/2 or seperation.angle(projectile.vel) > math.pi*3/2:
                 # Reflect
                 projectile.vel.reflect( seperation.getNormalized() )
 
         if (radius + projectile.radius) >= seperation2.length():
-            if seperation2.angle(projectile.vel) < math.pi/2 or seperation2.angle(projectile.vel) > math.pi*3/2: #TODO Test to see if this is actually working
+            if seperation2.angle(projectile.vel) < math.pi/2 or seperation2.angle(projectile.vel) > math.pi*3/2:
                 # Reflect
                 projectile.vel.reflect( seperation2.getNormalized() )
 
