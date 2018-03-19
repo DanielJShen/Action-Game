@@ -77,7 +77,7 @@ class ManMap:
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1200, 1150), hearts, 4, 1, "powerup", "heart",True))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1250, 1150), image_speed, 1, 1, "powerup", "speed"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1300, 1150), image_damage, 1, 1, "powerup", "damage"))
-        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1350, 1150), heartcontainers, 4, 1, "powerup", "heart",True))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1350, 1150), hearts, 4, 1, "powerup", "heart",True))
 
     #Enemies
         #Beginning
