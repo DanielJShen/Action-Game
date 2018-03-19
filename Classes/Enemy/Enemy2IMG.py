@@ -31,7 +31,12 @@ class Enemy2IMG:
 
     def updateDirection(self,player,enemy):
         if enemy.entity != "flameBat":
-            if (player.pos.x > enemy.pos.x) and (player.pos.y < enemy.pos.y):
+            if enemy.entity == "Cannon":
+                if (player.pos.x > enemy.pos.x):
+                    self.frameIndex[1] = 1
+                elif (player.pos.x < enemy.pos.x):
+                    self.frameIndex[1] = 0
+            elif (player.pos.x > enemy.pos.x) and (player.pos.y < enemy.pos.y):
                 self.frameIndex[1] = 2
             elif (player.pos.y > enemy.pos.y) and (player.pos.x < enemy.pos.x):
                 self.frameIndex[1] = 1
@@ -39,10 +44,6 @@ class Enemy2IMG:
                 self.frameIndex[1] = 2
             elif (player.pos.y > enemy.pos.y) and (player.pos.x > enemy.pos.x):
                 self.frameIndex[1] = 3
-
-    def updateDirectionFireEnemy(self, player, enemy):
-        pass
-
 
     def update(self,enemy):
         if enemy.entity == "flameBat":

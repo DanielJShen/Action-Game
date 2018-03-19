@@ -7,19 +7,20 @@ from Classes.Interactions import Interactions
 from Classes.Utilities.Vector import Vector
 from Classes.MainCharacter import Character
 from Classes.MainCharacter import Keyboard
-from Classes.Maps.Map import Map
 from Classes.Maps.Mand import ManMap
 from Classes.Maps.Tutorial import Tutorial
 from Classes.View import View
 from Classes.Spritesheet import Spritesheet
 from Classes.Inventory import Inventory
 from Classes.healthIMG import HealthIMG
-from Classes.Health import Health
+from Classes.Abilities.Cannon import Cannon
+from Classes.Abilities.Laser import Laser
+from Classes.Abilities.Shotgun import Shotgun
 from Classes.Enemy.flameBat import flameBat
 from Classes.Maps.LynelBoss import LynelMap
 
 import pygame
-
+heart1 = simplegui._load_local_image('Resources/images/Health.png')
 class game():
 
     def __init__(self,resolution,drawWalls1):
@@ -34,7 +35,7 @@ class game():
 
         #Defining Objects
         character_image = simplegui._load_local_image('Resources/images/player.png')
-        heart1 = simplegui._load_local_image('Resources/images/Health.png')
+
         image_Bat = simplegui._load_local_image('Resources/images/hellBat.png')
 
         if not globals().__contains__("frame"):
@@ -54,8 +55,15 @@ class game():
         spritesheet.addAnimation([0, 5], [7, 5])
         spritesheet.addAnimation([0, 6], [7, 6])
         spritesheet.addAnimation([0, 7], [7, 7])
-        
+
+        global noHearts
+
+
+        # health = Health(healthOB, noHearts)
+
         character = Character(Vector(0,0),map[currentMap].startPos,spritesheet,0,(64,64))
+        character.healthInit(HealthIMG,heart1)
+        character.healthStart(character.healthOB,3)
         offset = -map[currentMap].startPos + (Vector(CANVAS_WIDTH, CANVAS_HEIGHT) / 2)
         interactions = Interactions()
         inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
@@ -67,19 +75,7 @@ class game():
         pickups = map[currentMap].pickups
         hearts = map[currentMap].hearts
         boss = None
-        defaultHearts = 3
-        noHearts = defaultHearts
-        previous = 50
-        healthList = []
-        for i in range(0,noHearts):
-            healthList.append(HealthIMG(Vector(previous,50),heart1))
-            previous += 50
 
-        healthOB = []
-        for i in range(0,noHearts):
-            healthOB.append(healthList[i])
-
-        health = Health(healthOB,noHearts)
         trident = simplegui._load_local_image('Resources/images/Trident.png')
         incrementalTimer = 0
         batTimer = 0
@@ -121,7 +117,7 @@ class game():
                 if enemy.type == "Sniper":
                     enemy.fire(character.pos, projectiles,lasers)
                 elif enemy.type == "Malee":
-                    enemy.attack(character,health)
+                    enemy.attack(character)
             if not enemy.found:
                 enemy.losColour = 'rgba(255,255,0,0.6)'
 
@@ -130,20 +126,20 @@ class game():
 
         for pickup in pickups:
             if interactions.playerTouchPickup(pickup, pickups, character, inventory):
-                if health.heartList[health.last] > 1:
-                    health.heartList[health.last] = 1
-                    health.hearts[health.last - 1].frameIndex = [0, 0]
-                elif health.last < noHearts:
-                    health.last += 1
-                    health.heartList[health.last] = 1
-                    health.hearts[health.last - 1].frameIndex = [0, 0]
+                if character.heartList[character.last] > 1:
+                    character.heartList[character.last] = 1
+                    character.hearts[character.last - 1].frameIndex = [0, 0]
+                elif character.last < character.noHearts:
+                    character.last += 1
+                    character.heartList[character.last] = 1
+                    character.hearts[character.last - 1].frameIndex = [0, 0]
                 else:
-                    noHearts += 1
-                    healthList.append(HealthIMG(Vector(previous, 50), heart1))
-                    previous += 50
-                    health.hearts.append(healthList[noHearts - 1])
-                    health.heartList.append(1)
-                    health.last += 1
+                    character.noHearts += 1
+                    character.healthListInit.append(HealthIMG(Vector(character.previous, 50), heart1))
+                    character.previous += 50
+                    character.hearts.append(character.healthListInit[character.noHearts - 1])
+                    character.heartList.append(1)
+                    character.last += 1
 
         for pickup in pickups:
             pickup.draw(canvas, offset)
@@ -226,7 +222,7 @@ class game():
         for proj in projectiles:
             proj.draw(canvas,offset)
             proj.update(projectiles, map[currentMap].zoom)
-            Interactions().ballHitPlayer(proj,character,projectiles,health)
+            Interactions().ballHitPlayer(proj,character,projectiles)
             for enemy in enemies:
                 interactions.ballHitEnemy(proj,projectiles,enemy,enemies)
             if currentMap == 2:
@@ -253,6 +249,12 @@ class game():
             global detect
             if character.pos.x >= 2881:
                 detect = True
+                if map[2].trap:
+                    map[2].wallPoints2.append((2244, 1112))
+                    map[2].wallPoints2.append((2244, 1243))
+                    map[2].updateWalls()
+                    wall.draw(canvas, offset)
+                    map[2].trap = False
             if boss.health <= 0:
                 boss.death = True
             if not boss.death and detect:
@@ -271,8 +273,8 @@ class game():
 
 
         #Draw HUD
-        for i in range(0,noHearts):
-            healthOB[i].draw(canvas, offset)
+        for i in range(0,character.noHearts):
+            character.healthOB[i].draw(canvas, offset)
 
         canvas.draw_line((20, 100), (175, 100), 30, "white")
         canvas.draw_line((25, 100), (170, 100), 25, "black")
@@ -292,7 +294,7 @@ class game():
         keyboard.keyUp(key)
 
     def nextMap(self):
-        global currentMap,offset,projectiles,lasers,teleporter,walls,enemies,pickups,inventory,character,boss
+        global currentMap,offset,projectiles,lasers,teleporter,walls,enemies,pickups,inventory,character,boss,noHearts
         currentMap += 1
         if map.__len__() > currentMap:
             map[currentMap].start(frame,CANVAS_WIDTH,CANVAS_HEIGHT)
@@ -306,6 +308,12 @@ class game():
             pickups = map[currentMap].pickups
             if currentMap == 1:
                 inventory = Inventory(CANVAS_WIDTH, CANVAS_HEIGHT,character)
+                character.healthInit(HealthIMG, heart1)
+                character.healthStart(character.healthOB, 3)
+                Cannon().baseDamage = Cannon().resetDamage
+                Laser().baseDamage = Laser().resetDamage
+                Shotgun().baseDamage = Shotgun().resetDamage
+                character.staminaReg = 0.5
             if currentMap == 2:
                 boss = map[2].Boss
             character.pos = map[currentMap].startPos

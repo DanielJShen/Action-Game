@@ -22,6 +22,8 @@ class Character:
         self.rest = False
         self.staminaReg = 0.5
         self.running = False
+        #GodMode for testing
+        self.god = True
 
         if size == 0:
             self.size = self.dim
@@ -29,6 +31,45 @@ class Character:
             self.size = size
 
         self.radius = max(size[0]/2,size[1]/2)
+
+    def healthStart(self,healthList, noHearts):
+        self.noHearts = noHearts
+        self.hearts: list = healthList
+        self.heartList = []
+        for i in range(0, self.hearts.__len__() + 1):
+            self.heart = 1
+            self.heartList.append(self.heart)
+        self.lastHeart = noHearts
+        self.last = noHearts
+
+    def healthInit(self,HealthIMG,heart1):
+        noHearts = 3
+        self.previous = 50
+        self.healthListInit = []
+        for i in range(0,noHearts):
+            self.healthListInit.append(HealthIMG(Vector(self.previous, 50), heart1))
+            self.previous += 50
+
+        self.healthOB = []
+        for i in range(0, noHearts):
+            self.healthOB.append(self.healthListInit[i])
+
+    def damageTaken(self):
+        if self.last > 0:
+            if self.heartList[self.last] == 1:
+                self.heartList[self.last] = 2
+                self.hearts[self.last - 1].frameIndex = [1, 0]
+            elif self.heartList[self.last] == 2:
+                self.heartList[self.last] = 3
+                self.hearts[self.last - 1].frameIndex = [2, 0]
+            elif self.heartList[self.last] == 3:
+                self.heartList[self.last] = 4
+                self.hearts[self.last - 1].frameIndex = [3, 0]
+            elif self.heartList[self.last] == 4:
+                self.hearts[self.last - 1].frameIndex = [4, 0]
+                self.last -= 1
+        else:
+            print("DEAD")
 
     def fire(self,pos:Vector,projectiles:list,lasers:list):
         self.activeAbility.fire(pos,projectiles,lasers,self.pos,"player")
@@ -54,7 +95,7 @@ class Character:
                     (i + 0.5 - len(self.directions)) / len(self.directions) * 2 * math.pi):
                 self.direction = self.directions[i]
 
-        if self.health <= 0:
+        if self.last == 0 and not self.god:
             frame.stop()
             timer.stop()
             import runpy

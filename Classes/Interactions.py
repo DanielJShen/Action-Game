@@ -22,13 +22,13 @@ class Interactions:
             except ValueError:
                 print("Projectile missing error")
 
-    def ballHitPlayer(self,projectile,player,projectiles,health):
+    def ballHitPlayer(self,projectile,player,projectiles):
         if projectiles.count(projectile) == 0: return
         seperation = player.pos-projectile.pos
         if not projectile.owner == "player":
             if projectile.radius + player.radius >= seperation.length():
                 player.health -= projectile.damage
-                health.damageTaken()
+                player.damageTaken()
                 try:
                     projectiles.pop(projectiles.index(projectile))
                 except ValueError:

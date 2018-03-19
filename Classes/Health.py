@@ -16,12 +16,6 @@ class Health(HealthIMG):
         self.last = noHearts
         print(self.last , "test")
 
-
-    def updateHearts(self):
-        self.heart = 1
-        self.heartList.append(self.heart)
-        self.last += 1
-
     def damageTaken(self):
         if self.last > 0:
             if self.heartList[self.last] == 1:

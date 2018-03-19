@@ -10,6 +10,7 @@ class Laser():
         self.colour = "#7a14ff"
         self.time = 0.5
         self.bounce = True
+        self.resetDamage = 1
         self.baseDamage = 1
         self.speed = 0
         self.image = simplegui._load_local_image("Resources/images/Laser.png")
