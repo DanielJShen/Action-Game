@@ -10,8 +10,8 @@ class Cannon():
         self.projectileImage = simplegui._load_local_image("Resources/images/fireBall.png")
         self.time = 1.5
         self.bounce = True
-        self.resetDamage = 10
-        self.baseDamage = 10
+        self.resetDamage = 20
+        self.baseDamage = 20
         self.speed = 30
         self.image = simplegui._load_local_image("Resources/images/Cannon.png")
         self.scale = 2

@@ -9,7 +9,7 @@ class FireEnemy(EnemySuper):
 
         #Specific to this enemy
         self.speed = 0.7
-        self.health = 100
+        self.health = 180
         self.ability = Cannon()
         self.enemyIMG = Enemy2IMG(self.pos, FireEnemy, 530, 172, 9, 4, FrameIndex, 150, 150, 0)
         self.stopDistance = 200

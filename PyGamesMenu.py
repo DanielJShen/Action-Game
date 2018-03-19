@@ -70,7 +70,7 @@ background_image = pygame.image.load("Resources/images/bg.bmp").convert()
 menu_font = pygame.font.Font(None, 40)
 menu_options = [Menu("PLAY GAME", (345, 225)), Menu("RESOLUTION", (345, 285)),Menu("WALLS",(345,345)),Menu("QUIT", (345, 405))]
 font = pygame.font.Font(None, 70)
-text = font.render("ACTION GAME", True, (0,0,0))
+text = font.render("ZELDA GAME", True, (0,0,0))
 
 
 while menu==True:

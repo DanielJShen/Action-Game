@@ -40,7 +40,7 @@ class game():
         image_Bat = simplegui._load_local_image('Resources/images/hellBat.png')
 
         if not globals().__contains__("frame"):
-            frame = simplegui.create_frame("Action Game", CANVAS_WIDTH, CANVAS_HEIGHT)
+            frame = simplegui.create_frame("Zelda Game", CANVAS_WIDTH, CANVAS_HEIGHT,0)
 
         keyboard = Keyboard()
         currentMap = 0
