@@ -33,6 +33,7 @@ class ManMap:
         image_stamina = simplegui._load_local_image("Resources/images/stamina.png")
         image_shotgun = simplegui._load_local_image("Resources/images/Shotgun.png")
         hearts = simplegui._load_local_image("Resources/images/heartsprite.png")
+        heartcontainers = simplegui._load_local_image("Resources/images/heartcontainerSprite.png")
 
         #Background
         frame.set_canvas_background("#0170FE")
@@ -50,16 +51,33 @@ class ManMap:
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1450, 0), image_speed, 1, 1, "powerup", "speed"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, -300), image_damage, 1, 1, "powerup", "damage"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, -150), image_speed, 1, 1, "powerup", "speed"))
-        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), hearts, 4, 1, "powerup", "heart",True))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), image_damage, 1, 1, "powerup", "damage"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 150), hearts, 4, 1, "powerup", "heart",True))
 
+        #Pathway
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(115, -250), image_stamina, 1, 1, "powerup", "stamina"))
+
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(900, -155), image_stamina, 1, 1, "powerup", "stamina"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(950, -155), image_stamina, 1, 1, "powerup", "stamina"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1000, -155), image_stamina, 1, 1, "powerup", "stamina"))
+
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2100, -50), image_stamina, 1, 1, "powerup", "stamina"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2100, -200), image_stamina, 1, 1, "powerup", "stamina"))
+
+
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1900, 450), image_stamina, 1, 1, "powerup", "stamina"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1700, 450), image_stamina, 1, 1, "powerup", "stamina"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1400, 450), image_stamina, 1, 1, "powerup", "stamina"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1200, 450), image_stamina, 1, 1, "powerup", "stamina"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1000, 450), image_stamina, 1, 1, "powerup", "stamina"))
 
         #Pathway2
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1100, 1150), image_speed, 1, 1, "powerup", "speed"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1150, 1150), image_damage, 1, 1, "powerup", "damage"))
-        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1200, 1150), image_damage, 1, 1, "powerup", "heart"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1200, 1150), hearts, 4, 1, "powerup", "heart",True))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1250, 1150), image_speed, 1, 1, "powerup", "speed"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1300, 1150), image_damage, 1, 1, "powerup", "damage"))
-        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1350, 1150), hearts, 1, 1, "powerup", "heart",True))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(1350, 1150), heartcontainers, 4, 1, "powerup", "heart",True))
 
     #Enemies
         #Beginning
@@ -69,23 +87,30 @@ class ManMap:
         self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(1600, -300), "Red", "Sniper", image_FireEnemy,[0,1],95))
         self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(1600, -150), "Red", "Sniper", image_FireEnemy,[0,1],100))
         self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(1600, 0), "Red", "Sniper", image_FireEnemy,[0,2],60))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(2600, -300), "Blue", "Malee", image_Bat,[0,3],250))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(2600, -150), "Blue", "Malee", image_Bat, [0, 3], 280))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(2600, 0), "Blue", "Malee", image_Bat, [0, 1], 275))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(2600, -300), "Blue", "Melee", image_Bat,[0,3],250))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(2600, -150), "Blue", "Melee", image_Bat, [0, 3], 280))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(2600, 0), "Blue", "Melee", image_Bat, [0, 1], 275))
         #Guarding Laser
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 375), "Blue", "Malee", image_Bat,[0,3],100))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 475), "Blue", "Malee", image_Bat, [0, 3], 80))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 575), "Blue", "Malee", image_Bat, [0, 1], 90))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 375), "Blue", "Melee", image_Bat,[0,3],100))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 475), "Blue", "Melee", image_Bat, [0, 3], 80))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 575), "Blue", "Melee", image_Bat, [0, 1], 90))
         #Pathwaysprites
         self.enemies.append(FireEnemy(Vector(width / 2, height / 2)+Vector(-50, 750), "Red", "Sniper", image_FireEnemy,[0,2],120))
-        self.enemies.append(Bat(Vector(4040, 1080), "Blue", "Malee", image_Bat, [0, 3], 160))
-        self.enemies.append(Bat(Vector(3900, 1420), "Blue", "Malee", image_Bat, [0, 1], 260))
+        self.enemies.append(Bat(Vector(4040, 1080), "Blue", "Melee", image_Bat, [0, 3], 160))
+        self.enemies.append(Bat(Vector(3900, 1420), "Blue", "Melee", image_Bat, [0, 1], 260))
         #Pathway2
         self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(-200, 1150), "Red", "Sniper", image_FireEnemy,[0,1],270))
         self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(100, 1150), "Red", "Sniper", image_FireEnemy,[0,2],250))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1000, 1150), "Blue", "Malee", image_Bat, [0, 3], 120))
-        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1500, 1150), "Blue", "Malee", image_Bat, [0, 1], 200))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1000, 1150), "Blue", "Melee", image_Bat, [0, 3], 120))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1500, 1150), "Blue", "Melee", image_Bat, [0, 1], 200))
         self.enemies.append(FireEnemy(Vector(2620, 1810), "Red", "Sniper", image_FireEnemy,[0,1],270))
+
+        self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(1800, 1650), "Red", "Sniper", image_FireEnemy,[0,1],180))
+        self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(2000, 1650), "Red", "Sniper", image_FireEnemy,[0,1],180))
+        self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(2200, 1650), "Red", "Sniper", image_FireEnemy,[0,1],180))
+        self.enemies.append(FireEnemy(Vector(width/2,height/2)+Vector(2400, 1650), "Red", "Sniper", image_FireEnemy,[0,1],180))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1550, 2050), "Blue", "Melee", image_Bat, [0, 3], 0))
+        self.enemies.append(Bat(Vector(width/2,height/2)+Vector(1650, 2050), "Blue", "Melee", image_Bat, [0, 1], 0))
 
 
 
