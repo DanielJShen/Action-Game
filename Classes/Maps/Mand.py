@@ -50,6 +50,7 @@ class ManMap:
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, -300), image_damage, 1, 1, "powerup", "damage"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, -150), image_speed, 1, 1, "powerup", "speed"))
         self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), image_damage, 1, 1, "powerup", "damage"))
+        self.pickups.append(Pickup(Vector(width/2,height/2)+Vector(2800, 0), image_damage, 1, 1, "powerup", "heart"))
 
     #Enemies
         #Beginning
@@ -68,10 +69,9 @@ class ManMap:
         self.enemies.append(Bat(Vector(width/2,height/2)+Vector(100, 575), "Blue", "Malee", image_Bat, [0, 1], 90))
         #Pathwaysprites
         self.enemies.append(FireEnemy(Vector(2620, 1910), "Red", "Sniper", image_FireEnemy,[0,1],270))
-        self.enemies.append(FireEnemy(Vector(width / 2, height / 2)+Vector(10, 700), "Red", "Sniper", image_FireEnemy,[0,2],270))
-        self.enemies.append(Bat(Vector(1200, 950), "Blue", "Malee", image_Bat,[0,3],160))
+        self.enemies.append(FireEnemy(Vector(width / 2, height / 2)+Vector(-50, 750), "Red", "Sniper", image_FireEnemy,[0,2],120))
         self.enemies.append(Bat(Vector(4040, 1080), "Blue", "Malee", image_Bat, [0, 3], 160))
-        self.enemies.append(Bat(Vector(3900, 1480), "Blue", "Malee", image_Bat, [0, 1], 260))
+        self.enemies.append(Bat(Vector(3900, 1420), "Blue", "Malee", image_Bat, [0, 1], 260))
 
 
 
